@@ -1,220 +1,104 @@
 ---
 name: onboarding
-description: When the user wants to optimize post-signup onboarding, user activation, first-run experience, or time-to-value. Also use when the user mentions "onboarding flow," "activation rate," "user activation," "first-run experience," "empty states," "onboarding checklist," "aha moment," "new user experience," "users aren't activating," "nobody completes setup," "low activation rate," "users sign up but don't use the product," "time to value," or "first session experience." Use this whenever users are signing up but not sticking around. For signup/registration optimization, see signup. For ongoing email sequences, see emails.
-metadata:
-  version: 2.0.0
+description: Generate an onboarding checklist and first-week plan for a new hire. Use when someone has a start date coming up, building the pre-start task list (accounts, equipment, buddy), scheduling Day 1 and Week 1, or setting 30/60/90-day goals for a new team member.
+argument-hint: "<new hire name and role>"
 ---
 
-# Onboarding CRO
+# /onboarding
 
-You are an expert in user onboarding and activation. Your goal is to help users reach their "aha moment" as quickly as possible and establish habits that lead to long-term retention.
+> If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).
 
-## Initial Assessment
+Generate a comprehensive onboarding plan for a new team member.
 
-**Check for product marketing context first:**
-If `.agents/product-marketing.md` exists (or `.claude/product-marketing.md`, or the legacy `product-marketing-context.md` filename, in older setups), read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+## Usage
 
-Before providing recommendations, understand:
-
-1. **Product Context** - What type of product? B2B or B2C? Core value proposition?
-2. **Activation Definition** - What's the "aha moment"? What action indicates a user "gets it"?
-3. **Current State** - What happens after signup? Where do users drop off?
-
----
-
-## Core Principles
-
-### 1. Time-to-Value Is Everything
-Remove every step between signup and experiencing core value.
-
-### 2. One Goal Per Session
-Focus first session on one successful outcome. Save advanced features for later.
-
-### 3. Do, Don't Show
-Interactive > Tutorial. Doing the thing > Learning about the thing.
-
-### 4. Progress Creates Motivation
-Show advancement. Celebrate completions. Make the path visible.
-
----
-
-## Defining Activation
-
-### Find Your Aha Moment
-
-The action that correlates most strongly with retention:
-- What do retained users do that churned users don't?
-- What's the earliest indicator of future engagement?
-
-**Examples by product type:**
-- Project management: Create first project + add team member
-- Analytics: Install tracking + see first report
-- Design tool: Create first design + export/share
-- Marketplace: Complete first transaction
-
-### Activation Metrics
-- % of signups who reach activation
-- Time to activation
-- Steps to activation
-- Activation by cohort/source
-
----
-
-## Onboarding Flow Design
-
-### Immediate Post-Signup (First 30 Seconds)
-
-| Approach | Best For | Risk |
-|----------|----------|------|
-| Product-first | Simple products, B2C, mobile | Blank slate overwhelm |
-| Guided setup | Products needing personalization | Adds friction before value |
-| Value-first | Products with demo data | May not feel "real" |
-
-**Whatever you choose:**
-- Clear single next action
-- No dead ends
-- Progress indication if multi-step
-
-### Onboarding Checklist Pattern
-
-**When to use:**
-- Multiple setup steps required
-- Product has several features to discover
-- Self-serve B2B products
-
-**Best practices:**
-- 3-7 items (not overwhelming)
-- Order by value (most impactful first)
-- Start with quick wins
-- Progress bar/completion %
-- Celebration on completion
-- Dismiss option (don't trap users)
-
-### Empty States
-
-Empty states are onboarding opportunities, not dead ends.
-
-**Good empty state:**
-- Explains what this area is for
-- Shows what it looks like with data
-- Clear primary action to add first item
-- Optional: Pre-populate with example data
-
-### Tooltips and Guided Tours
-
-**When to use:** Complex UI, features that aren't self-evident, power features users might miss
-
-**Best practices:**
-- Max 3-5 steps per tour
-- Dismissable at any time
-- Don't repeat for returning users
-
----
-
-## Multi-Channel Onboarding
-
-### Email + In-App Coordination
-
-**Trigger-based emails:**
-- Welcome email (immediate)
-- Incomplete onboarding (24h, 72h)
-- Activation achieved (celebration + next step)
-- Feature discovery (days 3, 7, 14)
-
-**Email should:**
-- Reinforce in-app actions, not duplicate them
-- Drive back to product with specific CTA
-- Be personalized based on actions taken
-
----
-
-## Handling Stalled Users
-
-### Detection
-Define "stalled" criteria (X days inactive, incomplete setup)
-
-### Re-engagement Tactics
-
-1. **Email sequence** - Reminder of value, address blockers, offer help
-2. **In-app recovery** - Welcome back, pick up where left off
-3. **Human touch** - For high-value accounts, personal outreach
-
----
-
-## Measurement
-
-### Key Metrics
-
-| Metric | Description |
-|--------|-------------|
-| Activation rate | % reaching activation event |
-| Time to activation | How long to first value |
-| Onboarding completion | % completing setup |
-| Day 1/7/30 retention | Return rate by timeframe |
-
-### Funnel Analysis
-
-Track drop-off at each step:
 ```
-Signup → Step 1 → Step 2 → Activation → Retention
-100%      80%       60%       40%         25%
+/onboarding $ARGUMENTS
 ```
 
-Identify biggest drops and focus there.
+## What I Need From You
 
----
+- **New hire name**: Who's starting?
+- **Role**: What position?
+- **Team**: Which team are they joining?
+- **Start date**: When do they start?
+- **Manager**: Who's their manager?
 
-## Output Format
+## Output
 
-### Onboarding Audit
-For each issue: Finding → Impact → Recommendation → Priority
+```markdown
+## Onboarding Plan: [Name] — [Role]
+**Start Date:** [Date] | **Team:** [Team] | **Manager:** [Manager]
 
-### Onboarding Flow Design
-- Activation goal
-- Step-by-step flow
-- Checklist items (if applicable)
-- Empty state copy
-- Email sequence triggers
-- Metrics plan
+### Pre-Start (Before Day 1)
+- [ ] Send welcome email with start date, time, and logistics
+- [ ] Set up accounts: email, Slack, [tools for role]
+- [ ] Order equipment (laptop, monitor, peripherals)
+- [ ] Add to team calendar and recurring meetings
+- [ ] Assign onboarding buddy: [Suggested person]
+- [ ] Prepare desk / remote setup instructions
 
----
+### Day 1
+| Time | Activity | With |
+|------|----------|------|
+| 9:00 | Welcome and orientation | Manager |
+| 10:00 | IT setup and tool walkthrough | IT / Buddy |
+| 11:00 | Team introductions | Team |
+| 12:00 | Welcome lunch | Manager + Team |
+| 1:30 | Company overview and values | Manager |
+| 3:00 | Role expectations and 30/60/90 plan | Manager |
+| 4:00 | Free time to explore tools and docs | Self |
 
-## Common Patterns by Product Type
+### Week 1
+- [ ] Complete required compliance training
+- [ ] Read key documentation: [list for role]
+- [ ] 1:1 with each team member
+- [ ] Shadow key meetings
+- [ ] First small task or project assigned
+- [ ] End-of-week check-in with manager
 
-| Product Type | Key Steps |
-|--------------|-----------|
-| B2B SaaS | Setup wizard → First value action → Team invite → Deep setup |
-| Marketplace | Complete profile → Browse → First transaction → Repeat loop |
-| Mobile App | Permissions → Quick win → Push setup → Habit loop |
-| Content Platform | Follow/customize → Consume → Create → Engage |
+### 30-Day Goals
+1. [Goal aligned to role]
+2. [Goal aligned to role]
+3. [Goal aligned to role]
 
----
+### 60-Day Goals
+1. [Goal]
+2. [Goal]
 
-## Experiment Ideas
+### 90-Day Goals
+1. [Goal]
+2. [Goal]
 
-When recommending experiments, consider tests for:
-- Flow simplification (step count, ordering)
-- Progress and motivation mechanics
-- Personalization by role or goal
-- Support and help availability
+### Key Contacts
+| Person | Role | For What |
+|--------|------|----------|
+| [Manager] | Manager | Day-to-day guidance |
+| [Buddy] | Onboarding Buddy | Questions, culture, navigation |
+| [IT Contact] | IT | Tool access, equipment |
+| [HR Contact] | HR | Benefits, policies |
 
-**For comprehensive experiment ideas**: See [references/experiments.md](references/experiments.md)
+### Tools Access Needed
+| Tool | Access Level | Requested |
+|------|-------------|-----------|
+| [Tool] | [Level] | [ ] |
+```
 
----
+## If Connectors Available
 
-## Task-Specific Questions
+If **~~HRIS** is connected:
+- Pull new hire details and team org chart
+- Auto-populate tools access list based on role
 
-1. What action most correlates with retention?
-2. What happens immediately after signup?
-3. Where do users currently drop off?
-4. What's your activation rate target?
-5. Do you have cohort analysis on successful vs. churned users?
+If **~~knowledge base** is connected:
+- Link to relevant onboarding docs, team wikis, and runbooks
+- Pull the team's existing onboarding checklist to customize
 
----
+If **~~calendar** is connected:
+- Create Day 1 calendar events and Week 1 meeting invites automatically
 
-## Related Skills
+## Tips
 
-- **signup**: For optimizing the signup before onboarding
-- **emails**: For onboarding email series
-- **paywalls**: For converting to paid during/after onboarding
-- **ab-testing**: For testing onboarding changes
+1. **Customize for the role** — An engineer's onboarding looks different from a designer's.
+2. **Don't overload Day 1** — Focus on setup and relationships. Deep work starts Week 2.
+3. **Assign a buddy** — Having a go-to person who isn't their manager makes a huge difference.
