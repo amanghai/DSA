@@ -3,458 +3,740 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nazakat Telecom — Contact Page Preview</title>
+<title>Nazakat Telecom — Contact Page Preview (3D)</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #e5e7eb;
-  }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #080c14;
+  overflow-x: hidden;
+}
 
-  /* ---- Simulated header ---- */
-  .fake-header {
-    background: #0D1117;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
-    height: 64px;
-    font-size: 0.85rem;
-  }
-  .fake-header .logo {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #DC2626;
-    letter-spacing: 0.04em;
-  }
-  .fake-header nav { display: flex; gap: 24px; color: #94A3B8; font-size: 0.82rem; }
+/* ── HEADER (matches real store) ───────────────────────── */
+.site-header {
+  background: #1c2228;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.site-header .logo img {
+  height: 46px;
+  width: auto;
+  object-fit: contain;
+}
+.site-header nav {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.site-header nav a {
+  color: #c8cfd8;
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color 0.2s;
+}
+.site-header nav a:hover { color: #ffffff; }
+.site-header .header-icons {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+.site-header .header-icons svg {
+  width: 20px; height: 20px;
+  stroke: #c8cfd8; fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  cursor: pointer;
+  transition: stroke 0.2s;
+}
+.site-header .header-icons svg:hover { stroke: #ffffff; }
 
-  /* ---- Image banner ---- */
-  .fake-banner {
-    width: 100%;
-    height: 220px;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .fake-banner::before {
-    content: 'NT';
-    position: absolute;
-    font-size: 14rem;
-    font-weight: 900;
-    color: rgba(255,255,255,0.03);
-    letter-spacing: -0.05em;
-  }
-  .fake-banner-text {
-    text-align: center;
-    color: white;
-    z-index: 1;
-  }
-  .fake-banner-text h2 { font-size: 2rem; font-weight: 800; letter-spacing: 0.06em; }
-  .fake-banner-text p { color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 6px; }
+/* ── ANNOUNCEMENT BAR ──────────────────────────────────── */
+.announcement {
+  background: #DC2626;
+  color: white;
+  text-align: center;
+  padding: 9px 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
 
-  /* ===== CONTACT PAGE ===== */
-  .nzt-contact-wrapper { background: #F0F4F8; }
+/* ── IMAGE BANNER (real nz.png) ────────────────────────── */
+.site-banner {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  background: #0f172a;
+}
+.site-banner .banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.7;
+}
+.site-banner .banner-logo-watermark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.site-banner .banner-logo-watermark img {
+  height: 160px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.12;
+  filter: grayscale(1) brightness(3);
+}
 
-  .nzt-page-header {
-    text-align: center;
-    padding: 60px 20px 52px;
-    background: #ffffff;
-    border-bottom: 1px solid #E9EDF2;
-  }
-  .nzt-page-header__eyebrow {
-    display: inline-block;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: #DC2626;
-    margin-bottom: 14px;
-  }
-  .nzt-page-header__title {
-    font-size: clamp(2.4rem, 5vw, 3.6rem);
-    font-weight: 800;
-    color: #0D1117;
-    margin: 0 0 20px;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-  }
-  .nzt-page-header__rule {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-  }
-  .nzt-page-header__rule::before,
-  .nzt-page-header__rule::after {
-    content: '';
-    flex: 1;
-    max-width: 70px;
-    height: 1px;
-    background: #E2E8F0;
-  }
-  .nzt-page-header__dot {
-    width: 8px;
-    height: 8px;
-    background: #DC2626;
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(220,38,38,0.15);
-  }
+/* ── PAGE WRAPPER ──────────────────────────────────────── */
+.nzt-page {
+  background: #080c14;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 80px;
+}
 
-  .nzt-contact-section { padding: 52px 20px 72px; }
+/* Animated background blobs */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: float-blob 14s ease-in-out infinite;
+}
+.blob-1 {
+  width: 500px; height: 500px;
+  background: rgba(220,38,38,0.12);
+  top: -150px; left: -100px;
+  animation-delay: 0s;
+}
+.blob-2 {
+  width: 400px; height: 400px;
+  background: rgba(99,102,241,0.1);
+  top: 200px; right: -120px;
+  animation-delay: -5s;
+}
+.blob-3 {
+  width: 300px; height: 300px;
+  background: rgba(220,38,38,0.07);
+  bottom: 0; left: 40%;
+  animation-delay: -9s;
+}
+@keyframes float-blob {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -40px) scale(1.05); }
+  66%       { transform: translate(-20px, 30px) scale(0.96); }
+}
 
+/* Floating 3D geometric shapes */
+.geo {
+  position: absolute;
+  border: 1px solid rgba(220,38,38,0.15);
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 0;
+  animation: float-geo 10s ease-in-out infinite;
+}
+.geo-1 { width: 40px; height: 40px; top: 120px; left: 5%; animation-delay: 0s; transform: rotate(20deg); }
+.geo-2 { width: 24px; height: 24px; top: 300px; right: 8%; animation-delay: -4s; transform: rotate(45deg); border-radius: 50%; }
+.geo-3 { width: 32px; height: 32px; bottom: 100px; left: 12%; animation-delay: -7s; transform: rotate(-15deg); }
+.geo-4 { width: 18px; height: 18px; top: 80px; right: 20%; animation-delay: -2s; transform: rotate(30deg); border-radius: 50%; }
+@keyframes float-geo {
+  0%, 100% { transform: translateY(0) rotate(20deg); opacity: 0.5; }
+  50%       { transform: translateY(-20px) rotate(40deg); opacity: 1; }
+}
+
+/* ── PAGE HEADER ───────────────────────────────────────── */
+.nzt-page-header {
+  text-align: center;
+  padding: 64px 20px 56px;
+  position: relative;
+  z-index: 1;
+}
+.nzt-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #EF4444;
+  margin-bottom: 18px;
+}
+.nzt-eyebrow::before,
+.nzt-eyebrow::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: #EF4444;
+  opacity: 0.5;
+}
+.nzt-page-title {
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 40%, #DC2626 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 24px;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+.nzt-title-underline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.nzt-title-underline span {
+  display: block;
+  height: 3px;
+  border-radius: 3px;
+}
+.nzt-title-underline .line-l { width: 60px; background: rgba(255,255,255,0.08); }
+.nzt-title-underline .line-r { width: 60px; background: rgba(255,255,255,0.08); }
+.nzt-title-underline .line-m { width: 40px; background: linear-gradient(90deg, #DC2626, #EF4444); }
+
+/* ── 3D CARD WRAPPER ───────────────────────────────────── */
+.card-scene {
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+.card-3d-wrapper {
+  max-width: 1060px;
+  margin: 0 auto;
+  perspective: 1400px;
+  cursor: default;
+}
+.nzt-contact-grid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+  transform: perspective(1400px) rotateX(2deg) rotateY(-2deg);
+  box-shadow:
+    0 2px 0 rgba(220,38,38,0.15),
+    0 4px 8px rgba(0,0,0,0.5),
+    0 12px 30px rgba(0,0,0,0.45),
+    0 30px 60px rgba(0,0,0,0.35),
+    0 60px 120px rgba(0,0,0,0.2);
+  will-change: transform;
+}
+
+/* ── LEFT INFO PANEL ───────────────────────────────────── */
+.nzt-info-panel {
+  background: linear-gradient(155deg, #0f1420 0%, #181f30 55%, #0f1420 100%);
+  padding: 48px 34px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(255,255,255,0.05);
+}
+/* Red glow top-right */
+.nzt-info-panel::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(220,38,38,0.28) 0%, transparent 65%);
+  pointer-events: none;
+}
+/* Indigo glow bottom */
+.nzt-info-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: -40px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(99,102,241,0.16) 0%, transparent 65%);
+  pointer-events: none;
+}
+/* Grid pattern overlay */
+.panel-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+.nzt-info-top {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 32px;
+}
+.nzt-online-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(220,38,38,0.1);
+  border: 1px solid rgba(220,38,38,0.25);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: #FCA5A5;
+  margin-bottom: 22px;
+}
+.nzt-online-dot {
+  width: 6px; height: 6px;
+  background: #EF4444;
+  border-radius: 50%;
+  animation: nzt-blink 2s infinite;
+}
+@keyframes nzt-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.6); }
+}
+.nzt-info-heading {
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 10px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.nzt-info-sub {
+  color: #475569;
+  font-size: 0.88rem;
+  line-height: 1.8;
+}
+
+/* Contact items — 3D card style */
+.nzt-items {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+.nzt-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  cursor: default;
+}
+.nzt-item:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(220,38,38,0.25);
+  transform: translateX(4px);
+  box-shadow: -4px 0 0 #DC2626, 0 8px 24px rgba(0,0,0,0.3);
+}
+.nzt-item-icon {
+  width: 42px; height: 42px;
+  background: rgba(220,38,38,0.1);
+  border: 1px solid rgba(220,38,38,0.22);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.nzt-item:hover .nzt-item-icon {
+  background: rgba(220,38,38,0.18);
+  box-shadow: 0 0 16px rgba(220,38,38,0.3);
+}
+.nzt-item-icon svg {
+  width: 17px; height: 17px;
+  fill: none; stroke: #EF4444;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.nzt-item-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.nzt-item-text strong {
+  font-size: 0.66rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #334155;
+}
+.nzt-item-text span {
+  font-size: 0.87rem; font-weight: 500; color: #E2E8F0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.nzt-reply-note {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: auto; padding-top: 28px;
+  position: relative; z-index: 1;
+  color: #334155; font-size: 0.82rem;
+}
+.nzt-reply-note svg {
+  width: 14px; height: 14px;
+  stroke: #EF4444; fill: none;
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+/* ── RIGHT FORM PANEL — Glassmorphism ──────────────────── */
+.nzt-form-panel {
+  background: rgba(255, 255, 255, 0.97);
+  padding: 48px 48px 52px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+}
+/* Subtle top-right accent */
+.nzt-form-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle at top right, rgba(220,38,38,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.nzt-form-heading {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 28px;
+  line-height: 1.45;
+}
+.nzt-form-heading em {
+  font-style: normal;
+  color: #DC2626;
+}
+
+.contact-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.field { position: relative; margin-bottom: 14px; }
+.field:last-of-type { margin-bottom: 0; }
+
+.field input,
+.field textarea {
+  width: 100%;
+  background: #F8FAFC;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 15px 16px;
+  font-size: 0.93rem;
+  color: #0f172a;
+  font-family: inherit;
+  transition: border-color 0.22s, box-shadow 0.22s, background 0.22s;
+  outline: none;
+  -webkit-appearance: none;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
+}
+.field input:focus,
+.field textarea:focus {
+  border-color: #DC2626;
+  box-shadow: 0 0 0 3px rgba(220,38,38,0.09), inset 0 1px 3px rgba(0,0,0,0.02);
+  background: #ffffff;
+}
+.field input::placeholder,
+.field textarea::placeholder { color: #94A3B8; font-size: 0.9rem; }
+.field textarea {
+  min-height: 140px; resize: vertical;
+  margin-bottom: 14px; display: block;
+}
+
+/* 3D Send button */
+.btn-3d-wrap { position: relative; margin-top: 6px; }
+.submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 17px 32px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  font-family: inherit;
+  position: relative;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow:
+    0 4px 0 #7f1d1d,
+    0 8px 20px rgba(220,38,38,0.35),
+    0 16px 40px rgba(220,38,38,0.18);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 7px 0 #7f1d1d,
+    0 14px 28px rgba(220,38,38,0.45),
+    0 24px 50px rgba(220,38,38,0.22);
+}
+.submit-btn:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 2px 0 #7f1d1d,
+    0 4px 12px rgba(220,38,38,0.3);
+}
+.submit-btn .btn-arrow {
+  display: inline-block;
+  margin-left: 8px;
+  transition: transform 0.2s;
+}
+.submit-btn:hover .btn-arrow { transform: translateX(4px); }
+
+/* ── RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 900px) {
   .nzt-contact-grid {
-    display: grid;
-    grid-template-columns: 360px 1fr;
-    max-width: 1060px;
-    margin: 0 auto;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 24px 64px rgba(13,17,23,0.13), 0 4px 20px rgba(13,17,23,0.07);
+    grid-template-columns: 1fr;
+    border-radius: 16px;
   }
+  .nzt-info-panel { padding: 36px 26px; }
+  .nzt-form-panel { padding: 36px 26px 44px; }
+  .contact-fields { grid-template-columns: 1fr; }
+  .site-header nav { display: none; }
+  .site-header .header-icons { display: none; }
+}
+@media (max-width: 480px) {
+  .nzt-page-header { padding: 44px 20px 40px; }
+  .card-scene { padding: 0 12px; }
+}
 
-  /* Left Info Panel */
-  .nzt-info-panel {
-    background: linear-gradient(158deg, #0D1117 0%, #161B27 55%, #0D1117 100%);
-    padding: 48px 36px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  .nzt-info-panel::before {
-    content: '';
-    position: absolute;
-    top: -90px; right: -90px;
-    width: 280px; height: 280px;
-    background: radial-gradient(circle, rgba(220,38,38,0.24) 0%, transparent 65%);
-    pointer-events: none;
-  }
-  .nzt-info-panel::after {
-    content: '';
-    position: absolute;
-    bottom: -70px; left: -50px;
-    width: 220px; height: 220px;
-    background: radial-gradient(circle, rgba(99,102,241,0.14) 0%, transparent 65%);
-    pointer-events: none;
-  }
-  .nzt-info-top { position: relative; z-index: 1; margin-bottom: 36px; }
-
-  .nzt-online-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: rgba(220,38,38,0.1);
-    border: 1px solid rgba(220,38,38,0.22);
-    border-radius: 100px;
-    padding: 6px 14px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #FCA5A5;
-    margin-bottom: 22px;
-  }
-  .nzt-online-dot {
-    width: 6px; height: 6px;
-    background: #EF4444;
-    border-radius: 50%;
-    animation: nzt-blink 2s infinite;
-  }
-  @keyframes nzt-blink {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(1.5); }
-  }
-  .nzt-info-heading {
-    font-size: 1.85rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0 0 12px;
-    line-height: 1.2;
-  }
-  .nzt-info-sub {
-    color: #64748B;
-    font-size: 0.9rem;
-    line-height: 1.75;
-  }
-
-  .nzt-items {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    position: relative;
-    z-index: 1;
-  }
-  .nzt-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 16px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 12px;
-    transition: background 0.2s, border-color 0.2s;
-    cursor: default;
-  }
-  .nzt-item:hover {
-    background: rgba(255,255,255,0.07);
-    border-color: rgba(220,38,38,0.22);
-  }
-  .nzt-item-icon {
-    width: 42px; height: 42px;
-    background: rgba(220,38,38,0.1);
-    border: 1px solid rgba(220,38,38,0.22);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .nzt-item-icon svg {
-    width: 18px; height: 18px;
-    fill: none;
-    stroke: #EF4444;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .nzt-item-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-  .nzt-item-text strong {
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: #475569;
-  }
-  .nzt-item-text span {
-    font-size: 0.88rem;
-    font-weight: 500;
-    color: #E2E8F0;
-  }
-
-  .nzt-reply-note {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: auto;
-    padding-top: 30px;
-    position: relative;
-    z-index: 1;
-    color: #64748B;
-    font-size: 0.83rem;
-  }
-  .nzt-reply-note svg {
-    width: 15px; height: 15px;
-    stroke: #EF4444;
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    flex-shrink: 0;
-  }
-
-  /* Right Form Panel */
-  .nzt-form-panel {
-    background: #ffffff;
-    padding: 48px 48px 52px;
-  }
-  .nzt-form-panel .form-heading {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #0D1117;
-    margin-bottom: 28px;
-    line-height: 1.4;
-  }
-  .contact-fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 14px;
-  }
-  .field { position: relative; margin-bottom: 14px; }
-  .field:last-of-type { margin-bottom: 0; }
-  .field input,
-  .field textarea {
-    width: 100%;
-    background: #F8FAFC;
-    border: 1.5px solid #E2E8F0;
-    border-radius: 10px;
-    padding: 14px 16px;
-    font-size: 0.93rem;
-    color: #0D1117;
-    font-family: inherit;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-    -webkit-appearance: none;
-    outline: none;
-  }
-  .field input:focus,
-  .field textarea:focus {
-    border-color: #DC2626;
-    box-shadow: 0 0 0 3px rgba(220,38,38,0.08);
-    background: #ffffff;
-  }
-  .field input::placeholder,
-  .field textarea::placeholder { color: #94A3B8; }
-  .field textarea { min-height: 140px; resize: vertical; }
-
-  .submit-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
-    color: #ffffff;
-    border: none;
-    border-radius: 10px;
-    padding: 16px 32px;
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.025em;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 18px rgba(220,38,38,0.3);
-    margin-top: 6px;
-    font-family: inherit;
-  }
-  .submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(220,38,38,0.42);
-  }
-  .submit-btn:active { transform: translateY(0); }
-
-  /* Responsive */
-  @media (max-width: 900px) {
-    .nzt-contact-grid { grid-template-columns: 1fr; border-radius: 16px; }
-    .nzt-info-panel { padding: 36px 28px; }
-    .nzt-form-panel { padding: 36px 28px 40px; }
-    .contact-fields { grid-template-columns: 1fr; }
-    .fake-header nav { display: none; }
-  }
-
-  /* Preview label */
-  .preview-bar {
-    background: #1e293b;
-    color: #94A3B8;
-    text-align: center;
-    padding: 10px;
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-  .preview-bar span { color: #EF4444; font-weight: 700; }
+/* Preview badge */
+.preview-bar {
+  background: #DC2626;
+  color: white;
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.preview-bar span { opacity: 0.75; font-weight: 400; margin-left: 6px; }
 </style>
 </head>
 <body>
 
-<div class="preview-bar"><span>PREVIEW ONLY</span> — Not live. Awaiting your approval.</div>
+<div class="preview-bar">
+  Preview Only — Not Live
+  <span>Move your mouse over the card to see the 3D effect</span>
+</div>
 
-<!-- Simulated store header -->
-<div class="fake-header">
-  <div class="logo">Nazakat Telecom</div>
+<!-- REAL HEADER -->
+<div class="announcement">Welcome to our store → Free shipping on orders above ₹999</div>
+<header class="site-header">
+  <div class="logo">
+    <img
+      src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/snapchat_2892b502-7fbc-4d45-b9aa-1b31e8aeb078.png?v=1726684601"
+      alt="Nazakat Telecom"
+    >
+  </div>
   <nav>
-    <span>Shop</span><span>Mobiles</span><span>Accessories</span><span>About Us</span>
+    <a href="#">Shop</a>
+    <a href="#">Mobiles</a>
+    <a href="#">Audio &amp; Party Speakers</a>
+    <a href="#">Accessories</a>
+    <a href="#">About Us</a>
+    <a href="#">FAQ</a>
   </nav>
-</div>
+  <div class="header-icons">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+  </div>
+</header>
 
-<!-- Existing image banner (simulated) -->
-<div class="fake-banner">
-  <div class="fake-banner-text">
-    <h2>NAZAKAT TELECOM</h2>
-    <p>Widest Choice &amp; Best Offers Guaranteed</p>
+<!-- REAL BANNER (nz.png + NT logo watermark) -->
+<div class="site-banner">
+  <img
+    class="banner-img"
+    src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/nz.png?v=1724704258"
+    alt="Nazakat Telecom Banner"
+  >
+  <div class="banner-logo-watermark">
+    <img
+      src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/rectangle_nazakat_logo.png?v=1735500571"
+      alt=""
+    >
   </div>
 </div>
 
-<!-- ===== REDESIGNED CONTACT SECTION ===== -->
-<div class="nzt-contact-wrapper">
+<!-- ═══ 3D CONTACT SECTION ═══ -->
+<div class="nzt-page">
 
+  <!-- Animated blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- Floating geometric shapes -->
+  <div class="geo geo-1"></div>
+  <div class="geo geo-2"></div>
+  <div class="geo geo-3"></div>
+  <div class="geo geo-4"></div>
+
+  <!-- Page Title -->
   <div class="nzt-page-header">
-    <span class="nzt-page-header__eyebrow">Nazakat Telecom</span>
-    <h1 class="nzt-page-header__title">Contact Us</h1>
-    <div class="nzt-page-header__rule">
-      <span class="nzt-page-header__dot"></span>
+    <div class="nzt-eyebrow">Nazakat Telecom</div>
+    <h1 class="nzt-page-title">Contact Us</h1>
+    <div class="nzt-title-underline">
+      <span class="line-l"></span>
+      <span class="line-m"></span>
+      <span class="line-r"></span>
     </div>
   </div>
 
-  <div class="nzt-contact-section">
-    <div class="nzt-contact-grid">
+  <!-- 3D Contact Card -->
+  <div class="card-scene">
+    <div class="card-3d-wrapper" id="cardWrapper">
+      <div class="nzt-contact-grid" id="contactCard">
 
-      <!-- Left: Info Panel -->
-      <div class="nzt-info-panel">
-        <div class="nzt-info-top">
-          <div class="nzt-online-badge">
-            <span class="nzt-online-dot"></span>
-            We're Online
+        <!-- LEFT: Info Panel -->
+        <div class="nzt-info-panel">
+          <div class="panel-grid"></div>
+
+          <div class="nzt-info-top">
+            <div class="nzt-online-badge">
+              <span class="nzt-online-dot"></span>
+              We're Online
+            </div>
+            <h2 class="nzt-info-heading">Get In Touch</h2>
+            <p class="nzt-info-sub">Have a question about a product or your order? We're here to help.</p>
           </div>
-          <h2 class="nzt-info-heading">Get In Touch</h2>
-          <p class="nzt-info-sub">Have a question about a product or your order? We're here to help.</p>
+
+          <ul class="nzt-items">
+            <li class="nzt-item">
+              <div class="nzt-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div class="nzt-item-text">
+                <strong>Email</strong>
+                <span>onztelecom@gmail.com</span>
+              </div>
+            </li>
+            <li class="nzt-item">
+              <div class="nzt-item-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="nzt-item-text">
+                <strong>Business Hours</strong>
+                <span>Every Day, 10:00 AM – 8:00 PM</span>
+              </div>
+            </li>
+            <li class="nzt-item">
+              <div class="nzt-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div class="nzt-item-text">
+                <strong>Location</strong>
+                <span>India</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="nzt-reply-note">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            We typically reply within 24 hours
+          </div>
         </div>
 
-        <ul class="nzt-items">
-          <li class="nzt-item">
-            <div class="nzt-item-icon">
-              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            </div>
-            <div class="nzt-item-text">
-              <strong>Email</strong>
-              <span>onztelecom@gmail.com</span>
-            </div>
-          </li>
-          <li class="nzt-item">
-            <div class="nzt-item-icon">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <div class="nzt-item-text">
-              <strong>Business Hours</strong>
-              <span>Every Day, 10:00 AM – 8:00 PM</span>
-            </div>
-          </li>
-          <li class="nzt-item">
-            <div class="nzt-item-icon">
-              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
-            <div class="nzt-item-text">
-              <strong>Location</strong>
-              <span>India</span>
-            </div>
-          </li>
-        </ul>
+        <!-- RIGHT: Form Panel -->
+        <div class="nzt-form-panel">
+          <p class="nzt-form-heading">
+            Questions or comments?<br>
+            <em>Get in touch</em> and we'll be happy to help.
+          </p>
 
-        <div class="nzt-reply-note">
-          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          We typically reply within 24 hours
-        </div>
-      </div>
+          <div class="contact-fields">
+            <div class="field">
+              <input type="text" placeholder="Name">
+            </div>
+            <div class="field">
+              <input type="email" placeholder="Email *">
+            </div>
+          </div>
 
-      <!-- Right: Form -->
-      <div class="nzt-form-panel">
-        <p class="form-heading">Questions or comments? Get in touch and we'll be happy to help.</p>
-
-        <div class="contact-fields">
           <div class="field">
-            <input type="text" placeholder="Name">
+            <input type="tel" placeholder="Phone number">
           </div>
+
           <div class="field">
-            <input type="email" placeholder="Email *">
+            <textarea placeholder="Comment"></textarea>
+          </div>
+
+          <div class="btn-3d-wrap">
+            <button class="submit-btn" type="button">
+              Send Message <span class="btn-arrow">→</span>
+            </button>
           </div>
         </div>
 
-        <div class="field">
-          <input type="tel" placeholder="Phone number">
-        </div>
+      </div><!-- .nzt-contact-grid -->
+    </div><!-- .card-3d-wrapper -->
+  </div><!-- .card-scene -->
 
-        <div class="field">
-          <textarea placeholder="Comment"></textarea>
-        </div>
+</div><!-- .nzt-page -->
 
-        <button class="submit-btn" type="button">Send Message</button>
-      </div>
+<script>
+  // 3D tilt on mouse move
+  const wrapper = document.getElementById('cardWrapper');
+  const card    = document.getElementById('contactCard');
 
-    </div>
-  </div>
-</div>
+  let rafId = null;
+  let targetX = 2, targetY = -2;
+  let currentX = 2, currentY = -2;
 
+  wrapper.addEventListener('mousemove', function(e) {
+    const rect = wrapper.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width  - 0.5;
+    const y = (e.clientY - rect.top)  / rect.height - 0.5;
+    targetY =  x * 10;
+    targetX =  y * -7;
+  });
+
+  wrapper.addEventListener('mouseleave', function() {
+    targetX = 0;
+    targetY = 0;
+  });
+
+  function animate() {
+    currentX += (targetX - currentX) * 0.08;
+    currentY += (targetY - currentY) * 0.08;
+    card.style.transform =
+      `perspective(1400px) rotateX(${currentX}deg) rotateY(${currentY}deg)`;
+    const depth = Math.abs(currentX) + Math.abs(currentY);
+    card.style.boxShadow = `
+      0 2px 0 rgba(220,38,38,0.15),
+      0 ${4 + depth}px ${12 + depth}px rgba(0,0,0,0.5),
+      0 ${16 + depth * 2}px ${40 + depth * 3}px rgba(0,0,0,0.4),
+      0 ${40 + depth * 3}px ${80 + depth * 4}px rgba(0,0,0,0.25),
+      0 ${depth}px ${depth * 3}px rgba(220,38,38,0.1)
+    `;
+    rafId = requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
 </body>
 </html>
