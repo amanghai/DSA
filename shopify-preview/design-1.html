@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nazakat Telecom — Contact | Design 1: Neon Night</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cyan: #00D4FF;
+    --cyan-dim: rgba(0,212,255,0.15);
+    --cyan-glow: 0 0 8px #00D4FF, 0 0 20px rgba(0,212,255,0.5);
+    --dark-bg: #050812;
+    --panel-left: rgba(5,15,30,0.92);
+    --panel-right: rgba(13,17,23,0.85);
+  }
+
+  html, body { min-height: 100vh; background: var(--dark-bg); color: #e0f7ff; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
+
+  /* Preview bar */
+  .preview-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: linear-gradient(90deg, #000d1a, #001428, #000d1a);
+    border-bottom: 1px solid var(--cyan);
+    text-align: center; padding: 7px 16px;
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--cyan); box-shadow: var(--cyan-glow);
+    font-weight: 600;
+  }
+
+  /* Sticky header */
+  .site-header {
+    position: sticky; top: 29px; z-index: 900;
+    background: rgba(5,8,18,0.97);
+    border-bottom: 1px solid rgba(0,212,255,0.25);
+    backdrop-filter: blur(12px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 64px;
+    box-shadow: 0 2px 20px rgba(0,212,255,0.1);
+  }
+  .site-header .logo img { height: 40px; width: auto; object-fit: contain; }
+  .site-nav { display: flex; gap: 28px; list-style: none; }
+  .site-nav a { color: rgba(224,247,255,0.75); text-decoration: none; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; transition: color .2s, text-shadow .2s; }
+  .site-nav a:hover { color: var(--cyan); text-shadow: var(--cyan-glow); }
+
+  /* Background FX */
+  .bg-scanline {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0,212,255,0.03) 50%, transparent 100%);
+    background-size: 100% 200px;
+    animation: scanline 6s linear infinite;
+  }
+  @keyframes scanline {
+    0% { background-position: 0 -200px; }
+    100% { background-position: 0 100vh; }
+  }
+
+  .bg-grid {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none;
+    background-image:
+      radial-gradient(circle, rgba(0,212,255,0.18) 1px, transparent 1px);
+    background-size: 48px 48px;
+    animation: gridpulse 4s ease-in-out infinite alternate;
+  }
+  @keyframes gridpulse {
+    0% { opacity: 0.4; }
+    100% { opacity: 0.9; }
+  }
+
+  /* Hero banner */
+  .hero {
+    position: relative; z-index: 1;
+    padding: 64px 40px 40px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    overflow: hidden; min-height: 220px;
+    border-bottom: 1px solid rgba(0,212,255,0.15);
+  }
+  .hero-ghost {
+    position: absolute; font-size: clamp(80px, 14vw, 170px);
+    font-weight: 900; letter-spacing: 0.2em; color: transparent;
+    -webkit-text-stroke: 1px rgba(0,212,255,0.1);
+    user-select: none; pointer-events: none;
+    animation: ghostpulse 3s ease-in-out infinite alternate;
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+    white-space: nowrap;
+  }
+  @keyframes ghostpulse {
+    0% { -webkit-text-stroke-color: rgba(0,212,255,0.06); }
+    100% { -webkit-text-stroke-color: rgba(0,212,255,0.22); }
+  }
+  .hero-gridlines {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  }
+  .hero-gridlines::before, .hero-gridlines::after {
+    content: '';
+    position: absolute; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    animation: gridline-sweep 4s linear infinite;
+  }
+  .hero-gridlines::before { animation-delay: 0s; }
+  .hero-gridlines::after { animation-delay: 2s; }
+  @keyframes gridline-sweep {
+    0% { top: -2px; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+  .hero-title {
+    position: relative; z-index: 2;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 800; letter-spacing: 4px; text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 0 10px var(--cyan), 0 0 30px rgba(0,212,255,0.6), 0 0 60px rgba(0,212,255,0.3);
+    animation: titleglow 2s ease-in-out infinite alternate;
+  }
+  @keyframes titleglow {
+    0% { text-shadow: 0 0 8px var(--cyan), 0 0 20px rgba(0,212,255,0.5); }
+    100% { text-shadow: 0 0 14px var(--cyan), 0 0 40px rgba(0,212,255,0.8), 0 0 80px rgba(0,212,255,0.4); }
+  }
+  .hero-sub {
+    position: relative; z-index: 2; margin-top: 10px;
+    font-size: 13px; letter-spacing: 5px; text-transform: uppercase;
+    color: rgba(0,212,255,0.6);
+  }
+
+  /* Main layout */
+  .main-content {
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto; padding: 60px 40px 80px;
+  }
+
+  .contact-card {
+    display: grid; grid-template-columns: 380px 1fr; gap: 0;
+    border-radius: 16px; overflow: hidden;
+    border: 1px solid rgba(0,212,255,0.3);
+    box-shadow: 0 0 40px rgba(0,212,255,0.1), 0 20px 60px rgba(0,0,0,0.6);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  /* Info panel (left) */
+  .info-panel {
+    background: var(--panel-left);
+    border-right: 1px solid rgba(0,212,255,0.25);
+    backdrop-filter: blur(20px);
+    padding: 50px 40px;
+    display: flex; flex-direction: column; gap: 32px;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--cyan-dim);
+    border: 1px solid var(--cyan);
+    border-radius: 40px; padding: 6px 16px;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--cyan); width: fit-content;
+    animation: badgeflicker 5s infinite;
+    box-shadow: var(--cyan-glow);
+  }
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--cyan);
+    animation: badgeflicker 5s infinite;
+  }
+  @keyframes badgeflicker {
+    0%, 95%, 97%, 99%, 100% { opacity: 1; }
+    96%, 98% { opacity: 0.3; }
+  }
+
+  .info-heading {
+    font-size: 26px; font-weight: 700; color: #fff; line-height: 1.3;
+    letter-spacing: 1px;
+  }
+  .info-heading span { color: var(--cyan); text-shadow: var(--cyan-glow); }
+
+  .info-divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--cyan), rgba(0,212,255,0.1), transparent);
+  }
+
+  .contact-items { display: flex; flex-direction: column; gap: 18px; }
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 14px 16px; border-radius: 8px;
+    border-left: 3px solid rgba(0,212,255,0.2);
+    background: rgba(0,212,255,0.03);
+    transition: border-color .3s, background .3s, box-shadow .3s;
+    cursor: default;
+  }
+  .contact-item:hover {
+    border-left-color: var(--cyan);
+    background: rgba(0,212,255,0.08);
+    box-shadow: inset 0 0 20px rgba(0,212,255,0.07), var(--cyan-glow);
+  }
+  .contact-item-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--cyan-dim); border: 1px solid rgba(0,212,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .contact-item-text { display: flex; flex-direction: column; gap: 3px; }
+  .contact-item-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(0,212,255,0.5); }
+  .contact-item-value { font-size: 14px; color: rgba(224,247,255,0.9); font-weight: 500; }
+
+  .social-row { display: flex; gap: 12px; margin-top: 4px; }
+  .social-btn {
+    width: 38px; height: 38px; border-radius: 8px;
+    background: var(--cyan-dim); border: 1px solid rgba(0,212,255,0.35);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; cursor: pointer; color: var(--cyan);
+    transition: background .2s, box-shadow .2s, transform .2s;
+    text-decoration: none;
+  }
+  .social-btn:hover {
+    background: rgba(0,212,255,0.2);
+    box-shadow: var(--cyan-glow);
+    transform: translateY(-2px);
+  }
+
+  /* Form panel (right) */
+  .form-panel {
+    background: var(--panel-right);
+    backdrop-filter: blur(20px);
+    padding: 50px 48px;
+  }
+
+  .form-title {
+    font-size: 22px; font-weight: 700; color: #fff;
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .form-subtitle { font-size: 13px; color: rgba(224,247,255,0.45); margin-bottom: 36px; letter-spacing: 1px; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: rgba(0,212,255,0.55); }
+
+  input, textarea {
+    background: rgba(0,212,255,0.04);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 8px; padding: 13px 16px;
+    color: #e0f7ff; font-size: 14px; outline: none;
+    transition: border-color .3s, box-shadow .3s;
+    font-family: inherit;
+    resize: none;
+  }
+  input::placeholder, textarea::placeholder { color: rgba(224,247,255,0.2); }
+  input:focus, textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(0,212,255,0.12), var(--cyan-glow);
+  }
+  textarea { height: 120px; }
+
+  .required-note { font-size: 11px; color: rgba(0,212,255,0.35); margin-top: 4px; }
+
+  .submit-btn {
+    margin-top: 28px;
+    width: 100%; padding: 16px; border-radius: 8px;
+    background: transparent; border: 1px solid var(--cyan);
+    color: var(--cyan); font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 700; cursor: pointer;
+    box-shadow: var(--cyan-glow);
+    transition: background .3s, box-shadow .3s, color .3s;
+    font-family: inherit;
+    position: relative; overflow: hidden;
+  }
+  .submit-btn::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0,212,255,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform .5s;
+  }
+  .submit-btn:hover::before { transform: translateX(100%); }
+  .submit-btn:hover {
+    background: rgba(0,212,255,0.08);
+    box-shadow: 0 0 20px rgba(0,212,255,0.5), 0 0 60px rgba(0,212,255,0.2);
+  }
+
+  @media (max-width: 900px) {
+    .site-header { padding: 0 20px; }
+    .site-nav { display: none; }
+    .main-content { padding: 40px 20px 60px; }
+    .contact-card { grid-template-columns: 1fr; }
+    .info-panel { padding: 40px 28px; }
+    .form-panel { padding: 40px 28px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .hero { padding: 50px 20px 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-scanline"></div>
+<div class="bg-grid"></div>
+
+<div class="preview-bar">DESIGN 1 — NEON NIGHT &nbsp;|&nbsp; Preview Only &nbsp;|&nbsp; Nazakat Telecom</div>
+
+<header class="site-header">
+  <div class="logo">
+    <img src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/snapchat_2892b502-7fbc-4d45-b9aa-1b31e8aeb078.png?v=1726684601" alt="Nazakat Telecom">
+  </div>
+  <ul class="site-nav">
+    <li><a href="#">Shop</a></li>
+    <li><a href="#">Mobiles</a></li>
+    <li><a href="#">Audio &amp; Party Speakers</a></li>
+    <li><a href="#">Accessories</a></li>
+    <li><a href="#">About Us</a></li>
+    <li><a href="#">FAQ</a></li>
+  </ul>
+</header>
+
+<!-- Hero Banner -->
+<section class="hero">
+  <div class="hero-ghost">CONTACT</div>
+  <div class="hero-gridlines"></div>
+  <h1 class="hero-title">Get In Touch</h1>
+  <p class="hero-sub">Nazakat Telecom &mdash; We&rsquo;re here for you</p>
+</section>
+
+<!-- Main -->
+<main class="main-content">
+  <div class="contact-card" id="contactCard">
+
+    <!-- Left Info Panel -->
+    <div class="info-panel">
+      <div>
+        <div class="badge"><span class="badge-dot"></span>Online &amp; Responsive</div>
+      </div>
+
+      <div class="info-heading">
+        Need help?<br><span>We&rsquo;ve got you covered.</span>
+      </div>
+
+      <div class="info-divider"></div>
+
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="contact-item-icon">📧</div>
+          <div class="contact-item-text">
+            <span class="contact-item-label">Email</span>
+            <span class="contact-item-value">onztelecom@gmail.com</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">🕐</div>
+          <div class="contact-item-text">
+            <span class="contact-item-label">Hours</span>
+            <span class="contact-item-value">Every Day, 10:00 AM – 8:00 PM</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div class="contact-item-text">
+            <span class="contact-item-label">Location</span>
+            <span class="contact-item-value">India</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-divider"></div>
+
+      <div>
+        <div class="contact-item-label" style="margin-bottom:12px;">Follow us</div>
+        <div class="social-row">
+          <a class="social-btn" href="#">𝕏</a>
+          <a class="social-btn" href="#">📘</a>
+          <a class="social-btn" href="#">📷</a>
+          <a class="social-btn" href="#">▶</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Form Panel -->
+    <div class="form-panel">
+      <div class="form-title">Send a Message</div>
+      <div class="form-subtitle">Response within 24 hours &mdash; usually much faster.</div>
+
+      <form>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Your name">
+          </div>
+          <div class="form-group">
+            <label for="email">Email <span style="color:var(--cyan)">*</span></label>
+            <input type="email" id="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" placeholder="+91 00000 00000">
+          </div>
+          <div class="form-group">
+            <label>&nbsp;</label>
+            <div class="required-note">* Required field</div>
+          </div>
+          <div class="form-group full">
+            <label for="comment">Comment</label>
+            <textarea id="comment" placeholder="Tell us how we can help you..."></textarea>
+          </div>
+        </div>
+        <button type="button" class="submit-btn">⚡ Send Message</button>
+      </form>
+    </div>
+
+  </div>
+</main>
+
+<script>
+(function() {
+  const card = document.getElementById('contactCard');
+  let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+  let rafId = null;
+  let isHovering = false;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function animate() {
+    currentX = lerp(currentX, targetX, 0.08);
+    currentY = lerp(currentY, targetY, 0.08);
+    card.style.transform = `perspective(1200px) rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+    rafId = requestAnimationFrame(animate);
+  }
+
+  card.addEventListener('mousemove', function(e) {
+    if (!isHovering) {
+      isHovering = true;
+      rafId = requestAnimationFrame(animate);
+    }
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    targetX = x * 14;
+    targetY = -y * 10;
+  });
+
+  card.addEventListener('mouseleave', function() {
+    targetX = 0; targetY = 0;
+    function returnToZero() {
+      currentX = lerp(currentX, 0, 0.1);
+      currentY = lerp(currentY, 0, 0.1);
+      card.style.transform = `perspective(1200px) rotateY(${currentX}deg) rotateX(${currentY}deg)`;
+      if (Math.abs(currentX) > 0.01 || Math.abs(currentY) > 0.01) {
+        requestAnimationFrame(returnToZero);
+      } else {
+        card.style.transform = '';
+        isHovering = false;
+        cancelAnimationFrame(rafId);
+      }
+    }
+    cancelAnimationFrame(rafId);
+    requestAnimationFrame(returnToZero);
+  });
+})();
+</script>
+</body>
+</html>
