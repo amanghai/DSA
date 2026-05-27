@@ -3,561 +3,574 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nazakat Telecom — Contact | Design 3: IVORY ELITE</title>
+<title>Nazakat Telecom — Contact | Ivory Elite 3D</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Libre+Baskerville:wght@400;700&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --white: #FFFFFF;
-    --navy: #0A0F1E;
-    --red: #DC2626;
-    --red-dark: #B91C1C;
-    --text: #111827;
-    --text-mid: #374151;
+    --white:      #FFFFFF;
+    --navy:       #0A0F1E;
+    --navy-deep:  #06091A;
+    --red:        #DC2626;
+    --red-dark:   #B91C1C;
+    --text:       #111827;
+    --text-mid:   #374151;
     --text-light: #6B7280;
-    --border: #E5E7EB;
-    --border-light: #F3F4F6;
+    --border:     #E5E7EB;
+    --bg:         #FAFAFA;
   }
 
   html { scroll-behavior: smooth; }
-
   body {
     font-family: 'Inter', sans-serif;
-    background: var(--white);
+    background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* PREVIEW BAR */
+  /* ── PREVIEW BAR ─────────────────────────────────────── */
   .preview-bar {
     background: var(--navy);
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.55);
     text-align: center;
-    padding: 8px 16px;
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    font-weight: 600;
+    padding: 9px 16px;
+    font-size: 9.5px;
+    font-weight: 700;
     letter-spacing: 3.5px;
     text-transform: uppercase;
-    position: relative;
-    z-index: 1000;
+    position: relative; z-index: 1000;
   }
-  .preview-bar span {
-    color: var(--red);
-    font-weight: 700;
-  }
+  .preview-bar b { color: var(--red); }
 
-  /* HEADER */
+  /* ── HEADER ──────────────────────────────────────────── */
   header {
-    position: sticky;
-    top: 0;
-    z-index: 900;
-    background: rgba(255,255,255,0.98);
+    position: sticky; top: 0; z-index: 900;
+    background: rgba(255,255,255,0.97);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 16px rgba(0,0,0,0.05);
   }
   .header-inner {
-    max-width: 1380px;
-    margin: 0 auto;
-    padding: 0 40px;
+    max-width: 1380px; margin: 0 auto; padding: 0 40px;
     height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
   }
-  .logo-wrap img {
-    height: 44px;
-    width: auto;
-    transition: opacity 0.2s;
-  }
+  .logo-wrap img { height: 44px; width: auto; transition: opacity 0.2s; }
   .logo-wrap img:hover { opacity: 0.8; }
-
   nav { display: flex; align-items: center; gap: 2px; }
   nav a {
-    color: var(--text-light);
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    padding: 7px 14px;
-    border-radius: 6px;
-    transition: all 0.18s;
-    letter-spacing: 0.2px;
+    color: var(--text-light); text-decoration: none;
+    font-size: 13px; font-weight: 500; padding: 7px 13px; border-radius: 6px;
+    transition: all 0.18s; letter-spacing: 0.2px;
   }
-  nav a:hover {
-    color: var(--text);
-    background: var(--border-light);
+  nav a:hover { color: var(--text); background: #F3F4F6; }
+  .header-icons { display: flex; gap: 16px; }
+  .header-icons svg {
+    width: 20px; height: 20px; stroke: var(--text-light); fill: none;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    cursor: pointer; transition: stroke 0.2s;
   }
+  .header-icons svg:hover { stroke: var(--text); }
 
-  /* HERO */
+  /* ── HERO ────────────────────────────────────────────── */
   .hero {
-    position: relative;
-    overflow: hidden;
-    height: 260px;
+    position: relative; overflow: hidden; height: 280px;
     background: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    display: flex; align-items: center; justify-content: flex-start;
+    border-bottom: 1px solid var(--border);
   }
+  /* subtle background dot grid */
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.055) 1px, transparent 1px);
+    background-size: 28px 28px;
+    animation: gridDrift 20s linear infinite;
+  }
+  @keyframes gridDrift { from{background-position:0 0;} to{background-position:28px 28px;} }
 
-  /* Bold diagonal red slash */
+  /* diagonal red slash */
   .hero-slash {
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 50%;
-    overflow: hidden;
-    pointer-events: none;
+    position: absolute; right: 0; top: 0; bottom: 0; width: 55%;
+    overflow: hidden; pointer-events: none;
   }
   .hero-slash::before {
-    content: '';
-    position: absolute;
-    top: -20%;
-    right: 10%;
-    width: 5px;
-    height: 160%;
+    content: ''; position: absolute;
+    top: -20%; right: 12%; width: 5px; height: 160%;
     background: var(--red);
-    transform: rotate(-8deg);
-    transform-origin: top center;
-    animation: slashIn 0.9s cubic-bezier(0.16,1,0.3,1) both;
+    transform: rotate(-8deg); transform-origin: top center;
+    animation: slashIn 1s cubic-bezier(0.16,1,0.3,1) both;
   }
   .hero-slash::after {
-    content: '';
-    position: absolute;
-    top: -20%;
-    right: 14%;
-    width: 2px;
-    height: 160%;
-    background: rgba(220,38,38,0.18);
-    transform: rotate(-8deg);
-    transform-origin: top center;
-    animation: slashIn 0.9s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+    content: ''; position: absolute;
+    top: -20%; right: 16.5%; width: 2px; height: 160%;
+    background: rgba(220,38,38,0.2);
+    transform: rotate(-8deg); transform-origin: top center;
+    animation: slashIn 1s 0.1s cubic-bezier(0.16,1,0.3,1) both;
   }
   @keyframes slashIn {
-    from { transform: rotate(-8deg) scaleY(0); opacity: 0; }
-    to { transform: rotate(-8deg) scaleY(1); opacity: 1; }
+    from { transform:rotate(-8deg) scaleY(0); opacity:0; }
+    to   { transform:rotate(-8deg) scaleY(1); opacity:1; }
   }
 
-  /* Subtle decorative lines top-right */
+  /* light sweep across hero */
+  .hero-sweep {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.5) 50%,transparent 60%);
+    background-size: 300% 100%;
+    animation: sweep 5s 1.2s ease-in-out both;
+  }
+  @keyframes sweep { from{background-position:130% 0;} to{background-position:-30% 0;} }
+
+  /* decorative lines right */
   .hero-deco {
-    position: absolute;
-    right: 60px;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 12px;
+    position: absolute; right: 68px; top: 0; bottom: 0;
+    display: flex; flex-direction: column; justify-content: center; gap: 14px;
     pointer-events: none;
-    animation: decoFade 1s 0.4s ease both;
+    animation: decoIn 0.8s 0.5s ease both;
   }
-  @keyframes decoFade { from{opacity:0;transform:translateX(20px);} to{opacity:1;transform:translateX(0);} }
-  .hero-deco-line {
-    height: 1px;
-    background: var(--border);
-  }
-  .hero-deco-line:nth-child(1) { width: 120px; }
-  .hero-deco-line:nth-child(2) { width: 80px; }
-  .hero-deco-line:nth-child(3) { width: 140px; }
-  .hero-deco-line:nth-child(4) { width: 60px; }
+  @keyframes decoIn { from{opacity:0;transform:translateX(16px);} to{opacity:1;transform:translateX(0);} }
+  .hdl { height: 1px; background: var(--border); }
+  .hdl:nth-child(1){width:130px;} .hdl:nth-child(2){width:80px;}
+  .hdl:nth-child(3){width:155px;} .hdl:nth-child(4){width:60px;}
 
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    padding: 0 40px 0 60px;
-    max-width: 700px;
-  }
+  .hero-content { position: relative; z-index: 2; padding: 0 60px; max-width: 720px; }
   .hero-eyebrow {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    color: var(--red);
-    text-transform: uppercase;
-    margin-bottom: 14px;
-    animation: fadeInLeft 0.7s ease both;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 4px;
+    color: var(--red); text-transform: uppercase; margin-bottom: 14px;
+    animation: fadeUp 0.6s ease both;
   }
   .hero-title {
-    font-family: 'Inter', sans-serif;
-    font-size: clamp(34px, 5.5vw, 68px);
-    font-weight: 900;
-    color: var(--text);
-    line-height: 1.0;
-    letter-spacing: -2px;
-    animation: fadeInLeft 0.7s 0.1s ease both;
-  }
-  .hero-title-accent {
-    display: block;
-    font-size: clamp(14px, 2vw, 20px);
-    font-weight: 400;
-    letter-spacing: 0.5px;
-    color: var(--text-light);
-    margin-top: 12px;
-    animation: fadeInLeft 0.7s 0.22s ease both;
-  }
-  .hero-red-line {
-    width: 48px;
-    height: 3px;
-    background: var(--red);
-    margin-top: 20px;
-    border-radius: 2px;
-    animation: lineExpand 0.8s 0.35s cubic-bezier(0.16,1,0.3,1) both;
-  }
-  @keyframes lineExpand { from{width:0;opacity:0;} to{width:48px;opacity:1;} }
-  @keyframes fadeInLeft { from{opacity:0;transform:translateX(-18px);} to{opacity:1;transform:translateX(0);} }
-
-  /* MAIN */
-  .page-wrap { position: relative; z-index: 1; }
-  .contact-section {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 64px 40px 96px;
-  }
-  .card-outer { perspective: 1400px; }
-  .card {
-    display: grid;
-    grid-template-columns: 360px 1fr;
-    border-radius: 2px;
+    font-size: clamp(36px, 5.5vw, 70px);
+    font-weight: 900; color: var(--text);
+    line-height: 1.0; letter-spacing: -2.5px;
+    animation: fadeUp 0.6s 0.1s ease both;
     overflow: hidden;
-    border: 1px solid var(--border);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
-    transform-style: preserve-3d;
-    will-change: transform;
-    transition: box-shadow 0.4s;
   }
-  .card:hover {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05), 0 20px 48px rgba(0,0,0,0.1), 0 2px 0 0 var(--red) inset;
+  .hero-sub {
+    display: block;
+    font-size: clamp(13px, 1.8vw, 18px); font-weight: 400;
+    letter-spacing: 0.3px; color: var(--text-light); margin-top: 12px;
+    animation: fadeUp 0.6s 0.22s ease both;
+  }
+  .hero-redline {
+    width: 48px; height: 3px; background: var(--red);
+    margin-top: 22px; border-radius: 2px;
+    animation: lineGrow 0.8s 0.4s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
+  @keyframes lineGrow { from{width:0;opacity:0;} to{width:48px;opacity:1;} }
+
+  /* ── PAGE BACKGROUND ─────────────────────────────────── */
+  .page-wrap {
+    position: relative;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  /* Very subtle floating bg shapes — barely there, keeps it elite */
+  .bg-shape {
+    position: absolute; border-radius: 2px;
+    border: 1px solid rgba(0,0,0,0.04);
+    pointer-events: none; z-index: 0;
+    animation: bgFloat ease-in-out infinite;
+  }
+  .bgs1{width:60px;height:60px;top:80px;left:3%;   animation-duration:12s; animation-delay:0s;  transform:rotate(15deg);}
+  .bgs2{width:36px;height:36px;top:300px;right:4%; animation-duration:16s; animation-delay:-5s; transform:rotate(45deg); border-radius:50%;}
+  .bgs3{width:48px;height:48px;bottom:120px;left:6%;animation-duration:14s;animation-delay:-8s; transform:rotate(-10deg);}
+  .bgs4{width:24px;height:24px;top:50px;right:12%;  animation-duration:10s; animation-delay:-3s; transform:rotate(30deg); border-radius:50%;}
+  @keyframes bgFloat {
+    0%,100%{transform:translateY(0) rotate(15deg); opacity:.5;}
+    50%{transform:translateY(-20px) rotate(30deg); opacity:1;}
   }
 
-  /* LEFT PANEL — deep navy */
+  /* ── CONTACT SECTION ─────────────────────────────────── */
+  .contact-section {
+    max-width: 1280px; margin: 0 auto;
+    padding: 72px 40px 110px;
+    position: relative; z-index: 1;
+  }
+
+  /* 3D perspective wrapper */
+  .card-scene { perspective: 1800px; perspective-origin: 50% 40%; }
+
+  .card {
+    display: grid; grid-template-columns: 360px 1fr;
+    border-radius: 4px; overflow: hidden;
+    border: 1px solid var(--border);
+    will-change: transform;
+    /* Load-in */
+    animation: cardReveal 0.9s cubic-bezier(0.22,1,0.36,1) both;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.9) inset,
+      0 2px 4px rgba(0,0,0,0.04),
+      0 8px 24px rgba(0,0,0,0.06),
+      0 32px 64px rgba(0,0,0,0.05);
+  }
+  @keyframes cardReveal {
+    from { opacity:0; transform:perspective(1800px) rotateX(6deg) translateY(40px); }
+    to   { opacity:1; transform:perspective(1800px) rotateX(0deg) translateY(0); }
+  }
+
+  /* ground shadow — the 3D "floor reflection" */
+  .card-shadow {
+    height: 40px; margin: 0 40px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0,0,0,0.14) 0%, transparent 70%);
+    transition: opacity 0.3s;
+    animation: shadowPulse 4s ease-in-out infinite;
+  }
+  @keyframes shadowPulse {
+    0%,100%{transform:scaleX(1); opacity:.7;}
+    50%{transform:scaleX(0.92); opacity:.4;}
+  }
+
+  /* ── LEFT PANEL — deep navy ──────────────────────────── */
   .panel-left {
     background: var(--navy);
-    padding: 52px 40px;
-    position: relative;
-    overflow: hidden;
-  }
-  .panel-left::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--red), transparent);
-  }
-  /* Subtle large N in bg */
-  .panel-left::after {
-    content: 'NT';
-    position: absolute;
-    bottom: -20px; right: -20px;
-    font-family: 'Inter', sans-serif;
-    font-size: 160px;
-    font-weight: 900;
-    color: rgba(255,255,255,0.025);
-    letter-spacing: -8px;
-    user-select: none;
-    pointer-events: none;
-    line-height: 1;
+    padding: 52px 40px 52px;
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
   }
 
-  .store-badge-dark {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(220,38,38,0.12);
-    border: 1px solid rgba(220,38,38,0.25);
-    border-radius: 2px;
-    padding: 5px 12px 5px 9px;
-    margin-bottom: 32px;
+  /* Animated red top-edge line */
+  .panel-left::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--red) 0%, var(--red-dark) 50%, var(--red) 100%);
+    background-size: 200% 100%;
+    animation: redLineSweep 3s linear infinite;
   }
-  .badge-dot-red {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--red);
-    animation: redPulse 2s ease-in-out infinite;
+  @keyframes redLineSweep {
+    0%  { background-position: 100% 0; }
+    100%{ background-position: -100% 0; }
   }
-  @keyframes redPulse {
-    0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.4);}
-    50%{box-shadow:0 0 0 4px rgba(220,38,38,0);}
+
+  /* NT watermark — slowly drifts */
+  .panel-left::after {
+    content: 'NT';
+    position: absolute; bottom: -30px; right: -20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 180px; font-weight: 900;
+    color: rgba(255,255,255,0.025);
+    letter-spacing: -10px; user-select: none; pointer-events: none; line-height: 1;
+    animation: watermarkDrift 18s ease-in-out infinite;
   }
-  .badge-text-dark {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: rgba(220,38,38,0.9);
-    text-transform: uppercase;
+  @keyframes watermarkDrift {
+    0%,100%{transform:translate(0,0) rotate(0deg);}
+    50%{transform:translate(-10px,-12px) rotate(-2deg);}
+  }
+
+  /* inner glow top-right */
+  .panel-glow {
+    position: absolute; top: -80px; right: -80px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(220,38,38,0.18) 0%, transparent 65%);
+    pointer-events: none;
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+  @keyframes glowPulse { 0%,100%{opacity:.6; transform:scale(1);} 50%{opacity:1; transform:scale(1.15);} }
+
+  /* badge */
+  .store-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(220,38,38,0.1);
+    border: 1px solid rgba(220,38,38,0.22);
+    border-radius: 2px; padding: 5px 12px 5px 9px; margin-bottom: 28px;
+    width: fit-content;
+    animation: fadeUp 0.5s 0.6s ease both;
+  }
+  .badge-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--red);
+    animation: dotPulse 2s ease-in-out infinite;
+  }
+  @keyframes dotPulse {
+    0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.45);}
+    50%{box-shadow:0 0 0 5px rgba(220,38,38,0);}
+  }
+  .badge-text {
+    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    color: rgba(220,38,38,0.85); text-transform: uppercase;
   }
 
   .panel-heading {
     font-family: 'Libre Baskerville', serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.3;
-    margin-bottom: 10px;
-    letter-spacing: -0.3px;
+    font-size: 27px; font-weight: 700; color: #fff;
+    line-height: 1.3; margin-bottom: 10px; letter-spacing: -0.3px;
+    animation: fadeUp 0.5s 0.7s ease both;
   }
   .panel-sub {
-    font-size: 13px;
-    color: rgba(255,255,255,0.45);
-    line-height: 1.7;
-    margin-bottom: 40px;
-    font-weight: 400;
+    font-size: 13px; color: rgba(255,255,255,0.42);
+    line-height: 1.75; margin-bottom: 36px;
+    animation: fadeUp 0.5s 0.8s ease both;
   }
 
-  .contact-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 40px; }
+  /* contact rows */
+  .contact-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 36px; }
   .contact-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 16px 0;
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 15px 0 15px 10px;
     border-bottom: 1px solid rgba(255,255,255,0.07);
     border-left: 2px solid transparent;
-    padding-left: 12px;
-    transition: all 0.22s;
+    transition: border-left-color 0.22s, padding-left 0.22s, background 0.22s;
     cursor: default;
+    animation: fadeUp 0.5s ease both;
   }
-  .contact-item:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+  .contact-item:nth-child(1){ animation-delay:.85s; border-top:1px solid rgba(255,255,255,0.07); }
+  .contact-item:nth-child(2){ animation-delay:.95s; }
+  .contact-item:nth-child(3){ animation-delay:1.05s; }
   .contact-item:hover {
     border-left-color: var(--red);
     padding-left: 16px;
+    background: rgba(220,38,38,0.04);
   }
   .contact-icon {
-    width: 32px; height: 32px;
-    border-radius: 2px;
-    background: var(--red);
+    width: 34px; height: 34px; border-radius: 2px;
+    background: var(--red); flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    font-size: 14px;
-    color: #fff;
-    transition: all 0.22s;
+    transition: background 0.22s, transform 0.22s, box-shadow 0.22s;
   }
   .contact-item:hover .contact-icon {
     background: var(--red-dark);
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(220,38,38,0.4);
   }
+  .contact-icon svg { width:15px; height:15px; stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
   .contact-label {
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: rgba(220,38,38,0.7);
-    text-transform: uppercase;
-    margin-bottom: 3px;
+    font-size: 9px; font-weight: 700; letter-spacing: 2px;
+    color: rgba(220,38,38,0.75); text-transform: uppercase; margin-bottom: 3px;
   }
-  .contact-value {
-    font-size: 13px;
-    color: rgba(255,255,255,0.8);
-    font-weight: 400;
-  }
+  .contact-value { font-size: 13px; color: rgba(255,255,255,0.78); font-weight: 400; }
 
-  .social-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  /* social */
+  .social-row {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto;
+  }
   .social-btn {
-    width: 36px; height: 36px;
-    border-radius: 2px;
-    background: rgba(255,255,255,0.06);
+    width: 36px; height: 36px; border-radius: 2px;
+    background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1);
     display: flex; align-items: center; justify-content: center;
-    color: rgba(255,255,255,0.45);
-    font-size: 14px;
-    text-decoration: none;
-    transition: all 0.2s;
-    cursor: pointer;
+    cursor: pointer; transition: all 0.2s;
+    animation: fadeUp 0.4s ease both;
   }
-  .social-btn:hover {
-    background: rgba(220,38,38,0.15);
-    border-color: rgba(220,38,38,0.3);
-    color: var(--red);
-  }
+  .social-btn:nth-child(1){animation-delay:1.1s;}
+  .social-btn:nth-child(2){animation-delay:1.18s;}
+  .social-btn:nth-child(3){animation-delay:1.26s;}
+  .social-btn:nth-child(4){animation-delay:1.34s;}
+  .social-btn svg { width:15px; height:15px; stroke:rgba(255,255,255,0.4); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:stroke 0.2s; }
+  .social-btn:hover { background:rgba(220,38,38,0.15); border-color:rgba(220,38,38,0.3); }
+  .social-btn:hover svg { stroke: var(--red); }
 
-  /* RIGHT PANEL */
+  /* ── RIGHT PANEL ─────────────────────────────────────── */
   .panel-right {
     background: var(--white);
     padding: 52px 56px;
     position: relative;
   }
+  /* faint red corner accent */
+  .panel-right::before {
+    content: ''; position: absolute; top:0; right:0;
+    width:0; height:0;
+    border-style: solid;
+    border-width: 0 40px 40px 0;
+    border-color: transparent rgba(220,38,38,0.06) transparent transparent;
+  }
 
-  .form-header { margin-bottom: 40px; }
   .form-label-top {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: var(--red);
-    text-transform: uppercase;
-    margin-bottom: 10px;
+    font-size: 10px; font-weight: 700; letter-spacing: 3px;
+    color: var(--red); text-transform: uppercase; margin-bottom: 10px;
+    animation: fadeUp 0.5s 0.7s ease both;
   }
   .form-title {
-    font-family: 'Inter', sans-serif;
-    font-size: clamp(22px, 2.8vw, 30px);
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -1px;
-    line-height: 1.1;
+    font-size: clamp(22px, 2.8vw, 32px); font-weight: 800;
+    color: var(--text); letter-spacing: -1px; line-height: 1.1;
+    animation: fadeUp 0.5s 0.8s ease both;
   }
-  .form-red-line {
-    width: 36px; height: 2px;
-    background: var(--red);
-    margin-top: 16px;
-    border-radius: 1px;
-    animation: lineExpand2 0.8s 0.4s ease both;
+  .form-redline {
+    width: 36px; height: 2px; background: var(--red);
+    margin: 16px 0 36px; border-radius: 1px;
+    animation: lineGrow2 0.8s 0.95s cubic-bezier(0.16,1,0.3,1) both;
   }
-  @keyframes lineExpand2 { from{width:0;opacity:0;} to{width:36px;opacity:1;} }
+  @keyframes lineGrow2 { from{width:0;opacity:0;} to{width:36px;opacity:1;} }
 
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 28px 24px;
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 24px; }
+  .fg       { display: flex; flex-direction: column; gap: 0; }
+  .fg.full  { grid-column: 1 / -1; }
+  .fg label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--text-light); text-transform: uppercase; margin-bottom: 8px;
   }
-  .form-group { display: flex; flex-direction: column; gap: 0; }
-  .form-group.full { grid-column: 1 / -1; }
-  .form-group label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    color: var(--text-light);
-    text-transform: uppercase;
-    margin-bottom: 8px;
+  /* Underline-only fields with animated focus line */
+  .fg .field-wrap { position: relative; }
+  .fg input, .fg textarea {
+    background: transparent; border: none;
+    border-bottom: 1.5px solid var(--border);
+    border-radius: 0; padding: 10px 2px;
+    color: var(--text); font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 400; outline: none;
+    resize: none; width: 100%; transition: border-color 0.22s;
   }
-  .form-group input,
-  .form-group textarea {
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid var(--border);
-    border-radius: 0;
-    padding: 10px 2px;
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    outline: none;
-    transition: border-color 0.22s;
-    resize: none;
-    width: 100%;
+  .fg textarea { height: 90px; padding-top: 8px; }
+  .fg .field-line {
+    position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+    background: var(--red); border-radius: 1px;
+    transition: width 0.3s cubic-bezier(0.16,1,0.3,1);
   }
-  .form-group textarea { height: 100px; padding-top: 8px; }
-  .form-group input:focus,
-  .form-group textarea:focus {
-    border-bottom-color: var(--red);
-  }
-  .form-group input::placeholder,
-  .form-group textarea::placeholder { color: #D1D5DB; }
+  .fg input:focus ~ .field-line,
+  .fg textarea:focus ~ .field-line { width: 100%; }
+  .fg input::placeholder,
+  .fg textarea::placeholder { color: #D1D5DB; font-size: 13px; }
 
+  /* fg stagger */
+  .fg:nth-child(1){animation:fadeUp .4s 1.0s ease both;}
+  .fg:nth-child(2){animation:fadeUp .4s 1.1s ease both;}
+  .fg:nth-child(3){animation:fadeUp .4s 1.2s ease both;}
+  .fg:nth-child(4){animation:fadeUp .4s 1.3s ease both;}
+
+  /* 3D push button */
   .submit-btn {
-    margin-top: 36px;
-    padding: 15px 40px;
-    background: var(--navy);
-    border: none;
-    border-radius: 2px;
-    color: #fff;
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.25s;
-    box-shadow: 0 2px 8px rgba(10,15,30,0.18);
+    margin-top: 40px; padding: 15px 44px;
+    background: var(--navy); border: none; border-radius: 2px;
+    color: #fff; font-family: 'Inter', sans-serif;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; cursor: pointer;
+    position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    box-shadow: 0 4px 0 var(--navy-deep), 0 6px 20px rgba(10,15,30,0.18);
+    animation: fadeUp 0.4s 1.4s ease both;
+    display: inline-flex; align-items: center; gap: 10px;
   }
+  /* Red sweep on hover */
   .submit-btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--red), var(--red-dark));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s;
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.15) 50%, transparent 100%);
+    background-size: 200% 100%; background-position: 200% 0;
+    transition: background-position 0.4s ease;
+  }
+  /* Red top edge */
+  .submit-btn::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--red); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.16,1,0.3,1);
   }
   .submit-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(10,15,30,0.25), 0 2px 4px rgba(10,15,30,0.12);
-    background: #0F1628;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 0 var(--navy-deep), 0 16px 32px rgba(10,15,30,0.25);
+    background: #0D1428;
   }
-  .submit-btn:hover::before { transform: scaleX(1); }
+  .submit-btn:hover::before { background-position: -200% 0; }
+  .submit-btn:hover::after  { transform: scaleX(1); }
   .submit-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(10,15,30,0.2);
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--navy-deep), 0 4px 10px rgba(10,15,30,0.2);
   }
+  .btn-arrow { transition: transform 0.2s; display: inline-block; }
+  .submit-btn:hover .btn-arrow { transform: translateX(4px); }
 
+  /* ── RESPONSIVE ──────────────────────────────────────── */
   @media (max-width: 900px) {
-    .card { grid-template-columns: 1fr; border-radius: 0; }
+    .card { grid-template-columns: 1fr; }
     .panel-left { padding: 40px 28px; }
     .panel-right { padding: 40px 28px; }
     .form-grid { grid-template-columns: 1fr; gap: 24px; }
     nav { display: none; }
+    .header-icons { display: none; }
     .hero-content { padding: 0 24px; }
     .hero-slash { width: 30%; }
+    .card-shadow { display: none; }
+    .bgs1,.bgs2,.bgs3,.bgs4 { display: none; }
+  }
+  @media (max-width: 480px) {
+    .contact-section { padding: 40px 16px 72px; }
   }
 </style>
 </head>
 <body>
 
-<div class="preview-bar">&#9632;&nbsp;&nbsp;<span>DESIGN 3</span> &mdash; IVORY ELITE &mdash; Preview Only&nbsp;&nbsp;&#9632;</div>
+<div class="preview-bar">&#9632;&nbsp;&nbsp;<b>DESIGN 3 — IVORY ELITE (3D)</b>&nbsp;&nbsp;Hover the card to feel the tilt&nbsp;&nbsp;&#9632;</div>
 
+<!-- HEADER -->
 <header>
   <div class="header-inner">
     <a href="#" class="logo-wrap">
       <img src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/snapchat_2892b502-7fbc-4d45-b9aa-1b31e8aeb078.png?v=1726684601" alt="Nazakat Telecom">
     </a>
     <nav>
-      <a href="#">Shop</a>
-      <a href="#">Mobiles</a>
+      <a href="#">Shop</a><a href="#">Mobiles</a>
       <a href="#">Audio &amp; Party Speakers</a>
-      <a href="#">Accessories</a>
-      <a href="#">About Us</a>
-      <a href="#">FAQ</a>
+      <a href="#">Accessories</a><a href="#">About Us</a><a href="#">FAQ</a>
     </nav>
+    <div class="header-icons">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    </div>
   </div>
 </header>
 
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-sweep"></div>
+  <div class="hero-slash"></div>
+  <div class="hero-deco">
+    <div class="hdl"></div><div class="hdl"></div>
+    <div class="hdl"></div><div class="hdl"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Nazakat Telecom</div>
+    <h1 class="hero-title">Contact Us
+      <span class="hero-sub">We're here to help. Reach us any time.</span>
+    </h1>
+    <div class="hero-redline"></div>
+  </div>
+</section>
+
+<!-- PAGE -->
 <div class="page-wrap">
-  <section class="hero">
-    <div class="hero-slash"></div>
-    <div class="hero-deco">
-      <div class="hero-deco-line"></div>
-      <div class="hero-deco-line"></div>
-      <div class="hero-deco-line"></div>
-      <div class="hero-deco-line"></div>
-    </div>
-    <div class="hero-content">
-      <div class="hero-eyebrow">Nazakat Telecom</div>
-      <h1 class="hero-title">Contact
-        <span class="hero-title-accent">We&rsquo;re here to help. Reach us any time.</span>
-      </h1>
-      <div class="hero-red-line"></div>
-    </div>
-  </section>
+  <div class="bg-shape bgs1"></div>
+  <div class="bg-shape bgs2"></div>
+  <div class="bg-shape bgs3"></div>
+  <div class="bg-shape bgs4"></div>
 
   <section class="contact-section">
-    <div class="card-outer">
-      <div class="card" id="tilt-card">
+    <div class="card-scene">
+      <div class="card" id="tiltCard">
 
+        <!-- LEFT: Deep Navy Panel -->
         <div class="panel-left">
-          <div class="store-badge-dark">
-            <span class="badge-dot-red"></span>
-            <span class="badge-text-dark">Available Now</span>
+          <div class="panel-glow"></div>
+
+          <div class="store-badge">
+            <span class="badge-dot"></span>
+            <span class="badge-text">Available Now</span>
           </div>
+
           <h2 class="panel-heading">Nazakat<br>Telecom</h2>
-          <p class="panel-sub">Premium phones, audio, and accessories. Trusted by customers across India since day one.</p>
+          <p class="panel-sub">Premium phones, audio &amp; accessories. Trusted by customers across India.</p>
 
           <div class="contact-list">
             <div class="contact-item">
-              <div class="contact-icon">&#9993;</div>
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
               <div>
                 <div class="contact-label">Email</div>
                 <div class="contact-value">onztelecom@gmail.com</div>
               </div>
             </div>
             <div class="contact-item">
-              <div class="contact-icon">&#9201;</div>
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
               <div>
                 <div class="contact-label">Hours</div>
-                <div class="contact-value">Every Day, 10:00 AM &ndash; 8:00 PM</div>
+                <div class="contact-value">Every Day, 10:00 AM – 8:00 PM</div>
               </div>
             </div>
             <div class="contact-item">
-              <div class="contact-icon">&#9679;</div>
+              <div class="contact-icon">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
               <div>
                 <div class="contact-label">Location</div>
                 <div class="contact-value">India</div>
@@ -566,95 +579,110 @@
           </div>
 
           <div class="social-row">
-            <a class="social-btn" title="Instagram">&#9651;</a>
-            <a class="social-btn" title="Facebook">&#9670;</a>
-            <a class="social-btn" title="WhatsApp">&#9632;</a>
-            <a class="social-btn" title="Twitter">&#9653;</a>
+            <div class="social-btn"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+            <div class="social-btn"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></div>
+            <div class="social-btn"><svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></div>
+            <div class="social-btn"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg></div>
           </div>
         </div>
 
+        <!-- RIGHT: White Form Panel -->
         <div class="panel-right">
-          <div class="form-header">
-            <div class="form-label-top">Get in Touch</div>
-            <h3 class="form-title">Send Us a Message</h3>
-            <div class="form-red-line"></div>
-          </div>
+          <div class="form-label-top">Get in Touch</div>
+          <h3 class="form-title">Send Us a Message</h3>
+          <div class="form-redline"></div>
+
           <form onsubmit="return false;">
             <div class="form-grid">
-              <div class="form-group">
-                <label for="d3-name">Name</label>
-                <input type="text" id="d3-name" placeholder="Your full name">
+              <div class="fg">
+                <label>Name</label>
+                <div class="field-wrap">
+                  <input type="text" placeholder="Your full name">
+                  <div class="field-line"></div>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="d3-email">Email *</label>
-                <input type="email" id="d3-email" placeholder="your@email.com" required>
+              <div class="fg">
+                <label>Email *</label>
+                <div class="field-wrap">
+                  <input type="email" placeholder="your@email.com">
+                  <div class="field-line"></div>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="d3-phone">Phone</label>
-                <input type="tel" id="d3-phone" placeholder="+91 00000 00000">
+              <div class="fg">
+                <label>Phone</label>
+                <div class="field-wrap">
+                  <input type="tel" placeholder="+91 00000 00000">
+                  <div class="field-line"></div>
+                </div>
               </div>
-              <div class="form-group full">
-                <label for="d3-comment">Comment</label>
-                <textarea id="d3-comment" placeholder="How can we help?"></textarea>
+              <div class="fg full">
+                <label>Comment</label>
+                <div class="field-wrap">
+                  <textarea placeholder="How can we help?"></textarea>
+                  <div class="field-line"></div>
+                </div>
               </div>
             </div>
-            <button class="submit-btn" type="submit">Send Message &rarr;</button>
+            <button class="submit-btn" type="submit">
+              Send Message <span class="btn-arrow">→</span>
+            </button>
           </form>
         </div>
 
-      </div>
-    </div>
+      </div><!-- .card -->
+    </div><!-- .card-scene -->
+
+    <!-- Ground shadow -->
+    <div class="card-shadow"></div>
   </section>
 </div>
 
 <script>
-(function() {
-  var card = document.getElementById('tilt-card');
-  var targetX = 0, targetY = 0;
-  var currentX = 0, currentY = 0;
-  var rafId = null;
-  var MAX_TILT = 6;
+(function () {
+  var card  = document.getElementById('tiltCard');
+  var cX = 0, cY = 0;
+  var tX = 0, tY = 0;
+  var hovering = false;
+  var t = 0;
+  var MAX = 12;
 
-  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerp(a, b, f) { return a + (b - a) * f; }
 
-  function loop() {
-    currentX = lerp(currentX, targetX, 0.07);
-    currentY = lerp(currentY, targetY, 0.07);
-    card.style.transform = 'rotateY(' + currentX + 'deg) rotateX(' + currentY + 'deg)';
-    rafId = requestAnimationFrame(loop);
-  }
-
-  card.addEventListener('mouseenter', function() {
-    if (!rafId) loop();
+  card.addEventListener('mouseenter', function () { hovering = true; });
+  card.addEventListener('mouseleave', function () { hovering = false; });
+  card.addEventListener('mousemove', function (e) {
+    var r  = card.getBoundingClientRect();
+    var dx = (e.clientX - (r.left + r.width  / 2)) / (r.width  / 2);
+    var dy = (e.clientY - (r.top  + r.height / 2)) / (r.height / 2);
+    tX =  dx * MAX;
+    tY = -dy * (MAX * 0.7);
   });
 
-  card.addEventListener('mousemove', function(e) {
-    var rect = card.getBoundingClientRect();
-    var cx = rect.left + rect.width / 2;
-    var cy = rect.top + rect.height / 2;
-    var dx = (e.clientX - cx) / (rect.width / 2);
-    var dy = (e.clientY - cy) / (rect.height / 2);
-    targetX = dx * MAX_TILT;
-    targetY = -dy * (MAX_TILT * 0.75);
-  });
+  (function tick() {
+    t += 0.012;
 
-  card.addEventListener('mouseleave', function() {
-    targetX = 0;
-    targetY = 0;
-    cancelAnimationFrame(rafId);
-    rafId = null;
-    (function resetLoop() {
-      currentX = lerp(currentX, 0, 0.1);
-      currentY = lerp(currentY, 0, 0.1);
-      card.style.transform = 'rotateY(' + currentX + 'deg) rotateX(' + currentY + 'deg)';
-      if (Math.abs(currentX) > 0.02 || Math.abs(currentY) > 0.02) {
-        rafId = requestAnimationFrame(resetLoop);
-      } else {
-        card.style.transform = '';
-        rafId = null;
-      }
-    })();
-  });
+    if (hovering) {
+      cX = lerp(cX, tX, 0.09);
+      cY = lerp(cY, tY, 0.09);
+    } else {
+      /* gentle idle float */
+      cX = lerp(cX, Math.sin(t * 0.7) * 2.5, 0.04);
+      cY = lerp(cY, Math.cos(t * 0.5) * 1.8, 0.04);
+    }
+
+    var depth = Math.sqrt(cX * cX + cY * cY);
+    card.style.transform =
+      'perspective(1800px) rotateY(' + cX + 'deg) rotateX(' + cY + 'deg)';
+
+    /* dynamic shadow deepens with tilt */
+    card.style.boxShadow =
+      '0 1px 0 rgba(255,255,255,0.9) inset,' +
+      '0 ' + (2 + depth * 0.5) + 'px ' + (6  + depth)     + 'px rgba(0,0,0,0.05),' +
+      '0 ' + (8 + depth)       + 'px ' + (28 + depth * 2)  + 'px rgba(0,0,0,' + (0.07 + depth * 0.006) + '),' +
+      '0 ' + (28 + depth * 2)  + 'px ' + (64 + depth * 3)  + 'px rgba(0,0,0,' + (0.05 + depth * 0.004) + ')';
+
+    requestAnimationFrame(tick);
+  })();
 })();
 </script>
 </body>
