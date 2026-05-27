@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nazakat Telecom — Contact | Design 3: IVORY ELITE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Libre+Baskerville:wght@400;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --white: #FFFFFF;
+    --navy: #0A0F1E;
+    --red: #DC2626;
+    --red-dark: #B91C1C;
+    --text: #111827;
+    --text-mid: #374151;
+    --text-light: #6B7280;
+    --border: #E5E7EB;
+    --border-light: #F3F4F6;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* PREVIEW BAR */
+  .preview-bar {
+    background: var(--navy);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 8px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1000;
+  }
+  .preview-bar span {
+    color: var(--red);
+    font-weight: 700;
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .logo-wrap img {
+    height: 44px;
+    width: auto;
+    transition: opacity 0.2s;
+  }
+  .logo-wrap img:hover { opacity: 0.8; }
+
+  nav { display: flex; align-items: center; gap: 2px; }
+  nav a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 6px;
+    transition: all 0.18s;
+    letter-spacing: 0.2px;
+  }
+  nav a:hover {
+    color: var(--text);
+    background: var(--border-light);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    height: 260px;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  /* Bold diagonal red slash */
+  .hero-slash {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .hero-slash::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: 10%;
+    width: 5px;
+    height: 160%;
+    background: var(--red);
+    transform: rotate(-8deg);
+    transform-origin: top center;
+    animation: slashIn 0.9s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .hero-slash::after {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: 14%;
+    width: 2px;
+    height: 160%;
+    background: rgba(220,38,38,0.18);
+    transform: rotate(-8deg);
+    transform-origin: top center;
+    animation: slashIn 0.9s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @keyframes slashIn {
+    from { transform: rotate(-8deg) scaleY(0); opacity: 0; }
+    to { transform: rotate(-8deg) scaleY(1); opacity: 1; }
+  }
+
+  /* Subtle decorative lines top-right */
+  .hero-deco {
+    position: absolute;
+    right: 60px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    pointer-events: none;
+    animation: decoFade 1s 0.4s ease both;
+  }
+  @keyframes decoFade { from{opacity:0;transform:translateX(20px);} to{opacity:1;transform:translateX(0);} }
+  .hero-deco-line {
+    height: 1px;
+    background: var(--border);
+  }
+  .hero-deco-line:nth-child(1) { width: 120px; }
+  .hero-deco-line:nth-child(2) { width: 80px; }
+  .hero-deco-line:nth-child(3) { width: 140px; }
+  .hero-deco-line:nth-child(4) { width: 60px; }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 40px 0 60px;
+    max-width: 700px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    animation: fadeInLeft 0.7s ease both;
+  }
+  .hero-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(34px, 5.5vw, 68px);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.0;
+    letter-spacing: -2px;
+    animation: fadeInLeft 0.7s 0.1s ease both;
+  }
+  .hero-title-accent {
+    display: block;
+    font-size: clamp(14px, 2vw, 20px);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+    margin-top: 12px;
+    animation: fadeInLeft 0.7s 0.22s ease both;
+  }
+  .hero-red-line {
+    width: 48px;
+    height: 3px;
+    background: var(--red);
+    margin-top: 20px;
+    border-radius: 2px;
+    animation: lineExpand 0.8s 0.35s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  @keyframes lineExpand { from{width:0;opacity:0;} to{width:48px;opacity:1;} }
+  @keyframes fadeInLeft { from{opacity:0;transform:translateX(-18px);} to{opacity:1;transform:translateX(0);} }
+
+  /* MAIN */
+  .page-wrap { position: relative; z-index: 1; }
+  .contact-section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 64px 40px 96px;
+  }
+  .card-outer { perspective: 1400px; }
+  .card {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    border-radius: 2px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: box-shadow 0.4s;
+  }
+  .card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05), 0 20px 48px rgba(0,0,0,0.1), 0 2px 0 0 var(--red) inset;
+  }
+
+  /* LEFT PANEL — deep navy */
+  .panel-left {
+    background: var(--navy);
+    padding: 52px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .panel-left::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), transparent);
+  }
+  /* Subtle large N in bg */
+  .panel-left::after {
+    content: 'NT';
+    position: absolute;
+    bottom: -20px; right: -20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 160px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.025);
+    letter-spacing: -8px;
+    user-select: none;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .store-badge-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(220,38,38,0.12);
+    border: 1px solid rgba(220,38,38,0.25);
+    border-radius: 2px;
+    padding: 5px 12px 5px 9px;
+    margin-bottom: 32px;
+  }
+  .badge-dot-red {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: redPulse 2s ease-in-out infinite;
+  }
+  @keyframes redPulse {
+    0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,0.4);}
+    50%{box-shadow:0 0 0 4px rgba(220,38,38,0);}
+  }
+  .badge-text-dark {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(220,38,38,0.9);
+    text-transform: uppercase;
+  }
+
+  .panel-heading {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+  .panel-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.7;
+    margin-bottom: 40px;
+    font-weight: 400;
+  }
+
+  .contact-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 40px; }
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-left: 2px solid transparent;
+    padding-left: 12px;
+    transition: all 0.22s;
+    cursor: default;
+  }
+  .contact-item:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+  .contact-item:hover {
+    border-left-color: var(--red);
+    padding-left: 16px;
+  }
+  .contact-icon {
+    width: 32px; height: 32px;
+    border-radius: 2px;
+    background: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    color: #fff;
+    transition: all 0.22s;
+  }
+  .contact-item:hover .contact-icon {
+    background: var(--red-dark);
+  }
+  .contact-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(220,38,38,0.7);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .contact-value {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    font-weight: 400;
+  }
+
+  .social-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .social-btn {
+    width: 36px; height: 36px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.45);
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .social-btn:hover {
+    background: rgba(220,38,38,0.15);
+    border-color: rgba(220,38,38,0.3);
+    color: var(--red);
+  }
+
+  /* RIGHT PANEL */
+  .panel-right {
+    background: var(--white);
+    padding: 52px 56px;
+    position: relative;
+  }
+
+  .form-header { margin-bottom: 40px; }
+  .form-label-top {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .form-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(22px, 2.8vw, 30px);
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  .form-red-line {
+    width: 36px; height: 2px;
+    background: var(--red);
+    margin-top: 16px;
+    border-radius: 1px;
+    animation: lineExpand2 0.8s 0.4s ease both;
+  }
+  @keyframes lineExpand2 { from{width:0;opacity:0;} to{width:36px;opacity:1;} }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 24px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 0; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .form-group input,
+  .form-group textarea {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--border);
+    border-radius: 0;
+    padding: 10px 2px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    outline: none;
+    transition: border-color 0.22s;
+    resize: none;
+    width: 100%;
+  }
+  .form-group textarea { height: 100px; padding-top: 8px; }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-bottom-color: var(--red);
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: #D1D5DB; }
+
+  .submit-btn {
+    margin-top: 36px;
+    padding: 15px 40px;
+    background: var(--navy);
+    border: none;
+    border-radius: 2px;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s;
+    box-shadow: 0 2px 8px rgba(10,15,30,0.18);
+  }
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--red), var(--red-dark));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(10,15,30,0.25), 0 2px 4px rgba(10,15,30,0.12);
+    background: #0F1628;
+  }
+  .submit-btn:hover::before { transform: scaleX(1); }
+  .submit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(10,15,30,0.2);
+  }
+
+  @media (max-width: 900px) {
+    .card { grid-template-columns: 1fr; border-radius: 0; }
+    .panel-left { padding: 40px 28px; }
+    .panel-right { padding: 40px 28px; }
+    .form-grid { grid-template-columns: 1fr; gap: 24px; }
+    nav { display: none; }
+    .hero-content { padding: 0 24px; }
+    .hero-slash { width: 30%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-bar">&#9632;&nbsp;&nbsp;<span>DESIGN 3</span> &mdash; IVORY ELITE &mdash; Preview Only&nbsp;&nbsp;&#9632;</div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo-wrap">
+      <img src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/snapchat_2892b502-7fbc-4d45-b9aa-1b31e8aeb078.png?v=1726684601" alt="Nazakat Telecom">
+    </a>
+    <nav>
+      <a href="#">Shop</a>
+      <a href="#">Mobiles</a>
+      <a href="#">Audio &amp; Party Speakers</a>
+      <a href="#">Accessories</a>
+      <a href="#">About Us</a>
+      <a href="#">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-wrap">
+  <section class="hero">
+    <div class="hero-slash"></div>
+    <div class="hero-deco">
+      <div class="hero-deco-line"></div>
+      <div class="hero-deco-line"></div>
+      <div class="hero-deco-line"></div>
+      <div class="hero-deco-line"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Nazakat Telecom</div>
+      <h1 class="hero-title">Contact
+        <span class="hero-title-accent">We&rsquo;re here to help. Reach us any time.</span>
+      </h1>
+      <div class="hero-red-line"></div>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <div class="card-outer">
+      <div class="card" id="tilt-card">
+
+        <div class="panel-left">
+          <div class="store-badge-dark">
+            <span class="badge-dot-red"></span>
+            <span class="badge-text-dark">Available Now</span>
+          </div>
+          <h2 class="panel-heading">Nazakat<br>Telecom</h2>
+          <p class="panel-sub">Premium phones, audio, and accessories. Trusted by customers across India since day one.</p>
+
+          <div class="contact-list">
+            <div class="contact-item">
+              <div class="contact-icon">&#9993;</div>
+              <div>
+                <div class="contact-label">Email</div>
+                <div class="contact-value">onztelecom@gmail.com</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">&#9201;</div>
+              <div>
+                <div class="contact-label">Hours</div>
+                <div class="contact-value">Every Day, 10:00 AM &ndash; 8:00 PM</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">&#9679;</div>
+              <div>
+                <div class="contact-label">Location</div>
+                <div class="contact-value">India</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="social-row">
+            <a class="social-btn" title="Instagram">&#9651;</a>
+            <a class="social-btn" title="Facebook">&#9670;</a>
+            <a class="social-btn" title="WhatsApp">&#9632;</a>
+            <a class="social-btn" title="Twitter">&#9653;</a>
+          </div>
+        </div>
+
+        <div class="panel-right">
+          <div class="form-header">
+            <div class="form-label-top">Get in Touch</div>
+            <h3 class="form-title">Send Us a Message</h3>
+            <div class="form-red-line"></div>
+          </div>
+          <form onsubmit="return false;">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="d3-name">Name</label>
+                <input type="text" id="d3-name" placeholder="Your full name">
+              </div>
+              <div class="form-group">
+                <label for="d3-email">Email *</label>
+                <input type="email" id="d3-email" placeholder="your@email.com" required>
+              </div>
+              <div class="form-group">
+                <label for="d3-phone">Phone</label>
+                <input type="tel" id="d3-phone" placeholder="+91 00000 00000">
+              </div>
+              <div class="form-group full">
+                <label for="d3-comment">Comment</label>
+                <textarea id="d3-comment" placeholder="How can we help?"></textarea>
+              </div>
+            </div>
+            <button class="submit-btn" type="submit">Send Message &rarr;</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function() {
+  var card = document.getElementById('tilt-card');
+  var targetX = 0, targetY = 0;
+  var currentX = 0, currentY = 0;
+  var rafId = null;
+  var MAX_TILT = 6;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function loop() {
+    currentX = lerp(currentX, targetX, 0.07);
+    currentY = lerp(currentY, targetY, 0.07);
+    card.style.transform = 'rotateY(' + currentX + 'deg) rotateX(' + currentY + 'deg)';
+    rafId = requestAnimationFrame(loop);
+  }
+
+  card.addEventListener('mouseenter', function() {
+    if (!rafId) loop();
+  });
+
+  card.addEventListener('mousemove', function(e) {
+    var rect = card.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    var dx = (e.clientX - cx) / (rect.width / 2);
+    var dy = (e.clientY - cy) / (rect.height / 2);
+    targetX = dx * MAX_TILT;
+    targetY = -dy * (MAX_TILT * 0.75);
+  });
+
+  card.addEventListener('mouseleave', function() {
+    targetX = 0;
+    targetY = 0;
+    cancelAnimationFrame(rafId);
+    rafId = null;
+    (function resetLoop() {
+      currentX = lerp(currentX, 0, 0.1);
+      currentY = lerp(currentY, 0, 0.1);
+      card.style.transform = 'rotateY(' + currentX + 'deg) rotateX(' + currentY + 'deg)';
+      if (Math.abs(currentX) > 0.02 || Math.abs(currentY) > 0.02) {
+        rafId = requestAnimationFrame(resetLoop);
+      } else {
+        card.style.transform = '';
+        rafId = null;
+      }
+    })();
+  });
+})();
+</script>
+</body>
+</html>
