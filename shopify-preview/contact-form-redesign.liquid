@@ -1,0 +1,590 @@
+{{ 'section-contact-form.aio.min.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  /* ===== NZT CONTACT PAGE ===== */
+
+  .nzt-contact-wrapper {
+    background: #F0F4F8;
+  }
+
+  /* Page Header */
+  .nzt-page-header {
+    text-align: center;
+    padding: 60px 20px 52px;
+    background: #ffffff;
+    border-bottom: 1px solid #E9EDF2;
+  }
+  .nzt-page-header__eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #DC2626;
+    margin-bottom: 14px;
+  }
+  .nzt-page-header__title {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 800;
+    color: #0D1117;
+    margin: 0 0 20px;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .nzt-page-header__rule {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+  .nzt-page-header__rule::before,
+  .nzt-page-header__rule::after {
+    content: '';
+    flex: 1;
+    max-width: 70px;
+    height: 1px;
+    background: #E2E8F0;
+  }
+  .nzt-page-header__dot {
+    width: 8px;
+    height: 8px;
+    background: #DC2626;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(220,38,38,0.15);
+  }
+
+  /* Grid */
+  .nzt-contact-section {
+    padding: 52px 20px 72px;
+  }
+  .nzt-contact-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    max-width: 1060px;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(13,17,23,0.13), 0 4px 20px rgba(13,17,23,0.07);
+  }
+
+  /* Left Info Panel */
+  .nzt-info-panel {
+    background: linear-gradient(158deg, #0D1117 0%, #161B27 55%, #0D1117 100%);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .nzt-info-panel::before {
+    content: '';
+    position: absolute;
+    top: -90px;
+    right: -90px;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(220,38,38,0.24) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .nzt-info-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -70px;
+    left: -50px;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(99,102,241,0.14) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .nzt-info-top {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 36px;
+  }
+  .nzt-online-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(220,38,38,0.1);
+    border: 1px solid rgba(220,38,38,0.22);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #FCA5A5;
+    margin-bottom: 22px;
+  }
+  .nzt-online-dot {
+    width: 6px;
+    height: 6px;
+    background: #EF4444;
+    border-radius: 50%;
+    animation: nzt-blink 2s infinite;
+  }
+  @keyframes nzt-blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.5); }
+  }
+  .nzt-info-heading {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 12px;
+    line-height: 1.2;
+  }
+  .nzt-info-sub {
+    color: #64748B;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  /* Contact Items */
+  .nzt-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .nzt-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .nzt-item:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(220,38,38,0.22);
+  }
+  .nzt-item-icon {
+    width: 42px;
+    height: 42px;
+    background: rgba(220,38,38,0.1);
+    border: 1px solid rgba(220,38,38,0.22);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .nzt-item-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: #EF4444;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .nzt-item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+  .nzt-item-text strong {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: #475569;
+  }
+  .nzt-item-text span {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #E2E8F0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Reply note */
+  .nzt-reply-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 30px;
+    position: relative;
+    z-index: 1;
+    color: #64748B;
+    font-size: 0.83rem;
+    line-height: 1.5;
+  }
+  .nzt-reply-note svg {
+    width: 15px;
+    height: 15px;
+    stroke: #EF4444;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  /* Right Form Panel */
+  .nzt-form-panel {
+    background: #ffffff;
+    padding: 48px 48px 52px;
+  }
+  .nzt-form-panel .title {
+    font-size: 1.35rem !important;
+    font-weight: 700 !important;
+    color: #0D1117 !important;
+    margin-top: 0 !important;
+    margin-bottom: 28px !important;
+    line-height: 1.4 !important;
+  }
+  .nzt-form-panel .contact__fields {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px !important;
+    margin-bottom: 14px !important;
+  }
+  .nzt-form-panel .field__input {
+    width: 100% !important;
+    background: #F8FAFC !important;
+    border: 1.5px solid #E2E8F0 !important;
+    border-radius: 10px !important;
+    padding: 14px 16px !important;
+    font-size: 0.93rem !important;
+    color: #0D1117 !important;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s !important;
+    -webkit-appearance: none;
+  }
+  .nzt-form-panel .field__input:focus {
+    border-color: #DC2626 !important;
+    box-shadow: 0 0 0 3px rgba(220,38,38,0.08) !important;
+    background: #ffffff !important;
+    outline: none !important;
+  }
+  .nzt-form-panel .field__input::placeholder {
+    color: #94A3B8 !important;
+  }
+  .nzt-form-panel .text-area.field__input {
+    min-height: 140px !important;
+    resize: vertical !important;
+    margin-bottom: 14px !important;
+  }
+  .nzt-form-panel .field__label {
+    color: #64748B !important;
+    font-size: 0.82rem !important;
+  }
+  .nzt-form-panel .contact__button {
+    margin-top: 6px !important;
+  }
+  .nzt-form-panel .contact__button .button {
+    width: 100% !important;
+    background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 16px 32px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.025em !important;
+    cursor: pointer !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+    box-shadow: 0 4px 18px rgba(220,38,38,0.3) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+  }
+  .nzt-form-panel .contact__button .button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 10px 30px rgba(220,38,38,0.42) !important;
+  }
+  .nzt-form-panel .contact__button .button:active {
+    transform: translateY(0) !important;
+  }
+
+  /* Responsive */
+  @media screen and (max-width: 900px) {
+    .nzt-contact-grid {
+      grid-template-columns: 1fr;
+      border-radius: 16px;
+    }
+    .nzt-info-panel { padding: 36px 28px; }
+    .nzt-form-panel { padding: 36px 28px 40px; }
+    .nzt-form-panel .contact__fields {
+      grid-template-columns: 1fr !important;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .nzt-page-header { padding: 44px 20px 38px; }
+    .nzt-contact-section { padding: 28px 12px 56px; }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient nzt-contact-wrapper">
+
+  <div class="nzt-page-header">
+    <span class="nzt-page-header__eyebrow">Nazakat Telecom</span>
+    <h2 class="nzt-page-header__title{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      Contact Us
+    </h2>
+    <div class="nzt-page-header__rule">
+      <span class="nzt-page-header__dot"></span>
+    </div>
+  </div>
+
+  <div class="nzt-contact-section">
+    <div class="nzt-contact-grid section-{{ section.id }}-padding">
+
+      <div class="nzt-info-panel">
+        <div class="nzt-info-top">
+          <div class="nzt-online-badge">
+            <span class="nzt-online-dot"></span>
+            We're Online
+          </div>
+          <h3 class="nzt-info-heading">Get In Touch</h3>
+          <p class="nzt-info-sub">Have a question about a product or your order? We're here to help.</p>
+        </div>
+
+        <ul class="nzt-items">
+          <li class="nzt-item">
+            <div class="nzt-item-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="nzt-item-text">
+              <strong>Email</strong>
+              <span>onztelecom@gmail.com</span>
+            </div>
+          </li>
+          <li class="nzt-item">
+            <div class="nzt-item-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="nzt-item-text">
+              <strong>Business Hours</strong>
+              <span>Every Day, 10:00 AM – 8:00 PM</span>
+            </div>
+          </li>
+          <li class="nzt-item">
+            <div class="nzt-item-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="nzt-item-text">
+              <strong>Location</strong>
+              <span>India</span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="nzt-reply-note">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          We typically reply within 24 hours
+        </div>
+      </div>
+
+      <div class="nzt-form-panel">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- else -%}
+          <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
+        {%- endif -%}
+
+        {%- liquid
+          assign contact_form_class = 'isolate'
+          if settings.animations_reveal_on_scroll
+            assign contact_form_class = 'isolate scroll-trigger animate--slide-in'
+          endif
+        -%}
+
+        {%- form 'contact', id: 'ContactForm', class: contact_form_class -%}
+          {%- if form.posted_successfully? -%}
+            <h2 class="form-status form-status-list form__message" tabindex="-1" autofocus>
+              {{- 'icon-success.svg' | inline_asset_content -}}
+              {{ 'templates.contact.form.post_success' | t }}
+            </h2>
+          {%- elsif form.errors -%}
+            <div class="form__message">
+              <h2 class="form-status caption-large text-body" role="alert" tabindex="-1" autofocus>
+                {{- 'icon-error.svg' | inline_asset_content -}}
+                {{ 'templates.contact.form.error_heading' | t }}
+              </h2>
+            </div>
+            <ul class="form-status-list caption-large" role="list">
+              <li>
+                <a href="#ContactForm-email" class="link">
+                  {{ form.errors.translated_fields.email | capitalize }}
+                  {{ form.errors.messages.email }}
+                </a>
+              </li>
+            </ul>
+          {%- endif -%}
+          <div class="contact__fields">
+            <div class="field">
+              <input
+                class="field__input"
+                autocomplete="name"
+                type="text"
+                id="ContactForm-name"
+                name="contact[{{ 'templates.contact.form.name' | t }}]"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="{{ 'templates.contact.form.name' | t }}"
+              >
+              <label class="field__label" for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
+            </div>
+            <div class="field field--with-error">
+              <input
+                autocomplete="email"
+                type="email"
+                id="ContactForm-email"
+                class="field__input"
+                name="contact[email]"
+                spellcheck="false"
+                autocapitalize="off"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                aria-required="true"
+                {% if form.errors contains 'email' %}
+                  aria-invalid="true"
+                  aria-describedby="ContactForm-email-error"
+                {% endif %}
+                placeholder="{{ 'templates.contact.form.email' | t }}"
+              >
+              <label class="field__label" for="ContactForm-email">
+                {{- 'templates.contact.form.email' | t }}
+                <span aria-hidden="true">*</span></label
+              >
+              {%- if form.errors contains 'email' -%}
+                <small class="contact__field-error" id="ContactForm-email-error">
+                  <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+                  <span class="form__message">
+                    <span class="svg-wrapper">{{- 'icon-error.svg' | inline_asset_content -}}</span>
+                    {{- form.errors.translated_fields.email | capitalize }}
+                    {{ form.errors.messages.email -}}
+                  </span>
+                </small>
+              {%- endif -%}
+            </div>
+          </div>
+          <div class="field">
+            <input
+              type="tel"
+              id="ContactForm-phone"
+              class="field__input"
+              autocomplete="tel"
+              name="contact[{{ 'templates.contact.form.phone' | t }}]"
+              pattern="[0-9\-]*"
+              value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              placeholder="{{ 'templates.contact.form.phone' | t }}"
+            >
+            <label class="field__label" for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+          </div>
+          <div class="field">
+            <textarea
+              rows="10"
+              id="ContactForm-body"
+              class="text-area field__input"
+              name="contact[{{ 'templates.contact.form.comment' | t }}]"
+              placeholder="{{ 'templates.contact.form.comment' | t }}"
+            >
+              {{- form.body -}}
+            </textarea>
+            <label class="form__label field__label" for="ContactForm-body">
+              {{- 'templates.contact.form.comment' | t -}}
+            </label>
+          </div>
+          <div class="contact__button">
+            <button type="submit" class="button">
+              {{ 'templates.contact.form.send' | t }}
+            </button>
+          </div>
+        {%- endform -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.contact-form.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "t:sections.contact-form.settings.title.default",
+      "label": "t:sections.contact-form.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        { "value": "h2", "label": "t:sections.all.heading_size.options__1.label" },
+        { "value": "h1", "label": "t:sections.all.heading_size.options__2.label" },
+        { "value": "h0", "label": "t:sections.all.heading_size.options__3.label" },
+        { "value": "hxl", "label": "t:sections.all.heading_size.options__4.label" },
+        { "value": "hxxl", "label": "t:sections.all.heading_size.options__5.label" }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.contact-form.presets.name"
+    }
+  ]
+}
+{% endschema %}
