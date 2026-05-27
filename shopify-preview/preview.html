@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nazakat Telecom — Contact Page Preview</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #e5e7eb;
+  }
+
+  /* ---- Simulated header ---- */
+  .fake-header {
+    background: #0D1117;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+    font-size: 0.85rem;
+  }
+  .fake-header .logo {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #DC2626;
+    letter-spacing: 0.04em;
+  }
+  .fake-header nav { display: flex; gap: 24px; color: #94A3B8; font-size: 0.82rem; }
+
+  /* ---- Image banner ---- */
+  .fake-banner {
+    width: 100%;
+    height: 220px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .fake-banner::before {
+    content: 'NT';
+    position: absolute;
+    font-size: 14rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.03);
+    letter-spacing: -0.05em;
+  }
+  .fake-banner-text {
+    text-align: center;
+    color: white;
+    z-index: 1;
+  }
+  .fake-banner-text h2 { font-size: 2rem; font-weight: 800; letter-spacing: 0.06em; }
+  .fake-banner-text p { color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 6px; }
+
+  /* ===== CONTACT PAGE ===== */
+  .nzt-contact-wrapper { background: #F0F4F8; }
+
+  .nzt-page-header {
+    text-align: center;
+    padding: 60px 20px 52px;
+    background: #ffffff;
+    border-bottom: 1px solid #E9EDF2;
+  }
+  .nzt-page-header__eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #DC2626;
+    margin-bottom: 14px;
+  }
+  .nzt-page-header__title {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-weight: 800;
+    color: #0D1117;
+    margin: 0 0 20px;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .nzt-page-header__rule {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+  .nzt-page-header__rule::before,
+  .nzt-page-header__rule::after {
+    content: '';
+    flex: 1;
+    max-width: 70px;
+    height: 1px;
+    background: #E2E8F0;
+  }
+  .nzt-page-header__dot {
+    width: 8px;
+    height: 8px;
+    background: #DC2626;
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(220,38,38,0.15);
+  }
+
+  .nzt-contact-section { padding: 52px 20px 72px; }
+
+  .nzt-contact-grid {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    max-width: 1060px;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(13,17,23,0.13), 0 4px 20px rgba(13,17,23,0.07);
+  }
+
+  /* Left Info Panel */
+  .nzt-info-panel {
+    background: linear-gradient(158deg, #0D1117 0%, #161B27 55%, #0D1117 100%);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .nzt-info-panel::before {
+    content: '';
+    position: absolute;
+    top: -90px; right: -90px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(220,38,38,0.24) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .nzt-info-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -70px; left: -50px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(99,102,241,0.14) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .nzt-info-top { position: relative; z-index: 1; margin-bottom: 36px; }
+
+  .nzt-online-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(220,38,38,0.1);
+    border: 1px solid rgba(220,38,38,0.22);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #FCA5A5;
+    margin-bottom: 22px;
+  }
+  .nzt-online-dot {
+    width: 6px; height: 6px;
+    background: #EF4444;
+    border-radius: 50%;
+    animation: nzt-blink 2s infinite;
+  }
+  @keyframes nzt-blink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.5); }
+  }
+  .nzt-info-heading {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 12px;
+    line-height: 1.2;
+  }
+  .nzt-info-sub {
+    color: #64748B;
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+
+  .nzt-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .nzt-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+  .nzt-item:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(220,38,38,0.22);
+  }
+  .nzt-item-icon {
+    width: 42px; height: 42px;
+    background: rgba(220,38,38,0.1);
+    border: 1px solid rgba(220,38,38,0.22);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .nzt-item-icon svg {
+    width: 18px; height: 18px;
+    fill: none;
+    stroke: #EF4444;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .nzt-item-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .nzt-item-text strong {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: #475569;
+  }
+  .nzt-item-text span {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #E2E8F0;
+  }
+
+  .nzt-reply-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 30px;
+    position: relative;
+    z-index: 1;
+    color: #64748B;
+    font-size: 0.83rem;
+  }
+  .nzt-reply-note svg {
+    width: 15px; height: 15px;
+    stroke: #EF4444;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  /* Right Form Panel */
+  .nzt-form-panel {
+    background: #ffffff;
+    padding: 48px 48px 52px;
+  }
+  .nzt-form-panel .form-heading {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #0D1117;
+    margin-bottom: 28px;
+    line-height: 1.4;
+  }
+  .contact-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .field { position: relative; margin-bottom: 14px; }
+  .field:last-of-type { margin-bottom: 0; }
+  .field input,
+  .field textarea {
+    width: 100%;
+    background: #F8FAFC;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.93rem;
+    color: #0D1117;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    -webkit-appearance: none;
+    outline: none;
+  }
+  .field input:focus,
+  .field textarea:focus {
+    border-color: #DC2626;
+    box-shadow: 0 0 0 3px rgba(220,38,38,0.08);
+    background: #ffffff;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder { color: #94A3B8; }
+  .field textarea { min-height: 140px; resize: vertical; }
+
+  .submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 16px 32px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 18px rgba(220,38,38,0.3);
+    margin-top: 6px;
+    font-family: inherit;
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(220,38,38,0.42);
+  }
+  .submit-btn:active { transform: translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .nzt-contact-grid { grid-template-columns: 1fr; border-radius: 16px; }
+    .nzt-info-panel { padding: 36px 28px; }
+    .nzt-form-panel { padding: 36px 28px 40px; }
+    .contact-fields { grid-template-columns: 1fr; }
+    .fake-header nav { display: none; }
+  }
+
+  /* Preview label */
+  .preview-bar {
+    background: #1e293b;
+    color: #94A3B8;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .preview-bar span { color: #EF4444; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="preview-bar"><span>PREVIEW ONLY</span> — Not live. Awaiting your approval.</div>
+
+<!-- Simulated store header -->
+<div class="fake-header">
+  <div class="logo">Nazakat Telecom</div>
+  <nav>
+    <span>Shop</span><span>Mobiles</span><span>Accessories</span><span>About Us</span>
+  </nav>
+</div>
+
+<!-- Existing image banner (simulated) -->
+<div class="fake-banner">
+  <div class="fake-banner-text">
+    <h2>NAZAKAT TELECOM</h2>
+    <p>Widest Choice &amp; Best Offers Guaranteed</p>
+  </div>
+</div>
+
+<!-- ===== REDESIGNED CONTACT SECTION ===== -->
+<div class="nzt-contact-wrapper">
+
+  <div class="nzt-page-header">
+    <span class="nzt-page-header__eyebrow">Nazakat Telecom</span>
+    <h1 class="nzt-page-header__title">Contact Us</h1>
+    <div class="nzt-page-header__rule">
+      <span class="nzt-page-header__dot"></span>
+    </div>
+  </div>
+
+  <div class="nzt-contact-section">
+    <div class="nzt-contact-grid">
+
+      <!-- Left: Info Panel -->
+      <div class="nzt-info-panel">
+        <div class="nzt-info-top">
+          <div class="nzt-online-badge">
+            <span class="nzt-online-dot"></span>
+            We're Online
+          </div>
+          <h2 class="nzt-info-heading">Get In Touch</h2>
+          <p class="nzt-info-sub">Have a question about a product or your order? We're here to help.</p>
+        </div>
+
+        <ul class="nzt-items">
+          <li class="nzt-item">
+            <div class="nzt-item-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="nzt-item-text">
+              <strong>Email</strong>
+              <span>onztelecom@gmail.com</span>
+            </div>
+          </li>
+          <li class="nzt-item">
+            <div class="nzt-item-icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="nzt-item-text">
+              <strong>Business Hours</strong>
+              <span>Every Day, 10:00 AM – 8:00 PM</span>
+            </div>
+          </li>
+          <li class="nzt-item">
+            <div class="nzt-item-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="nzt-item-text">
+              <strong>Location</strong>
+              <span>India</span>
+            </div>
+          </li>
+        </ul>
+
+        <div class="nzt-reply-note">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          We typically reply within 24 hours
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="nzt-form-panel">
+        <p class="form-heading">Questions or comments? Get in touch and we'll be happy to help.</p>
+
+        <div class="contact-fields">
+          <div class="field">
+            <input type="text" placeholder="Name">
+          </div>
+          <div class="field">
+            <input type="email" placeholder="Email *">
+          </div>
+        </div>
+
+        <div class="field">
+          <input type="tel" placeholder="Phone number">
+        </div>
+
+        <div class="field">
+          <textarea placeholder="Comment"></textarea>
+        </div>
+
+        <button class="submit-btn" type="button">Send Message</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
