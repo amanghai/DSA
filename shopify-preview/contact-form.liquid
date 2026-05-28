@@ -411,25 +411,55 @@
 .nzk-d1{transition-delay:.08s!important;} .nzk-d2{transition-delay:.18s!important;}
 .nzk-d3{transition-delay:.28s!important;} .nzk-d4{transition-delay:.38s!important;}
 
-/* RESPONSIVE */
+/* RESPONSIVE — tablet + mobile */
 @media (max-width:900px) {
+  /* Hero */
+  .nzk-hero { height:210px; }
+  .nzk-hero-content { padding:0 20px; }
+  .nzk-hero-eyebrow { letter-spacing:2px; font-size:10px; }
+  .nzk-hero-title { letter-spacing:-1px; }
+  .nzk-hero-redline { margin-top:16px; }
+  .nzk-hero-slash { width:22%; }
+  .nzk-hero-deco { display:none; }
+  /* Card / contact section */
   .nzk-card { grid-template-columns:1fr; }
-  .nzk-panel-left { padding:40px 24px; }
-  .nzk-panel-right { padding:40px 24px; }
-  .nzk-form-grid { grid-template-columns:1fr; gap:24px; }
-  .nzk-hero-content { padding:0 24px; }
-  .nzk-hero-slash { width:30%; }
-  .nzk-hero-deco { right:36px; }
   .nzk-card-shadow { display:none; }
-  .nzk-contact-section { padding:40px 16px 72px; }
+  .nzk-contact-section { padding:28px 14px 52px; }
+  /* Dark left panel */
+  .nzk-panel-left { padding:28px 20px 32px; }
+  .nzk-store-badge { margin-bottom:16px; padding:5px 12px 5px 9px; }
+  .nzk-panel-heading { font-size:24px; margin-bottom:8px; }
+  .nzk-panel-sub { font-size:13px; margin-bottom:20px; line-height:1.65; }
+  .nzk-contact-list { margin-bottom:24px; }
+  .nzk-contact-item { padding:10px 0 10px 10px; gap:12px; }
+  .nzk-contact-icon { width:32px; height:32px; }
+  .nzk-contact-icon svg { width:13px; height:13px; }
+  .nzk-contact-label { font-size:8.5px; }
+  .nzk-contact-value { font-size:12.5px; line-height:1.5; }
+  /* White right panel */
+  .nzk-panel-right { padding:32px 20px 40px; }
+  .nzk-form-label-top { letter-spacing:2px; }
+  .nzk-form-redline { margin:12px 0 28px; }
+  .nzk-form-grid { grid-template-columns:1fr; gap:18px; }
+  .nzk-submit-btn { width:100%; justify-content:center; margin-top:32px; padding:15px 24px; }
+  /* Decorative */
   .nzk-bgs1{width:36px;height:36px;} .nzk-bgs3{width:28px;height:28px;}
   .nzk-bgs2,.nzk-bgs4{display:none;}
   .nzk-orb-1,.nzk-orb-2,.nzk-orb-3 { display:none; }
   .nzk-cursor-glow { display:none; }
 }
+/* Small phones */
 @media (max-width:480px) {
+  .nzk-hero { height:190px; }
   .nzk-hero-content { padding:0 16px; }
-  .nzk-hero-deco { display:none; }
+  .nzk-hero-title { font-size:clamp(28px,8vw,40px); }
+  .nzk-hero-sub { font-size:13px; }
+  .nzk-panel-left { padding:24px 16px 28px; }
+  .nzk-panel-right { padding:28px 16px 36px; }
+  .nzk-panel-heading { font-size:22px; }
+  .nzk-panel-sub { font-size:12.5px; }
+  .nzk-contact-section { padding:20px 12px 48px; }
+  .nzk-social-btn { width:36px; height:36px; }
 }
 </style>
 
