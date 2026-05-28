@@ -413,8 +413,8 @@
 
   /* ── FOOTER ──────────────────────────────────────── */
   footer {
-    background:linear-gradient(175deg, #0D1328 0%, #0A0F1E 100%);
-    color:rgba(255,255,255,.75); position:relative; overflow:hidden;
+    background:linear-gradient(160deg, #1a2744 0%, #111d36 50%, #0c1628 100%);
+    color:rgba(255,255,255,.82); position:relative; overflow:hidden;
   }
   /* Animated top line */
   footer::before {
@@ -433,10 +433,15 @@
   .footer-inner { max-width:1280px; margin:0 auto; padding:64px 40px 40px; position:relative; z-index:1; }
   .footer-grid { display:grid; grid-template-columns:1.6fr 1fr 1.4fr; gap:48px; margin-bottom:52px; }
 
-  /* Logo — invert to white so it shows on dark bg */
-  .footer-logo { height:42px; width:auto; margin-bottom:20px; filter:brightness(0) invert(1); opacity:.9; }
+  /* Logo — original colors on a white pill container */
+  .footer-logo-wrap {
+    display:inline-flex; background:rgba(255,255,255,.97);
+    border-radius:8px; padding:7px 14px; margin-bottom:22px;
+    box-shadow:0 4px 16px rgba(0,0,0,.25);
+  }
+  .footer-logo { height:38px; width:auto; display:block; }
   .footer-brand p {
-    font-size:13.5px; line-height:1.82; color:rgba(255,255,255,.68);
+    font-size:13.5px; line-height:1.82; color:rgba(255,255,255,.80);
     max-width:280px; margin-bottom:24px;
   }
 
@@ -458,10 +463,10 @@
 
   .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:11px; }
   .footer-col ul li a {
-    color:rgba(255,255,255,.65); text-decoration:none; font-size:13.5px;
+    color:rgba(255,255,255,.78); text-decoration:none; font-size:13.5px;
     transition:color .2s, padding-left .2s; display:inline-block;
   }
-  .footer-col ul li a:hover { color:rgba(255,255,255,.96); padding-left:5px; }
+  .footer-col ul li a:hover { color:#fff; padding-left:5px; }
 
   .footer-contact { display:flex; flex-direction:column; gap:16px; }
   .footer-contact-item { display:flex; gap:12px; align-items:flex-start; }
@@ -470,13 +475,13 @@
     border-radius:2px; flex-shrink:0; display:flex; align-items:center; justify-content:center;
   }
   .footer-contact-item .fc-icon svg { width:13px; height:13px; stroke:rgba(255,100,100,1); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
-  .footer-contact-item p { font-size:13px; color:rgba(255,255,255,.68); line-height:1.72; margin:0; }
+  .footer-contact-item p { font-size:13px; color:rgba(255,255,255,.82); line-height:1.72; margin:0; }
 
   .footer-bottom {
     border-top:1px solid rgba(255,255,255,.1); padding-top:28px;
     display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
   }
-  .footer-bottom p { font-size:12px; color:rgba(255,255,255,.50); }
+  .footer-bottom p { font-size:12px; color:rgba(255,255,255,.60); }
   .footer-bottom .footer-badge {
     display:inline-flex; align-items:center; gap:6px;
     background:rgba(220,38,38,.12); border:1px solid rgba(220,38,38,.25);
@@ -675,7 +680,9 @@
 
       <!-- Brand -->
       <div class="footer-brand">
-        <img class="footer-logo" src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/snapchat_2892b502-7fbc-4d45-b9aa-1b31e8aeb078.png?v=1726684601" alt="Nazakat Telecom">
+        <div class="footer-logo-wrap">
+          <img class="footer-logo" src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/snapchat_2892b502-7fbc-4d45-b9aa-1b31e8aeb078.png?v=1726684601" alt="Nazakat Telecom">
+        </div>
         <p>Widest Choice &amp; Best Offers Guaranteed. Serving customers across India with premium telecom products and accessories.</p>
         <div class="footer-social">
           <div class="sb"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
