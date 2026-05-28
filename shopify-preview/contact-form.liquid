@@ -1,0 +1,807 @@
+{%- liquid
+  assign instagram_url = section.settings.social_instagram
+  assign facebook_url  = section.settings.social_facebook
+  assign youtube_url   = section.settings.social_youtube
+  assign twitter_url   = section.settings.social_twitter
+-%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+
+<div class="nzk-progress-bar" id="nzkProgressBar"></div>
+<div class="nzk-cursor-glow"   id="nzkCursorGlow"></div>
+
+<div id="nzk-contact">
+<style>
+#nzk-contact *, #nzk-contact *::before, #nzk-contact *::after { box-sizing:border-box; margin:0; padding:0; }
+:root {
+  --nzk-white:     #FFFFFF;
+  --nzk-navy:      #0A0F1E;
+  --nzk-navy-deep: #06091A;
+  --nzk-red:       #DC2626;
+  --nzk-red-dark:  #B91C1C;
+  --nzk-text:      #111827;
+  --nzk-text-mid:  #374151;
+  --nzk-text-lt:   #6B7280;
+  --nzk-border:    #E5E7EB;
+  --nzk-bg:        #F8F8F8;
+}
+
+/* PROGRESS BAR */
+.nzk-progress-bar {
+  position:fixed; top:0; left:0; height:3px; width:0%;
+  background:linear-gradient(90deg,var(--nzk-navy),var(--nzk-red),#FF7070);
+  z-index:9999; box-shadow:0 0 8px rgba(220,38,38,.45);
+  transition:width .07s linear; pointer-events:none;
+}
+/* CURSOR GLOW */
+.nzk-cursor-glow {
+  position:fixed; width:360px; height:360px; border-radius:50%;
+  pointer-events:none; z-index:1;
+  background:radial-gradient(circle,rgba(220,38,38,.065) 0%,transparent 65%);
+  transform:translate(-50%,-50%);
+  will-change:left,top; mix-blend-mode:multiply;
+}
+
+/* BODY GRADIENT — breathes */
+#nzk-contact {
+  font-family:'Inter',sans-serif; color:var(--nzk-text); overflow-x:hidden;
+  background:linear-gradient(135deg,#F9F9FB 0%,#F6F4FF 40%,#FFF4F6 70%,#F9F9FB 100%);
+  background-size:400% 400%; animation:nzkBodyGrad 22s ease infinite;
+}
+@keyframes nzkBodyGrad {
+  0%,100%{background-position:0% 50%;}
+  33%    {background-position:100% 50%;}
+  66%    {background-position:50% 0%;}
+}
+
+/* HERO */
+.nzk-hero {
+  position:relative; overflow:hidden; height:280px;
+  background:linear-gradient(135deg,#FFFFFF 0%,#FFF8F8 25%,#FFFAFA 50%,#F8F8FF 75%,#FFFFFF 100%);
+  background-size:400% 400%; animation:nzkHeroGrad 14s ease infinite;
+  display:flex; align-items:center; border-bottom:1px solid var(--nzk-border);
+}
+@keyframes nzkHeroGrad {
+  0%,100%{background-position:0% 50%;}
+  50%    {background-position:100% 50%;}
+}
+.nzk-hero::before {
+  content:''; position:absolute; inset:0;
+  background-image:radial-gradient(circle,rgba(0,0,0,.055) 1px,transparent 1px);
+  background-size:28px 28px; animation:nzkGridDrift 20s linear infinite;
+}
+@keyframes nzkGridDrift { from{background-position:0 0;} to{background-position:28px 28px;} }
+
+.nzk-hero-slash { position:absolute; right:0; top:0; bottom:0; width:55%; overflow:hidden; pointer-events:none; }
+.nzk-hero-slash::before {
+  content:''; position:absolute; top:-20%; right:12%; width:5px; height:160%;
+  background:var(--nzk-red); transform:rotate(-8deg); transform-origin:top center;
+  animation:nzkSlashIn 1s cubic-bezier(.16,1,.3,1) both;
+}
+.nzk-hero-slash::after {
+  content:''; position:absolute; top:-20%; right:16.5%; width:2px; height:160%;
+  background:rgba(220,38,38,.22); transform:rotate(-8deg); transform-origin:top center;
+  animation:nzkSlashIn 1s .1s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes nzkSlashIn { from{transform:rotate(-8deg) scaleY(0);opacity:0;} to{transform:rotate(-8deg) scaleY(1);opacity:1;} }
+
+.nzk-hero-sweep {
+  position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);
+  background-size:300% 100%; animation:nzkSweep 5s 1.2s ease-in-out both;
+}
+@keyframes nzkSweep { from{background-position:130% 0;} to{background-position:-30% 0;} }
+
+.nzk-hero-deco {
+  position:absolute; right:68px; top:0; bottom:0;
+  display:flex; flex-direction:column; justify-content:center; gap:14px;
+  pointer-events:none; animation:nzkDecoIn .8s .5s ease both;
+}
+@keyframes nzkDecoIn { from{opacity:0;transform:translateX(16px);} to{opacity:1;transform:translateX(0);} }
+.nzk-hdl { height:1px; background:var(--nzk-border); }
+.nzk-hdl:nth-child(1){width:130px;} .nzk-hdl:nth-child(2){width:80px;}
+.nzk-hdl:nth-child(3){width:155px;} .nzk-hdl:nth-child(4){width:60px;}
+
+.nzk-hero-content { position:relative; z-index:2; padding:0 60px; max-width:720px; will-change:transform; }
+.nzk-hero-eyebrow {
+  font-size:10.5px; font-weight:700; letter-spacing:4px;
+  color:var(--nzk-red); text-transform:uppercase; margin-bottom:14px;
+  animation:nzkFadeUp .6s ease both;
+}
+.nzk-hero-title {
+  font-size:clamp(32px,5.5vw,70px); font-weight:900; color:var(--nzk-text);
+  line-height:1; letter-spacing:-2.5px; animation:nzkFadeUp .6s .1s ease both;
+}
+.nzk-hero-sub {
+  display:block; font-size:clamp(13px,1.8vw,18px); font-weight:400;
+  letter-spacing:.3px; color:var(--nzk-text-lt); margin-top:12px;
+  animation:nzkFadeUp .6s .22s ease both;
+}
+.nzk-hero-redline {
+  width:48px; height:3px; background:var(--nzk-red); margin-top:22px; border-radius:2px;
+  animation:nzkLineGrow .8s .4s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes nzkFadeUp   { from{opacity:0;transform:translateY(14px);} to{opacity:1;transform:translateY(0);} }
+@keyframes nzkLineGrow { from{width:0;opacity:0;} to{width:48px;opacity:1;} }
+
+/* PAGE WRAP */
+.nzk-page-wrap { position:relative; overflow:hidden; }
+
+/* ORBS */
+.nzk-orb { position:absolute; border-radius:50%; pointer-events:none; z-index:0; will-change:transform; }
+.nzk-orb-1 {
+  width:560px; height:560px; top:-80px; left:-130px;
+  background:radial-gradient(circle,rgba(220,38,38,.055) 0%,rgba(220,38,38,.015) 45%,transparent 70%);
+  animation:nzkOrbDrift 28s ease-in-out infinite;
+}
+.nzk-orb-2 {
+  width:440px; height:440px; top:180px; right:-100px;
+  background:radial-gradient(circle,rgba(99,102,241,.05) 0%,rgba(99,102,241,.01) 45%,transparent 70%);
+  animation:nzkOrbDrift 34s 6s ease-in-out infinite reverse;
+}
+.nzk-orb-3 {
+  width:320px; height:320px; bottom:80px; left:18%;
+  background:radial-gradient(circle,rgba(220,38,38,.04) 0%,transparent 70%);
+  animation:nzkOrbDrift 22s 12s ease-in-out infinite;
+}
+@keyframes nzkOrbDrift {
+  0%,100%{transform:translate(0,0) scale(1);}
+  33%    {transform:translate(28px,-22px) scale(1.06);}
+  66%    {transform:translate(-18px,18px) scale(.95);}
+}
+.nzk-bg-shape { position:absolute; border-radius:2px; border:1px solid rgba(0,0,0,.04); pointer-events:none; z-index:0; will-change:transform; }
+.nzk-bgs1{width:60px;height:60px;top:80px;left:3%;}
+.nzk-bgs2{width:36px;height:36px;top:300px;right:4%;border-radius:50%;}
+.nzk-bgs3{width:48px;height:48px;bottom:120px;left:6%;}
+.nzk-bgs4{width:24px;height:24px;top:50px;right:12%;border-radius:50%;}
+
+/* CONTACT SECTION */
+.nzk-contact-section { max-width:1280px; margin:0 auto; padding:72px 40px 100px; position:relative; z-index:1; }
+.nzk-card-scene { perspective:1100px; perspective-origin:50% 38%; }
+.nzk-card {
+  display:grid; grid-template-columns:360px 1fr;
+  border-radius:4px; overflow:hidden; border:1px solid var(--nzk-border);
+  will-change:transform; animation:nzkCardReveal .9s cubic-bezier(.22,1,.36,1) both;
+  box-shadow:0 2px 4px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06),0 32px 64px rgba(0,0,0,.06);
+  position:relative;
+}
+@keyframes nzkCardReveal {
+  from{opacity:0;transform:perspective(1100px) rotateX(10deg) translateY(50px) scale(.96);}
+  to  {opacity:1;transform:perspective(1100px) rotateX(0) translateY(0) scale(1);}
+}
+.nzk-card-edge { position:absolute; inset:-1px; border-radius:4px; pointer-events:none; z-index:20; border:1px solid transparent; }
+.nzk-card-shadow {
+  height:50px; margin:0 60px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,0,0,.2) 0%,transparent 70%);
+  animation:nzkShadowPulse 4s ease-in-out infinite; filter:blur(4px);
+}
+@keyframes nzkShadowPulse { 0%,100%{transform:scaleX(1);opacity:.8;} 50%{transform:scaleX(.88);opacity:.35;} }
+
+/* LEFT PANEL */
+.nzk-panel-left {
+  background:linear-gradient(155deg,#0D1328 0%,#0A0F1E 40%,#130825 70%,#080C18 100%);
+  background-size:200% 200%; animation:nzkPanelGrad 16s ease infinite;
+  padding:52px 40px; position:relative; overflow:hidden; display:flex; flex-direction:column;
+}
+@keyframes nzkPanelGrad {
+  0%,100%{background-position:0% 0%;}
+  50%    {background-position:100% 100%;}
+}
+.nzk-panel-left::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,transparent,var(--nzk-red),#FF6B6B,var(--nzk-red),transparent);
+  background-size:300% 100%; animation:nzkRedSweep 3s linear infinite;
+}
+@keyframes nzkRedSweep { 0%{background-position:100% 0;} 100%{background-position:-100% 0;} }
+.nzk-panel-left::after {
+  content:'NT'; position:absolute; bottom:-30px; right:-20px;
+  font-size:180px; font-weight:900; color:rgba(255,255,255,.03);
+  letter-spacing:-10px; user-select:none; pointer-events:none; line-height:1;
+  animation:nzkWatermarkDrift 18s ease-in-out infinite;
+}
+@keyframes nzkWatermarkDrift { 0%,100%{transform:translate(0,0) rotate(0deg);} 50%{transform:translate(-10px,-12px) rotate(-2deg);} }
+
+.nzk-panel-glow {
+  position:absolute; top:-100px; right:-100px; width:320px; height:320px; border-radius:50%;
+  background:radial-gradient(circle,rgba(220,38,38,.24) 0%,rgba(220,38,38,.06) 50%,transparent 70%);
+  pointer-events:none; animation:nzkGlowPulse 4.5s ease-in-out infinite;
+}
+@keyframes nzkGlowPulse { 0%,100%{opacity:.6;transform:scale(1);} 50%{opacity:1;transform:scale(1.2);} }
+.nzk-panel-glow2 {
+  position:absolute; bottom:-60px; left:-40px; width:220px; height:220px; border-radius:50%;
+  background:radial-gradient(circle,rgba(220,38,38,.1) 0%,transparent 70%);
+  pointer-events:none; animation:nzkGlowPulse 6s 2.5s ease-in-out infinite;
+}
+
+.nzk-particles { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.nzk-p { position:absolute; border-radius:50%; animation:nzkParticleRise linear infinite; }
+.nzk-p1{width:3px;height:3px;left:18%;background:rgba(220,38,38,.6);animation-duration:9s;animation-delay:0s;}
+.nzk-p2{width:2px;height:2px;left:55%;background:rgba(220,38,38,.4);animation-duration:13s;animation-delay:-4s;}
+.nzk-p3{width:4px;height:4px;left:78%;background:rgba(220,38,38,.5);animation-duration:10s;animation-delay:-7s;}
+.nzk-p4{width:2px;height:2px;left:38%;background:rgba(255,255,255,.25);animation-duration:16s;animation-delay:-2s;}
+.nzk-p5{width:3px;height:3px;left:67%;background:rgba(255,255,255,.18);animation-duration:12s;animation-delay:-9s;}
+.nzk-p6{width:2px;height:2px;left:85%;background:rgba(220,38,38,.35);animation-duration:8s;animation-delay:-5s;}
+@keyframes nzkParticleRise {
+  0%  {bottom:-8px;opacity:0;transform:translateX(0) scale(1);}
+  15% {opacity:1;}
+  85% {opacity:.8;}
+  100%{bottom:105%;opacity:0;transform:translateX(18px) scale(0);}
+}
+
+.nzk-store-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(220,38,38,.14); border:1px solid rgba(220,38,38,.35);
+  border-radius:2px; padding:6px 14px 6px 10px; margin-bottom:28px; width:fit-content;
+  animation:nzkFadeUp .5s .6s ease both; position:relative; z-index:2;
+  box-shadow:0 6px 20px rgba(220,38,38,.2);
+  transition:background .25s, box-shadow .25s, transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.nzk-store-badge:hover { background:rgba(220,38,38,.24); box-shadow:0 10px 28px rgba(220,38,38,.38); transform:translateY(-3px); }
+.nzk-badge-dot { width:6px; height:6px; border-radius:50%; background:var(--nzk-red); animation:nzkDotPulse 2s ease-in-out infinite; }
+@keyframes nzkDotPulse { 0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.55);} 50%{box-shadow:0 0 0 7px rgba(220,38,38,0);} }
+.nzk-badge-text { font-size:9px; font-weight:700; letter-spacing:2px; color:rgba(230,80,80,1); text-transform:uppercase; }
+
+.nzk-panel-heading {
+  font-family:'Libre Baskerville',serif; font-size:28px; font-weight:700;
+  line-height:1.28; margin-bottom:12px; letter-spacing:-.3px;
+  background:linear-gradient(90deg,#FFFFFF 0%,#FFE0E0 20%,#FF8080 45%,#FF5050 50%,#FF8080 55%,#FFE0E0 80%,#FFFFFF 100%);
+  background-size:300% 100%;
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  animation:nzkFadeUp .5s .7s ease both, nzkHeadingGrad 5s 1.5s ease infinite;
+  position:relative; z-index:2;
+}
+@keyframes nzkHeadingGrad {
+  0%,100%{background-position:0% 50%;}
+  50%    {background-position:100% 50%;}
+}
+.nzk-panel-sub { font-size:13.5px; color:rgba(255,255,255,.72); line-height:1.78; margin-bottom:36px; animation:nzkFadeUp .5s .8s ease both; position:relative; z-index:2; }
+
+.nzk-contact-list { display:flex; flex-direction:column; margin-bottom:36px; position:relative; z-index:2; }
+.nzk-contact-item {
+  display:flex; align-items:flex-start; gap:14px;
+  padding:15px 0 15px 10px;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  border-left:2px solid transparent;
+  transition:border-left-color .25s, padding-left .25s, background .25s;
+  cursor:default; animation:nzkFadeUp .5s ease both;
+  text-decoration:none; color:inherit;
+}
+.nzk-contact-item:first-child { border-top:1px solid rgba(255,255,255,.1); }
+.nzk-contact-item:nth-child(1){animation-delay:.85s;}
+.nzk-contact-item:nth-child(2){animation-delay:.95s;}
+.nzk-contact-item:nth-child(3){animation-delay:1.05s;}
+.nzk-contact-item:hover { border-left-color:var(--nzk-red); padding-left:16px; background:rgba(220,38,38,.06); }
+
+.nzk-contact-icon {
+  width:36px; height:36px; border-radius:2px; background:var(--nzk-red); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 14px rgba(220,38,38,.35);
+  transition:transform .38s cubic-bezier(.34,1.56,.64,1), box-shadow .25s;
+}
+.nzk-contact-item:hover .nzk-contact-icon { transform:scale(1.14) rotate(12deg); box-shadow:0 8px 22px rgba(220,38,38,.58); }
+.nzk-contact-icon svg { width:15px; height:15px; stroke:#fff; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.nzk-contact-label { font-size:9px; font-weight:700; letter-spacing:2px; color:rgba(240,100,100,1); text-transform:uppercase; margin-bottom:4px; }
+.nzk-contact-value { font-size:13px; color:rgba(255,255,255,.92); font-weight:400; line-height:1.58; }
+
+.nzk-social-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; position:relative; z-index:2; }
+.nzk-social-btn {
+  width:38px; height:38px; border-radius:2px;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all .38s cubic-bezier(.34,1.56,.64,1); animation:nzkFadeUp .4s ease both;
+  text-decoration:none;
+}
+.nzk-social-btn:nth-child(1){animation-delay:1.1s;} .nzk-social-btn:nth-child(2){animation-delay:1.18s;}
+.nzk-social-btn:nth-child(3){animation-delay:1.26s;} .nzk-social-btn:nth-child(4){animation-delay:1.34s;}
+.nzk-social-btn svg { width:15px; height:15px; stroke:rgba(255,255,255,.65); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:stroke .2s; }
+.nzk-social-btn:hover { background:rgba(220,38,38,.2); border-color:rgba(220,38,38,.5); transform:translateY(-5px) scale(1.14); box-shadow:0 8px 22px rgba(220,38,38,.38); }
+.nzk-social-btn:hover svg { stroke:rgba(255,120,120,1); }
+
+/* RIGHT PANEL */
+.nzk-panel-right { background:var(--nzk-white); padding:52px 56px; position:relative; overflow:hidden; }
+.nzk-panel-right::before {
+  content:''; position:absolute; top:0; right:0; width:0; height:0;
+  border-style:solid; border-width:0 44px 44px 0;
+  border-color:transparent rgba(220,38,38,.07) transparent transparent;
+}
+.nzk-panel-right::after {
+  content:''; position:absolute; top:0; left:-120%; width:60%; height:100%;
+  background:linear-gradient(90deg,transparent,rgba(220,38,38,.03),transparent);
+  animation:nzkPanelShimmer 8s 2s ease-in-out infinite; pointer-events:none;
+}
+@keyframes nzkPanelShimmer { 0%{left:-120%;} 100%{left:160%;} }
+
+.nzk-form-label-top { font-size:10px; font-weight:700; letter-spacing:3px; color:var(--nzk-red); text-transform:uppercase; margin-bottom:10px; animation:nzkFadeUp .5s .7s ease both; }
+.nzk-form-title { font-size:clamp(22px,2.8vw,32px); font-weight:800; color:var(--nzk-text); letter-spacing:-1px; line-height:1.1; animation:nzkFadeUp .5s .8s ease both; }
+.nzk-form-redline {
+  width:36px; height:2px; background:var(--nzk-red); margin:16px 0 36px; border-radius:1px;
+  animation:nzkLineGrow2 .8s .95s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes nzkLineGrow2 { from{width:0;opacity:0;} to{width:36px;opacity:1;} }
+
+/* SUCCESS / ERROR messages */
+.nzk-form-success {
+  background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.35); border-radius:4px;
+  padding:18px 24px; margin-bottom:28px;
+  font-size:14px; color:#166534; font-weight:500; line-height:1.6;
+}
+.nzk-form-error {
+  background:rgba(220,38,38,.07); border:1px solid rgba(220,38,38,.3); border-radius:4px;
+  padding:16px 22px; margin-bottom:24px;
+  font-size:13px; color:var(--nzk-red); font-weight:500; line-height:1.6;
+}
+.nzk-form-error ul { padding-left:18px; margin-top:6px; }
+.nzk-form-error ul li { margin-bottom:4px; }
+
+.nzk-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px 24px; }
+.nzk-fg { display:flex; flex-direction:column; }
+.nzk-fg.nzk-full { grid-column:1/-1; }
+
+.nzk-fg label {
+  font-size:10px; font-weight:700; letter-spacing:1.5px; color:var(--nzk-text-lt);
+  text-transform:uppercase; margin-bottom:8px;
+  transition:color .25s, letter-spacing .28s; display:block;
+}
+.nzk-fg:focus-within label { color:var(--nzk-red); letter-spacing:2.5px; }
+
+.nzk-fg.nzk-one{animation:nzkFadeUp .4s 1.0s ease both;} .nzk-fg.nzk-two{animation:nzkFadeUp .4s 1.1s ease both;}
+.nzk-fg.nzk-thr{animation:nzkFadeUp .4s 1.2s ease both;} .nzk-fg.nzk-fou{animation:nzkFadeUp .4s 1.3s ease both;}
+
+.nzk-field-wrap { position:relative; transition:transform .28s cubic-bezier(.34,1.56,.64,1); }
+.nzk-fg:focus-within .nzk-field-wrap { transform:translateY(-2px); }
+
+.nzk-fg input, .nzk-fg textarea {
+  background:transparent; border:none; border-bottom:1.5px solid var(--nzk-border);
+  padding:10px 2px; color:var(--nzk-text); font-family:'Inter',sans-serif;
+  font-size:14px; outline:none; resize:none; width:100%; transition:border-color .22s;
+}
+.nzk-fg textarea { height:90px; padding-top:8px; }
+.nzk-field-line {
+  position:absolute; bottom:0; left:0; width:0; height:2px;
+  background:var(--nzk-red); border-radius:1px; transition:width .3s cubic-bezier(.16,1,.3,1);
+}
+.nzk-fg input:focus ~ .nzk-field-line, .nzk-fg textarea:focus ~ .nzk-field-line { width:100%; }
+.nzk-fg input::placeholder, .nzk-fg textarea::placeholder { color:#BFC7D0; font-size:13px; }
+
+.nzk-submit-btn {
+  margin-top:40px; padding:15px 48px;
+  background:var(--nzk-navy); border:none; border-radius:2px;
+  color:#fff; font-family:'Inter',sans-serif;
+  font-size:11.5px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;
+  cursor:pointer; position:relative; overflow:hidden;
+  transition:transform .28s cubic-bezier(.16,1,.3,1), box-shadow .28s;
+  box-shadow:0 4px 0 var(--nzk-navy-deep),0 8px 24px rgba(10,15,30,.2);
+  animation:nzkFadeUp .4s 1.4s ease both;
+  display:inline-flex; align-items:center; gap:10px;
+}
+.nzk-submit-btn::before {
+  content:''; position:absolute; top:0; left:-100%; width:50%; height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.13),transparent);
+  transition:left .5s ease;
+}
+.nzk-submit-btn::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:var(--nzk-red); transform:scaleX(0); transform-origin:left;
+  transition:transform .3s cubic-bezier(.16,1,.3,1);
+}
+.nzk-submit-btn:hover { transform:translateY(-5px); box-shadow:0 10px 0 var(--nzk-navy-deep),0 20px 40px rgba(10,15,30,.28); }
+.nzk-submit-btn:hover::before { left:140%; }
+.nzk-submit-btn:hover::after  { transform:scaleX(1); }
+.nzk-submit-btn:active { transform:translateY(2px); box-shadow:0 2px 0 var(--nzk-navy-deep),0 4px 10px rgba(10,15,30,.18); }
+.nzk-btn-arrow { transition:transform .25s; display:inline-block; }
+.nzk-submit-btn:hover .nzk-btn-arrow { transform:translateX(5px); }
+.nzk-ripple {
+  position:absolute; border-radius:50%; background:rgba(255,255,255,.22);
+  width:10px; height:10px; margin:-5px 0 0 -5px;
+  transform:scale(0); animation:nzkRipple .55s linear; pointer-events:none;
+}
+@keyframes nzkRipple { to { transform:scale(30); opacity:0; } }
+
+/* SCROLL REVEAL */
+.nzk-reveal       { opacity:0; transform:translateY(36px); }
+.nzk-reveal-left  { opacity:0; transform:translateX(-36px); }
+.nzk-reveal-right { opacity:0; transform:translateX(36px); }
+.nzk-reveal-scale { opacity:0; transform:scale(.93); }
+.nzk-reveal.in,.nzk-reveal-left.in,.nzk-reveal-right.in,.nzk-reveal-scale.in {
+  opacity:1; transform:none;
+  transition:opacity .78s ease, transform .78s cubic-bezier(.16,1,.3,1);
+}
+.nzk-d1{transition-delay:.08s!important;} .nzk-d2{transition-delay:.18s!important;}
+.nzk-d3{transition-delay:.28s!important;} .nzk-d4{transition-delay:.38s!important;}
+
+/* RESPONSIVE */
+@media (max-width:900px) {
+  .nzk-card { grid-template-columns:1fr; }
+  .nzk-panel-left { padding:40px 24px; }
+  .nzk-panel-right { padding:40px 24px; }
+  .nzk-form-grid { grid-template-columns:1fr; gap:24px; }
+  .nzk-hero-content { padding:0 24px; }
+  .nzk-hero-slash { width:30%; }
+  .nzk-hero-deco { right:36px; }
+  .nzk-card-shadow { display:none; }
+  .nzk-contact-section { padding:40px 16px 72px; }
+  .nzk-bgs1{width:36px;height:36px;} .nzk-bgs3{width:28px;height:28px;}
+  .nzk-bgs2,.nzk-bgs4{display:none;}
+  .nzk-orb-1,.nzk-orb-2,.nzk-orb-3 { display:none; }
+  .nzk-cursor-glow { display:none; }
+}
+@media (max-width:480px) {
+  .nzk-hero-content { padding:0 16px; }
+  .nzk-hero-deco { display:none; }
+}
+</style>
+
+<!-- HERO -->
+<section class="nzk-hero">
+  <div class="nzk-hero-sweep"></div>
+  <div class="nzk-hero-slash"></div>
+  <div class="nzk-hero-deco">
+    <div class="nzk-hdl"></div><div class="nzk-hdl"></div>
+    <div class="nzk-hdl"></div><div class="nzk-hdl"></div>
+  </div>
+  <div class="nzk-hero-content" id="nzkHeroContent">
+    <div class="nzk-hero-eyebrow">Nazakat Telecom</div>
+    <h1 class="nzk-hero-title">Contact Us
+      <span class="nzk-hero-sub">We're here to help. Reach us any time.</span>
+    </h1>
+    <div class="nzk-hero-redline"></div>
+  </div>
+</section>
+
+<!-- PAGE WRAP -->
+<div class="nzk-page-wrap" id="nzkPageWrap">
+  <div class="nzk-orb nzk-orb-1" id="nzkOrb1"></div>
+  <div class="nzk-orb nzk-orb-2" id="nzkOrb2"></div>
+  <div class="nzk-orb nzk-orb-3" id="nzkOrb3"></div>
+  <div class="nzk-bg-shape nzk-bgs1" id="nzkBgs1"></div>
+  <div class="nzk-bg-shape nzk-bgs2" id="nzkBgs2"></div>
+  <div class="nzk-bg-shape nzk-bgs3" id="nzkBgs3"></div>
+  <div class="nzk-bg-shape nzk-bgs4" id="nzkBgs4"></div>
+
+  <section class="nzk-contact-section">
+    <div class="nzk-card-scene">
+      <div class="nzk-card" id="nzkTiltCard">
+        <div class="nzk-card-edge" id="nzkCardEdge"></div>
+
+        <!-- LEFT PANEL -->
+        <div class="nzk-panel-left">
+          <div class="nzk-panel-glow"></div>
+          <div class="nzk-panel-glow2"></div>
+          <div class="nzk-particles">
+            <div class="nzk-p nzk-p1"></div><div class="nzk-p nzk-p2"></div><div class="nzk-p nzk-p3"></div>
+            <div class="nzk-p nzk-p4"></div><div class="nzk-p nzk-p5"></div><div class="nzk-p nzk-p6"></div>
+          </div>
+
+          <div class="nzk-store-badge" data-depth="4">
+            <span class="nzk-badge-dot"></span>
+            <span class="nzk-badge-text">Available Now</span>
+          </div>
+          <h2 class="nzk-panel-heading" data-depth="3">Nazakat<br>Telecom</h2>
+          <p class="nzk-panel-sub" data-depth="2">Premium phones, audio &amp; accessories.<br>Trusted by customers across India.</p>
+
+          <div class="nzk-contact-list" data-depth="2">
+            <a class="nzk-contact-item" href="mailto:onztelecom@gmail.com">
+              <div class="nzk-contact-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div>
+                <div class="nzk-contact-label">Email</div>
+                <div class="nzk-contact-value">onztelecom@gmail.com</div>
+              </div>
+            </a>
+            <div class="nzk-contact-item">
+              <div class="nzk-contact-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div>
+                <div class="nzk-contact-label">Hours</div>
+                <div class="nzk-contact-value">Every Day, 10:00 AM – 8:00 PM</div>
+              </div>
+            </div>
+            <a class="nzk-contact-item" href="https://maps.google.com/?q=Defence+Rd+opp+Gurdwara+Sahib+Mamun+Pathankot+Punjab+145001" target="_blank" rel="noopener">
+              <div class="nzk-contact-icon">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div>
+                <div class="nzk-contact-label">Address</div>
+                <div class="nzk-contact-value">Defence Rd, opp. Gurdwara Sahib,<br>Mamun, Pathankot, Punjab 145001</div>
+              </div>
+            </a>
+          </div>
+
+          <div class="nzk-social-row" data-depth="3">
+            {%- if instagram_url != blank -%}
+              <a class="nzk-social-btn" href="{{ instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">
+            {%- else -%}
+              <span class="nzk-social-btn" aria-label="Instagram">
+            {%- endif -%}
+              <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            {%- if instagram_url != blank -%}</a>{%- else -%}</span>{%- endif -%}
+
+            {%- if facebook_url != blank -%}
+              <a class="nzk-social-btn" href="{{ facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">
+            {%- else -%}
+              <span class="nzk-social-btn" aria-label="Facebook">
+            {%- endif -%}
+              <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            {%- if facebook_url != blank -%}</a>{%- else -%}</span>{%- endif -%}
+
+            {%- if youtube_url != blank -%}
+              <a class="nzk-social-btn" href="{{ youtube_url }}" target="_blank" rel="noopener" aria-label="YouTube">
+            {%- else -%}
+              <span class="nzk-social-btn" aria-label="YouTube">
+            {%- endif -%}
+              <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            {%- if youtube_url != blank -%}</a>{%- else -%}</span>{%- endif -%}
+
+            {%- if twitter_url != blank -%}
+              <a class="nzk-social-btn" href="{{ twitter_url }}" target="_blank" rel="noopener" aria-label="Twitter / X">
+            {%- else -%}
+              <span class="nzk-social-btn" aria-label="Twitter / X">
+            {%- endif -%}
+              <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+            {%- if twitter_url != blank -%}</a>{%- else -%}</span>{%- endif -%}
+          </div>
+        </div><!-- .nzk-panel-left -->
+
+        <!-- RIGHT PANEL -->
+        <div class="nzk-panel-right">
+          <div class="nzk-form-label-top" data-depth="3">Get in Touch</div>
+          <h3 class="nzk-form-title" data-depth="2">Send Us a Message</h3>
+          <div class="nzk-form-redline"></div>
+
+          {%- form 'contact', id: 'ContactForm' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="nzk-form-success" role="status">
+                <strong>Message sent!</strong> Thank you for reaching out. We'll get back to you as soon as possible.
+              </div>
+            {%- else -%}
+              {%- if form.errors -%}
+                <div class="nzk-form-error" role="alert">
+                  <strong>Please fix the following:</strong>
+                  <ul>
+                    {%- for field in form.errors -%}
+                      <li>{{ form.errors.messages[field] }}</li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+
+              <div class="nzk-form-grid" data-depth="1">
+                <div class="nzk-fg nzk-one">
+                  <label for="ContactForm-name">{{ 'templates.contact.form.name' | t }}</label>
+                  <div class="nzk-field-wrap">
+                    <input type="text" id="ContactForm-name"
+                      name="contact[{{ 'templates.contact.form.name' | t }}]"
+                      value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                      placeholder="{{ 'templates.contact.form.name' | t }}">
+                    <div class="nzk-field-line"></div>
+                  </div>
+                </div>
+
+                <div class="nzk-fg nzk-two">
+                  <label for="ContactForm-email">{{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span></label>
+                  <div class="nzk-field-wrap">
+                    <input type="email" id="ContactForm-email"
+                      name="contact[email]"
+                      autocomplete="email"
+                      value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                      placeholder="{{ 'templates.contact.form.email' | t }}"
+                      required>
+                    <div class="nzk-field-line"></div>
+                  </div>
+                </div>
+
+                <div class="nzk-fg nzk-thr">
+                  <label for="ContactForm-phone">{{ 'templates.contact.form.phone' | t }}</label>
+                  <div class="nzk-field-wrap">
+                    <input type="tel" id="ContactForm-phone"
+                      name="contact[{{ 'templates.contact.form.phone' | t }}]"
+                      value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                      placeholder="+91 00000 00000">
+                    <div class="nzk-field-line"></div>
+                  </div>
+                </div>
+
+                <div class="nzk-fg nzk-fou nzk-full">
+                  <label for="ContactForm-body">{{ 'templates.contact.form.comment' | t }}</label>
+                  <div class="nzk-field-wrap">
+                    <textarea id="ContactForm-body"
+                      name="contact[{{ 'templates.contact.form.comment' | t }}]"
+                      placeholder="{{ 'templates.contact.form.comment' | t }}">{{ form.body }}</textarea>
+                    <div class="nzk-field-line"></div>
+                  </div>
+                </div>
+              </div>
+
+              <button class="nzk-submit-btn" id="nzkSubmitBtn" type="submit" data-depth="4">
+                {{ 'templates.contact.form.send' | t }} <span class="nzk-btn-arrow">&#8594;</span>
+              </button>
+            {%- endif -%}
+          {%- endform -%}
+        </div><!-- .nzk-panel-right -->
+
+      </div><!-- .nzk-card -->
+    </div><!-- .nzk-card-scene -->
+    <div class="nzk-card-shadow"></div>
+  </section>
+</div><!-- .nzk-page-wrap -->
+
+</div><!-- #nzk-contact -->
+
+<script>
+(function () {
+  /* SCROLL PROGRESS BAR */
+  var nzkPB = document.getElementById('nzkProgressBar');
+  if (nzkPB) {
+    function nzkUpdateProgress() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      nzkPB.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+    }
+    window.addEventListener('scroll', nzkUpdateProgress, { passive: true });
+  }
+
+  /* CURSOR GLOW */
+  var nzkCG = document.getElementById('nzkCursorGlow');
+  if (nzkCG) {
+    document.addEventListener('mousemove', function (e) {
+      nzkCG.style.left = e.clientX + 'px';
+      nzkCG.style.top  = e.clientY + 'px';
+    });
+  }
+
+  /* SCROLL REVEAL */
+  (function () {
+    var els = document.querySelectorAll('.nzk-reveal,.nzk-reveal-left,.nzk-reveal-right,.nzk-reveal-scale');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+
+  /* SCROLL PARALLAX */
+  (function () {
+    var hc   = document.getElementById('nzkHeroContent');
+    var o1   = document.getElementById('nzkOrb1');
+    var o2   = document.getElementById('nzkOrb2');
+    var o3   = document.getElementById('nzkOrb3');
+    var bgs  = [
+      { el: document.getElementById('nzkBgs1'), speed: 0.18, rot: 15 },
+      { el: document.getElementById('nzkBgs2'), speed: 0.28, rot: 45 },
+      { el: document.getElementById('nzkBgs3'), speed: 0.22, rot: -10 },
+      { el: document.getElementById('nzkBgs4'), speed: 0.14, rot: 30 }
+    ];
+    window.addEventListener('scroll', function () {
+      var sy = window.scrollY;
+      if (hc) hc.style.transform = 'translateY(' + (sy * 0.35) + 'px)';
+      if (o1) o1.style.transform = 'translate(0,' + (sy * 0.12) + 'px)';
+      if (o2) o2.style.transform = 'translate(0,' + (-sy * 0.08) + 'px)';
+      if (o3) o3.style.transform = 'translate(0,' + (sy * 0.06) + 'px)';
+      bgs.forEach(function (b) {
+        if (b.el) {
+          var d = sy * b.speed;
+          b.el.style.transform = 'translateY(' + d + 'px) rotate(' + (b.rot + d * 0.08) + 'deg)';
+          b.el.style.opacity   = Math.max(0.2, 0.7 - d * 0.002);
+        }
+      });
+    }, { passive: true });
+  })();
+
+  /* RIPPLE on submit */
+  var nzkSB = document.getElementById('nzkSubmitBtn');
+  if (nzkSB) {
+    nzkSB.addEventListener('click', function (e) {
+      var rect = nzkSB.getBoundingClientRect();
+      var rip  = document.createElement('span');
+      rip.className = 'nzk-ripple';
+      rip.style.left = (e.clientX - rect.left) + 'px';
+      rip.style.top  = (e.clientY - rect.top)  + 'px';
+      nzkSB.appendChild(rip);
+      setTimeout(function () { rip.remove(); }, 600);
+    });
+  }
+
+  /* 3D TILT + PARALLAX */
+  (function () {
+    var card     = document.getElementById('nzkTiltCard');
+    var cardEdge = document.getElementById('nzkCardEdge');
+    if (!card) return;
+    var layers   = card.querySelectorAll('[data-depth]');
+    var cX = 0, cY = 0, tX = 0, tY = 0, hovering = false, time = 0;
+    var isMobile = window.matchMedia('(max-width:900px)').matches;
+    var MAX = isMobile ? 10 : 20;
+
+    function lerp(a, b, f) { return a + (b - a) * f; }
+    function setTarget(clientX, clientY) {
+      var r  = card.getBoundingClientRect();
+      var dx = (clientX - (r.left + r.width  / 2)) / (r.width  / 2);
+      var dy = (clientY - (r.top  + r.height / 2)) / (r.height / 2);
+      tX =  dx * MAX;
+      tY = -dy * (MAX * 0.7);
+    }
+
+    card.addEventListener('mouseenter', function () { hovering = true; });
+    card.addEventListener('mouseleave', function () { hovering = false; });
+    card.addEventListener('mousemove',  function (e) { setTarget(e.clientX, e.clientY); });
+    card.addEventListener('touchstart', function ()  { hovering = true; },  { passive: true });
+    card.addEventListener('touchend',   function ()  { hovering = false; }, { passive: true });
+    card.addEventListener('touchmove',  function (e) { setTarget(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+
+    (function tick() {
+      time += 0.012;
+      if (hovering) {
+        cX = lerp(cX, tX, 0.09);
+        cY = lerp(cY, tY, 0.09);
+      } else {
+        cX = lerp(cX, Math.sin(time * 0.65) * 2.8, 0.04);
+        cY = lerp(cY, Math.cos(time * 0.45) * 2.0, 0.04);
+      }
+      var d = Math.sqrt(cX * cX + cY * cY);
+      card.style.transform =
+        'perspective(1100px) rotateY(' + cX + 'deg) rotateX(' + cY + 'deg)';
+      card.style.boxShadow =
+        '0 ' + (2  + d * 0.6) + 'px ' + (8  + d * 0.8) + 'px rgba(0,0,0,.06),' +
+        '0 ' + (8  + d * 1.2) + 'px ' + (28 + d * 2.5) + 'px rgba(0,0,0,' + (.07 + d * .006) + '),' +
+        '0 ' + (28 + d * 2.5) + 'px ' + (64 + d * 4)   + 'px rgba(0,0,0,' + (.05 + d * .004) + ')';
+      var gA = Math.min(d / MAX, 1) * 0.6;
+      var gR = cX > 0 ? Math.min(cX / MAX, 1) : 0;
+      var gL = cX < 0 ? Math.min(-cX / MAX, 1) : 0;
+      cardEdge.style.boxShadow =
+        'inset '  + (gR * 12) + 'px 0 24px rgba(220,38,38,' + (gA * gR) + '),' +
+        'inset -' + (gL * 12) + 'px 0 24px rgba(220,38,38,' + (gA * gL) + ')';
+      if (!isMobile) {
+        layers.forEach(function (el) {
+          var depth = parseFloat(el.getAttribute('data-depth'));
+          el.style.transform = 'translate(' + (cX * depth * 0.9) + 'px,' + (-cY * depth * 0.6) + 'px)';
+        });
+      }
+      requestAnimationFrame(tick);
+    })();
+  })();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Contact Form",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Social Media Links"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "social_twitter",
+      "label": "Twitter / X URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Form"
+    }
+  ]
+}
+{% endschema %}
