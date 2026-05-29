@@ -950,7 +950,7 @@ document.getElementById('submitBtn').addEventListener('click', function (e) {
   var hovering = false;
   var time     = 0;
   var isMobile = window.matchMedia('(max-width:900px)').matches;
-  var MAX      = isMobile ? 10 : 20;
+  var MAX      = isMobile ? 14 : 20;
 
   function lerp(a, b, f) { return a + (b - a) * f; }
 
@@ -978,8 +978,9 @@ document.getElementById('submitBtn').addEventListener('click', function (e) {
       cX = lerp(cX, tX, 0.09);
       cY = lerp(cY, tY, 0.09);
     } else {
-      cX = lerp(cX, Math.sin(time * 0.65) * 2.8, 0.04);
-      cY = lerp(cY, Math.cos(time * 0.45) * 2.0, 0.04);
+      var breathe = isMobile ? 4.5 : 2.8;
+      cX = lerp(cX, Math.sin(time * 0.65) * breathe, 0.04);
+      cY = lerp(cY, Math.cos(time * 0.45) * (breathe * 0.72), 0.04);
     }
 
     var d = Math.sqrt(cX * cX + cY * cY);
@@ -998,12 +999,11 @@ document.getElementById('submitBtn').addEventListener('click', function (e) {
       'inset '  + (glowR * 12) + 'px 0 24px rgba(220,38,38,' + (glowAlpha * glowR) + '),' +
       'inset -' + (glowL * 12) + 'px 0 24px rgba(220,38,38,' + (glowAlpha * glowL) + ')';
 
-    if (!isMobile) {
-      layers.forEach(function (el) {
-        var depth = parseFloat(el.getAttribute('data-depth'));
-        el.style.transform = 'translate(' + (cX * depth * 0.9) + 'px,' + (-cY * depth * 0.6) + 'px)';
-      });
-    }
+    layers.forEach(function (el) {
+      var depth = parseFloat(el.getAttribute('data-depth'));
+      var mult  = isMobile ? 0.55 : 0.9;
+      el.style.transform = 'translate(' + (cX * depth * mult) + 'px,' + (-cY * depth * (mult * 0.67)) + 'px)';
+    });
 
     requestAnimationFrame(tick);
   })();
