@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nazakat Telecom — Contact | Design 2: GOLDEN HOUR</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FFFAF5;
+    --amber: #D97706;
+    --gold: #F59E0B;
+    --orange: #C2410C;
+    --deep-orange: #9A3412;
+    --text-dark: #1C0A00;
+    --text-mid: #78350F;
+    --text-light: #92400E;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* PREVIEW BAR */
+  .preview-bar {
+    background: linear-gradient(90deg, var(--orange), var(--amber), var(--gold), var(--amber), var(--orange));
+    background-size: 300% 100%;
+    color: #fff;
+    text-align: center;
+    padding: 9px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1000;
+    animation: previewBarShift 4s ease-in-out infinite;
+  }
+  @keyframes previewBarShift { 0%,100%{background-position:0% 50%;} 50%{background-position:100% 50%;} }
+
+  /* FLOATING ORBS */
+  .orb-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+  }
+  .orb-1 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(249,115,22,0.18) 0%, transparent 70%);
+    top: -100px; left: -150px;
+    animation: orbFloat1 12s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(245,158,11,0.14) 0%, transparent 70%);
+    bottom: 100px; right: -100px;
+    animation: orbFloat2 15s ease-in-out infinite;
+  }
+  .orb-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(194,65,12,0.1) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    animation: orbFloat3 10s ease-in-out infinite;
+  }
+  @keyframes orbFloat1 { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(40px,30px) scale(1.08);} }
+  @keyframes orbFloat2 { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-30px,-40px) scale(1.05);} }
+  @keyframes orbFloat3 { 0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-48%,-52%) scale(1.06);} }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    background: rgba(255,250,245,0.96);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(194,65,12,0.12);
+    box-shadow: 0 2px 24px rgba(194,65,12,0.07);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .logo-wrap img {
+    height: 46px;
+    width: auto;
+    filter: drop-shadow(0 2px 6px rgba(194,65,12,0.2));
+    transition: filter 0.3s;
+  }
+  .logo-wrap img:hover { filter: drop-shadow(0 4px 12px rgba(194,65,12,0.4)); }
+
+  nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  nav a {
+    color: var(--text-mid);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 100px;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  nav a:hover {
+    color: var(--orange);
+    background: rgba(194,65,12,0.07);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--cream);
+  }
+
+  /* Warm animated gradient blobs */
+  .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+  .hero-blob-1 {
+    width: 600px; height: 400px;
+    background: radial-gradient(ellipse, rgba(249,115,22,0.2) 0%, transparent 70%);
+    left: -100px; top: -80px;
+    animation: hBlob1 8s ease-in-out infinite;
+  }
+  .hero-blob-2 {
+    width: 500px; height: 350px;
+    background: radial-gradient(ellipse, rgba(245,158,11,0.18) 0%, transparent 70%);
+    right: -100px; bottom: -60px;
+    animation: hBlob2 10s ease-in-out infinite;
+  }
+  .hero-blob-3 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(253,230,138,0.25) 0%, transparent 70%);
+    left: 50%; top: 50%;
+    transform: translate(-50%,-50%);
+    animation: hBlob3 7s ease-in-out infinite;
+  }
+  @keyframes hBlob1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(50px,20px);} }
+  @keyframes hBlob2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-30px,-30px);} }
+  @keyframes hBlob3 { 0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-50%,-50%) scale(1.15);} }
+
+  /* Sun-ray geometric shapes */
+  .sun-ray {
+    position: absolute;
+    pointer-events: none;
+  }
+  .sun-ray-1 {
+    width: 200px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245,158,11,0.25), transparent);
+    top: 60px; left: 50%;
+    transform: translateX(-50%) rotate(-30deg);
+    animation: rayFade 5s ease-in-out infinite;
+  }
+  .sun-ray-2 {
+    width: 150px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245,158,11,0.2), transparent);
+    top: 80px; left: 50%;
+    transform: translateX(-50%) rotate(30deg);
+    animation: rayFade 5s 1s ease-in-out infinite;
+  }
+  .sun-ray-3 {
+    width: 120px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(249,115,22,0.18), transparent);
+    bottom: 70px; left: 50%;
+    transform: translateX(-50%) rotate(-15deg);
+    animation: rayFade 5s 2s ease-in-out infinite;
+  }
+  @keyframes rayFade { 0%,100%{opacity:0.4;} 50%{opacity:1;} }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 24px;
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    animation: fadeUp 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 6vw, 64px);
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--orange), var(--amber), var(--gold), var(--amber), var(--orange));
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fadeUp 0.8s 0.12s ease both, titleGradient 4s ease-in-out infinite;
+  }
+  @keyframes titleGradient { 0%,100%{background-position:0% 50%;} 50%{background-position:100% 50%;} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px);} to{opacity:1;transform:translateY(0);} }
+  .hero-sub {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-top: 10px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    animation: fadeUp 0.8s 0.25s ease both;
+  }
+
+  /* MAIN */
+  .page-wrap { position: relative; z-index: 1; }
+  .contact-section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 60px 24px 88px;
+  }
+  .card-outer { perspective: 1200px; }
+  .card {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow:
+      0 4px 6px rgba(194,65,12,0.04),
+      0 20px 40px rgba(194,65,12,0.1),
+      0 60px 100px rgba(194,65,12,0.08);
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: box-shadow 0.4s;
+  }
+  .card:hover {
+    box-shadow:
+      0 4px 6px rgba(194,65,12,0.06),
+      0 30px 60px rgba(194,65,12,0.16),
+      0 80px 120px rgba(194,65,12,0.1);
+  }
+
+  /* LEFT PANEL — animated warm gradient */
+  .panel-left {
+    background: linear-gradient(145deg, var(--orange), var(--amber), var(--gold));
+    background-size: 300% 300%;
+    animation: panelGradientShift 6s ease-in-out infinite;
+    padding: 52px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  @keyframes panelGradientShift {
+    0%,100%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+  }
+  .panel-left::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    pointer-events: none;
+  }
+  .panel-left::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.07);
+    pointer-events: none;
+  }
+
+  .store-badge-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 100px;
+    padding: 6px 14px 6px 10px;
+    margin-bottom: 28px;
+  }
+  .badge-star {
+    color: #FCD34D;
+    font-size: 13px;
+    animation: starSpin 4s linear infinite;
+  }
+  @keyframes starSpin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+  .badge-text-gold {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.95);
+    text-transform: uppercase;
+  }
+
+  .panel-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .panel-sub {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.82);
+    line-height: 1.65;
+    margin-bottom: 36px;
+    font-weight: 400;
+  }
+
+  .contact-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 36px; }
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 12px;
+    transition: all 0.28s;
+    cursor: default;
+    border-left: 3px solid rgba(255,255,255,0.3);
+  }
+  .contact-item:hover {
+    background: rgba(255,255,255,0.25);
+    border-left-color: #FCD34D;
+    transform: translateX(5px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .contact-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 15px;
+    transition: all 0.28s;
+  }
+  .contact-item:hover .contact-icon {
+    background: rgba(255,255,255,0.32);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  .contact-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .contact-value {
+    font-size: 13.5px;
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .social-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .social-btn {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.85);
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.22s;
+    cursor: pointer;
+  }
+  .social-btn:hover {
+    background: rgba(255,255,255,0.28);
+    border-color: rgba(255,255,255,0.5);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  }
+
+  /* RIGHT PANEL */
+  .panel-right {
+    background: var(--white);
+    padding: 52px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .panel-right::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%);
+    pointer-events: none;
+    animation: rPanelOrb 9s ease-in-out infinite;
+  }
+  @keyframes rPanelOrb { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-20px,20px);} }
+
+  .form-header { margin-bottom: 38px; }
+  .form-label-top {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.2;
+  }
+  .form-divider {
+    width: 50px; height: 3px;
+    background: linear-gradient(90deg, var(--amber), var(--gold));
+    border-radius: 2px;
+    margin-top: 14px;
+    animation: dividerExpand 1s 0.3s ease both;
+  }
+  @keyframes dividerExpand { from{width:0;opacity:0;} to{width:50px;opacity:1;} }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-mid);
+    text-transform: uppercase;
+  }
+  .form-group input,
+  .form-group textarea {
+    background: #FFFBF5;
+    border: 1.5px solid #FDE68A;
+    border-radius: 10px;
+    padding: 13px 18px;
+    color: var(--text-dark);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.25s;
+    resize: none;
+  }
+  .form-group textarea { height: 115px; }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--amber);
+    background: #FFF7E6;
+    box-shadow: 0 0 0 4px rgba(217,119,6,0.1);
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: #C4A06A; }
+
+  .submit-btn {
+    margin-top: 28px;
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(90deg, var(--amber), var(--gold));
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s;
+    box-shadow: 0 4px 16px rgba(217,119,6,0.35), 0 8px 32px rgba(217,119,6,0.18);
+  }
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.4s;
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(217,119,6,0.48), 0 16px 40px rgba(217,119,6,0.22);
+    background: linear-gradient(90deg, var(--orange), var(--amber));
+  }
+  .submit-btn:hover::before { transform: translateX(100%); }
+  .submit-btn:active { transform: translateY(1px); box-shadow: 0 2px 8px rgba(217,119,6,0.3); }
+
+  @media (max-width: 900px) {
+    .card { grid-template-columns: 1fr; border-radius: 16px; }
+    .panel-left { padding: 40px 24px; }
+    .panel-right { padding: 40px 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+    nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb-layer">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="preview-bar">&#9733;&nbsp;&nbsp;DESIGN 2 &mdash; GOLDEN HOUR &mdash; Preview Only&nbsp;&nbsp;&#9733;</div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo-wrap">
+      <img src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/snapchat_2892b502-7fbc-4d45-b9aa-1b31e8aeb078.png?v=1726684601" alt="Nazakat Telecom">
+    </a>
+    <nav>
+      <a href="#">Shop</a>
+      <a href="#">Mobiles</a>
+      <a href="#">Audio &amp; Party Speakers</a>
+      <a href="#">Accessories</a>
+      <a href="#">About Us</a>
+      <a href="#">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-wrap">
+  <section class="hero">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="hero-blob hero-blob-3"></div>
+    <div class="sun-ray sun-ray-1"></div>
+    <div class="sun-ray sun-ray-2"></div>
+    <div class="sun-ray sun-ray-3"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Nazakat Telecom &mdash; Warm Welcome Awaits</div>
+      <h1 class="hero-title">Contact Us</h1>
+      <p class="hero-sub">We&rsquo;d love to hear from you &mdash; reach out any time</p>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <div class="card-outer">
+      <div class="card" id="tilt-card">
+
+        <div class="panel-left">
+          <div class="store-badge-gold">
+            <span class="badge-star">&#9733;</span>
+            <span class="badge-text-gold">Premium Service</span>
+          </div>
+          <h2 class="panel-heading">Nazakat<br>Telecom</h2>
+          <p class="panel-sub">Your trusted partner for mobiles, audio, and accessories. Our team is here for you every day.</p>
+
+          <div class="contact-list">
+            <div class="contact-item">
+              <div class="contact-icon">&#9993;</div>
+              <div>
+                <div class="contact-label">Email</div>
+                <div class="contact-value">onztelecom@gmail.com</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">&#9201;</div>
+              <div>
+                <div class="contact-label">Hours</div>
+                <div class="contact-value">Every Day, 10:00 AM &ndash; 8:00 PM</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">&#9872;</div>
+              <div>
+                <div class="contact-label">Location</div>
+                <div class="contact-value">India</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="social-row">
+            <a class="social-btn" title="Instagram">&#9651;</a>
+            <a class="social-btn" title="Facebook">&#9670;</a>
+            <a class="social-btn" title="WhatsApp">&#9632;</a>
+            <a class="social-btn" title="Twitter">&#9653;</a>
+          </div>
+        </div>
+
+        <div class="panel-right">
+          <div class="form-header">
+            <div class="form-label-top">Say Hello</div>
+            <h3 class="form-title">Send Us a Message</h3>
+            <div class="form-divider"></div>
+          </div>
+          <form onsubmit="return false;">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="d2-name">Name</label>
+                <input type="text" id="d2-name" placeholder="Your full name">
+              </div>
+              <div class="form-group">
+                <label for="d2-email">Email *</label>
+                <input type="email" id="d2-email" placeholder="your@email.com" required>
+              </div>
+              <div class="form-group">
+                <label for="d2-phone">Phone</label>
+                <input type="tel" id="d2-phone" placeholder="+91 00000 00000">
+              </div>
+              <div class="form-group full">
+                <label for="d2-comment">Comment</label>
+                <textarea id="d2-comment" placeholder="Tell us how we can help you..."></textarea>
+              </div>
+            </div>
+            <button class="submit-btn" type="submit">&#9654;&nbsp; Send Message</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function() {
+  var card = document.getElementById('tilt-card');
+  var targetX = 0, targetY = 0;
+  var currentX = 0, currentY = 0;
+  var rafId = null;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function loop() {
+    currentX = lerp(currentX, targetX, 0.07);
+    currentY = lerp(currentY, targetY, 0.07);
+    card.style.transform = 'rotateY(' + currentX + 'deg) rotateX(' + currentY + 'deg)';
+    rafId = requestAnimationFrame(loop);
+  }
+
+  card.addEventListener('mouseenter', function() {
+    if (!rafId) loop();
+  });
+
+  card.addEventListener('mousemove', function(e) {
+    var rect = card.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    var dx = (e.clientX - cx) / (rect.width / 2);
+    var dy = (e.clientY - cy) / (rect.height / 2);
+    targetX = dx * 7;
+    targetY = -dy * 5;
+  });
+
+  card.addEventListener('mouseleave', function() {
+    targetX = 0;
+    targetY = 0;
+    cancelAnimationFrame(rafId);
+    rafId = null;
+    (function resetLoop() {
+      currentX = lerp(currentX, 0, 0.1);
+      currentY = lerp(currentY, 0, 0.1);
+      card.style.transform = 'rotateY(' + currentX + 'deg) rotateX(' + currentY + 'deg)';
+      if (Math.abs(currentX) > 0.02 || Math.abs(currentY) > 0.02) {
+        rafId = requestAnimationFrame(resetLoop);
+      } else {
+        card.style.transform = '';
+        rafId = null;
+      }
+    })();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nazakat Telecom — Contact Page Preview (Light 3D)</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #F5F3FF;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ──────────────────────────────────────────── */
+.site-header {
+  background: #ffffff;
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  border-bottom: 1px solid #EDE9FE;
+  position: sticky; top: 0; z-index: 200;
+  box-shadow: 0 2px 20px rgba(109,40,217,0.08);
+}
+.site-header .logo img { height: 46px; width: auto; object-fit: contain; }
+.site-header nav { display: flex; gap: 26px; }
+.site-header nav a {
+  color: #4B5563; text-decoration: none;
+  font-size: 0.83rem; font-weight: 500;
+  transition: color 0.2s;
+}
+.site-header nav a:hover { color: #6D28D9; }
+.site-header .hicons { display: flex; gap: 18px; align-items: center; }
+.site-header .hicons svg {
+  width: 20px; height: 20px; fill: none; stroke: #6B7280;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  cursor: pointer; transition: stroke 0.2s;
+}
+.site-header .hicons svg:hover { stroke: #6D28D9; }
+
+/* ── HERO BANNER ─────────────────────────────────────── */
+.contact-hero {
+  position: relative;
+  height: 300px;
+  background: #ffffff;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+/* Animated gradient mesh */
+.contact-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 55% 80% at 15% 60%, rgba(167,139,250,0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 70% at 85% 35%, rgba(196,181,253,0.3) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 60% at 50% 100%, rgba(224,231,255,0.5) 0%, transparent 55%),
+    radial-gradient(ellipse 30% 40% at 70% 80%, rgba(251,207,232,0.25) 0%, transparent 55%);
+  animation: hero-pulse 8s ease-in-out infinite;
+}
+@keyframes hero-pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:.85; transform:scale(1.03); }
+}
+/* Ghost text */
+.hero-ghost {
+  position: absolute;
+  font-size: clamp(6rem, 18vw, 14rem);
+  font-weight: 900; letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(109,40,217,0.08);
+  user-select: none; white-space: nowrap; line-height: 1;
+}
+/* Floating shapes in hero */
+.hero-shape {
+  position: absolute; border-radius: 12px;
+  border: 2px solid rgba(109,40,217,0.12);
+  animation: shape-float ease-in-out infinite;
+}
+.hs1 { width:50px;height:50px; top:18%; left:8%;  transform:rotate(20deg); animation-duration:7s;  animation-delay:0s; }
+.hs2 { width:30px;height:30px; top:25%; right:10%;transform:rotate(45deg); animation-duration:9s;  animation-delay:-3s; border-radius:50%; border-color:rgba(219,39,119,0.15);}
+.hs3 { width:20px;height:20px; bottom:20%; left:15%;transform:rotate(-10deg);animation-duration:11s; animation-delay:-5s; border-radius:50%;}
+.hs4 { width:40px;height:40px; bottom:15%; right:14%;transform:rotate(30deg); animation-duration:8s;  animation-delay:-2s; border-color:rgba(59,130,246,0.12);}
+.hs5 { width:24px;height:24px; top:60%;   left:45%; transform:rotate(15deg); animation-duration:10s; animation-delay:-4s; border-color:rgba(167,139,250,0.2); }
+@keyframes shape-float {
+  0%,100% { transform:translateY(0) rotate(20deg); opacity:.6; }
+  50%      { transform:translateY(-18px) rotate(38deg); opacity:1; }
+}
+/* Particles */
+.hero-particles { position:absolute; inset:0; pointer-events:none; }
+.hp { position:absolute; border-radius:50%; animation:part-drift linear infinite; }
+.hp:nth-child(1)  { width:4px;height:4px; left:8%;  top:90%; background:rgba(139,92,246,0.5); animation-duration:9s;  animation-delay:0s; }
+.hp:nth-child(2)  { width:3px;height:3px; left:20%; top:85%; background:rgba(167,139,250,0.4); animation-duration:12s; animation-delay:-4s; }
+.hp:nth-child(3)  { width:5px;height:5px; left:35%; top:92%; background:rgba(219,39,119,0.35); animation-duration:8s;  animation-delay:-1s; }
+.hp:nth-child(4)  { width:3px;height:3px; left:50%; top:88%; background:rgba(139,92,246,0.45); animation-duration:11s; animation-delay:-6s; }
+.hp:nth-child(5)  { width:4px;height:4px; left:65%; top:90%; background:rgba(96,165,250,0.4);  animation-duration:10s; animation-delay:-2s; }
+.hp:nth-child(6)  { width:3px;height:3px; left:78%; top:87%; background:rgba(167,139,250,0.5); animation-duration:13s; animation-delay:-7s; }
+.hp:nth-child(7)  { width:5px;height:5px; left:90%; top:93%; background:rgba(219,39,119,0.3);  animation-duration:7s;  animation-delay:-3s; }
+@keyframes part-drift { from { transform:translateY(0) scale(1); opacity:1; } to { transform:translateY(-260px) scale(0.2); opacity:0; } }
+
+.hero-content { position:relative; z-index:1; text-align:center; }
+.hero-eyebrow {
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:0.69rem; font-weight:700; letter-spacing:0.18em;
+  text-transform:uppercase; color:#7C3AED; margin-bottom:14px;
+}
+.hero-eyebrow::before,.hero-eyebrow::after { content:''; width:28px; height:1px; background:rgba(124,58,237,0.3); }
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 900; letter-spacing: -0.03em; line-height: 1.1;
+  background: linear-gradient(120deg, #4C1D95 0%, #6D28D9 30%, #7C3AED 55%, #DB2777 85%, #9333EA 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: title-shine 4s linear infinite;
+}
+@keyframes title-shine {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ── PAGE ────────────────────────────────────────────── */
+.nzt-page {
+  background: #F5F3FF;
+  position: relative; overflow: hidden;
+  padding-bottom: 90px;
+}
+/* Soft light blobs */
+.blob { position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; z-index:0; animation:blob-drift 14s ease-in-out infinite; }
+.blob-1 { width:500px;height:500px; background:rgba(167,139,250,0.22); top:-180px; left:-120px; animation-delay:0s; }
+.blob-2 { width:400px;height:400px; background:rgba(219,39,119,0.1);   top:250px;  right:-120px; animation-delay:-6s; }
+.blob-3 { width:350px;height:350px; background:rgba(196,181,253,0.28); bottom:0;   left:35%; animation-delay:-10s; }
+@keyframes blob-drift {
+  0%,100% { transform:translate(0,0) scale(1); }
+  33%      { transform:translate(30px,-40px) scale(1.05); }
+  66%      { transform:translate(-20px,30px) scale(0.96); }
+}
+/* Light dot grid */
+.page-dots {
+  position:absolute; inset:0; pointer-events:none; z-index:0;
+  background-image: radial-gradient(circle, rgba(109,40,217,0.1) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+/* Small floating geo */
+.fgeo { position:absolute; border-radius:6px; border:1.5px solid rgba(109,40,217,0.15); pointer-events:none; z-index:0; animation:fgeo-float ease-in-out infinite; }
+.fg1 { width:32px;height:32px; top:80px;  left:4%;  animation-duration:9s;  animation-delay:0s; }
+.fg2 { width:22px;height:22px; top:260px; right:5%; animation-duration:11s; animation-delay:-3s; border-radius:50%; border-color:rgba(219,39,119,0.2); }
+.fg3 { width:18px;height:18px; bottom:100px; left:9%;  animation-duration:13s; animation-delay:-7s; }
+.fg4 { width:28px;height:28px; top:50px;  right:15%;animation-duration:8s;  animation-delay:-2s; border-radius:50%; }
+@keyframes fgeo-float { 0%,100%{transform:translateY(0) rotate(12deg); opacity:.5;} 50%{transform:translateY(-16px) rotate(28deg); opacity:1;} }
+
+/* ── SECTION HEADER ──────────────────────────────────── */
+.nzt-section-header { text-align:center; padding:64px 20px 48px; position:relative; z-index:1; }
+.section-eyebrow {
+  display:inline-flex; align-items:center; gap:10px;
+  font-size:0.68rem; font-weight:700; letter-spacing:0.18em;
+  text-transform:uppercase; color:#7C3AED; margin-bottom:16px;
+}
+.section-eyebrow::before,.section-eyebrow::after { content:''; width:26px; height:1.5px; background:rgba(124,58,237,0.3); border-radius:2px; }
+.nzt-main-title {
+  font-size: clamp(2.8rem, 6vw, 4.4rem);
+  font-weight: 900; letter-spacing: -0.04em; line-height: 1.02;
+  background: linear-gradient(120deg, #1E1B4B 0%, #4C1D95 30%, #6D28D9 60%, #DB2777 90%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: title-shine 5s linear infinite;
+  margin-bottom: 20px;
+}
+.title-rule { display:flex; align-items:center; justify-content:center; }
+.tr-l { flex:1; max-width:80px; height:2px; background:linear-gradient(90deg,transparent,rgba(109,40,217,0.2)); border-radius:2px; }
+.tr-m { width:48px; height:3px; background:linear-gradient(90deg,#6D28D9,#DB2777); border-radius:3px; margin:0 4px; }
+.tr-r { flex:1; max-width:80px; height:2px; background:linear-gradient(90deg,rgba(109,40,217,0.2),transparent); border-radius:2px; }
+
+/* ── 3D CARD ─────────────────────────────────────────── */
+.card-scene { padding:0 20px; position:relative; z-index:1; }
+.card-3d-wrapper { max-width:1060px; margin:0 auto; perspective:1600px; }
+
+.nzt-contact-grid {
+  display:grid; grid-template-columns:350px 1fr;
+  border-radius:24px; overflow:hidden;
+  transform:perspective(1600px) rotateX(2deg) rotateY(-3deg);
+  transition:transform 0.12s ease-out, box-shadow 0.12s ease-out;
+  box-shadow:
+    0 0 0 1px rgba(109,40,217,0.12),
+    0 4px 12px rgba(109,40,217,0.1),
+    0 16px 40px rgba(109,40,217,0.12),
+    0 40px 80px rgba(109,40,217,0.08),
+    0 2px 0 rgba(255,255,255,0.8) inset;
+  will-change:transform;
+}
+
+/* ── LEFT PANEL: animated gradient ──────────────────── */
+.nzt-info-panel {
+  padding:48px 34px;
+  position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+  background: linear-gradient(135deg, #4C1D95, #6D28D9, #7C3AED, #818CF8, #60A5FA);
+  background-size: 300% 300%;
+  animation: panel-gradient 8s ease infinite;
+}
+@keyframes panel-gradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+/* Shimmer overlay */
+.panel-shimmer {
+  position:absolute; inset:0;
+  background: linear-gradient(105deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 60%);
+  background-size: 200% 100%;
+  animation: shimmer 4s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes shimmer { 0%,100%{background-position:200% 0;} 50%{background-position:-200% 0;} }
+/* White dot grid overlay */
+.panel-dots-w {
+  position:absolute; inset:0; pointer-events:none;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+/* Glows */
+.nzt-info-panel::before {
+  content:''; position:absolute; top:-60px; right:-60px;
+  width:220px; height:220px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 65%);
+  pointer-events:none;
+}
+.nzt-info-panel::after {
+  content:''; position:absolute; bottom:-50px; left:-40px;
+  width:200px; height:200px;
+  background: radial-gradient(circle, rgba(219,39,119,0.25) 0%, transparent 65%);
+  pointer-events:none;
+}
+
+.nzt-info-top { position:relative; z-index:1; margin-bottom:32px; }
+
+.nzt-live-badge {
+  display:inline-flex; align-items:center; gap:7px;
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(8px);
+  border-radius:100px; padding:6px 14px;
+  font-size:0.68rem; font-weight:700;
+  letter-spacing:0.1em; text-transform:uppercase;
+  color:rgba(255,255,255,0.95); margin-bottom:22px;
+}
+.live-dot { width:6px; height:6px; background:#ffffff; border-radius:50%; animation:live-pulse 2s infinite; }
+@keyframes live-pulse {
+  0%,100%{opacity:1; transform:scale(1); box-shadow:0 0 0 0 rgba(255,255,255,0.5);}
+  50%{opacity:.5; transform:scale(1.5); box-shadow:0 0 0 4px rgba(255,255,255,0);}
+}
+.nzt-info-heading {
+  font-size:1.95rem; font-weight:800; color:#ffffff;
+  margin:0 0 10px; line-height:1.15; letter-spacing:-0.02em;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+.nzt-info-sub { color:rgba(255,255,255,0.65); font-size:0.87rem; line-height:1.8; }
+
+/* Items */
+.nzt-items { list-style:none; display:flex; flex-direction:column; gap:10px; position:relative; z-index:1; }
+.nzt-item {
+  display:flex; align-items:center; gap:14px;
+  padding:14px 16px;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:12px;
+  backdrop-filter:blur(8px);
+  transition:background 0.22s, border-color 0.22s, transform 0.22s, box-shadow 0.22s;
+  cursor:default;
+  /* stagger load-in */
+  animation: item-in 0.5s ease both;
+}
+.nzt-item:nth-child(1) { animation-delay:.1s; }
+.nzt-item:nth-child(2) { animation-delay:.2s; }
+.nzt-item:nth-child(3) { animation-delay:.3s; }
+@keyframes item-in { from{ opacity:0; transform:translateX(-16px); } to{ opacity:1; transform:translateX(0); } }
+.nzt-item:hover {
+  background:rgba(255,255,255,0.2);
+  border-color:rgba(255,255,255,0.4);
+  transform:translateX(5px);
+  box-shadow:0 4px 20px rgba(0,0,0,0.1);
+}
+.nzt-item-icon {
+  width:42px; height:42px;
+  background:rgba(255,255,255,0.2);
+  border:1px solid rgba(255,255,255,0.3);
+  border-radius:10px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:background 0.22s, box-shadow 0.22s;
+}
+.nzt-item:hover .nzt-item-icon {
+  background:rgba(255,255,255,0.3);
+  box-shadow:0 0 20px rgba(255,255,255,0.25);
+}
+.nzt-item-icon svg { width:17px; height:17px; fill:none; stroke:#ffffff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.nzt-item-text { display:flex; flex-direction:column; gap:3px; min-width:0; }
+.nzt-item-text strong { font-size:0.65rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.5); }
+.nzt-item-text span   { font-size:0.87rem; font-weight:500; color:#ffffff; }
+
+.nzt-reply {
+  display:flex; align-items:center; gap:8px;
+  margin-top:auto; padding-top:28px;
+  position:relative; z-index:1;
+  color:rgba(255,255,255,0.5); font-size:0.82rem;
+}
+.nzt-reply svg { width:14px; height:14px; stroke:rgba(255,255,255,0.7); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+
+/* ── RIGHT FORM PANEL ────────────────────────────────── */
+.nzt-form-panel {
+  background:#ffffff;
+  padding:48px 48px 52px;
+  position:relative;
+}
+.nzt-form-panel::before {
+  content:''; position:absolute; top:0; right:0;
+  width:200px; height:200px;
+  background:radial-gradient(circle at top right, rgba(109,40,217,0.05) 0%, transparent 70%);
+  pointer-events:none;
+}
+.nzt-form-panel::after {
+  content:''; position:absolute; bottom:0; left:0;
+  width:160px; height:160px;
+  background:radial-gradient(circle at bottom left, rgba(219,39,119,0.04) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.form-heading { font-size:1.3rem; font-weight:700; color:#1E1B4B; margin-bottom:28px; line-height:1.5; }
+.form-heading em { font-style:normal; color:#6D28D9; }
+
+.contact-fields { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.field { position:relative; margin-bottom:14px; }
+.field:last-of-type { margin-bottom:0; }
+.field input,.field textarea {
+  width:100%;
+  background:#FAFAFA;
+  border:1.5px solid #EDE9FE;
+  border-radius:10px;
+  padding:15px 16px;
+  font-size:0.92rem; color:#1E1B4B; font-family:inherit;
+  transition:border-color 0.22s, box-shadow 0.22s, background 0.22s;
+  outline:none; -webkit-appearance:none;
+}
+.field input:focus,.field textarea:focus {
+  border-color:#6D28D9;
+  box-shadow:0 0 0 3px rgba(109,40,217,0.1);
+  background:#ffffff;
+}
+.field input::placeholder,.field textarea::placeholder { color:#9CA3AF; font-size:0.89rem; }
+.field textarea { min-height:140px; resize:vertical; margin-bottom:14px; display:block; }
+
+/* Animated gradient button */
+.submit-btn {
+  width:100%; margin-top:6px;
+  background:linear-gradient(135deg, #4C1D95, #6D28D9, #DB2777, #7C3AED);
+  background-size:250% 250%;
+  animation:btn-gradient 4s ease infinite;
+  color:#ffffff; border:none; border-radius:10px;
+  padding:17px 32px;
+  font-size:1rem; font-weight:700; letter-spacing:0.04em;
+  cursor:pointer; font-family:inherit;
+  transition:transform 0.15s, box-shadow 0.15s;
+  box-shadow:
+    0 4px 0 #3B0764,
+    0 8px 24px rgba(109,40,217,0.35),
+    0 16px 48px rgba(109,40,217,0.2);
+  text-shadow:0 1px 3px rgba(0,0,0,0.2);
+  display:flex; align-items:center; justify-content:center; gap:10px;
+}
+@keyframes btn-gradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.submit-btn:hover {
+  transform:translateY(-3px);
+  box-shadow:
+    0 7px 0 #3B0764,
+    0 14px 32px rgba(109,40,217,0.45),
+    0 28px 60px rgba(109,40,217,0.25);
+}
+.submit-btn:active { transform:translateY(2px); box-shadow:0 2px 0 #3B0764, 0 4px 12px rgba(109,40,217,0.3); }
+.btn-arr { transition:transform 0.2s; }
+.submit-btn:hover .btn-arr { transform:translateX(4px); }
+
+/* Card load-in animation */
+.nzt-contact-grid { animation: card-in 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+@keyframes card-in {
+  from { opacity:0; transform:perspective(1600px) rotateX(8deg) rotateY(-6deg) translateY(40px); }
+  to   { opacity:1; transform:perspective(1600px) rotateX(2deg) rotateY(-3deg) translateY(0); }
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width:900px) {
+  .nzt-contact-grid { grid-template-columns:1fr; border-radius:18px; }
+  .nzt-info-panel { padding:36px 26px; }
+  .nzt-form-panel { padding:36px 26px 44px; }
+  .contact-fields { grid-template-columns:1fr; }
+  .site-header nav { display:none; }
+  .site-header .hicons { display:none; }
+  .contact-hero { height:220px; }
+}
+@media (max-width:480px) {
+  .nzt-section-header { padding:44px 16px 38px; }
+  .card-scene { padding:0 12px; }
+}
+
+/* Preview tag */
+.preview-bar {
+  background:linear-gradient(90deg,#6D28D9,#DB2777,#6D28D9);
+  background-size:200% 100%; animation:btn-gradient 3s linear infinite;
+  color:white; text-align:center; padding:10px 20px;
+  font-size:0.72rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+}
+.preview-bar span { opacity:.7; font-weight:400; margin-left:8px; }
+</style>
+</head>
+<body>
+
+<div class="preview-bar">Preview Only — Not Live<span>Hover the card to see 3D tilt</span></div>
+
+<!-- HEADER (white, light) -->
+<header class="site-header">
+  <div class="logo">
+    <img src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/snapchat_2892b502-7fbc-4d45-b9aa-1b31e8aeb078.png?v=1726684601" alt="Nazakat Telecom">
+  </div>
+  <nav>
+    <a href="#">Shop</a>
+    <a href="#">Mobiles</a>
+    <a href="#">Audio &amp; Party Speakers</a>
+    <a href="#">Accessories</a>
+    <a href="#">About Us</a>
+    <a href="#">FAQ</a>
+  </nav>
+  <div class="hicons">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="contact-hero">
+  <div class="hero-particles">
+    <div class="hp"></div><div class="hp"></div><div class="hp"></div><div class="hp"></div>
+    <div class="hp"></div><div class="hp"></div><div class="hp"></div>
+  </div>
+  <span class="hero-ghost">CONTACT</span>
+  <div class="hero-shape hs1"></div>
+  <div class="hero-shape hs2"></div>
+  <div class="hero-shape hs3"></div>
+  <div class="hero-shape hs4"></div>
+  <div class="hero-shape hs5"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Nazakat Telecom</div>
+    <h2 class="hero-title">We'd Love to<br>Hear From You</h2>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="nzt-page">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="page-dots"></div>
+  <div class="fgeo fg1"></div>
+  <div class="fgeo fg2"></div>
+  <div class="fgeo fg3"></div>
+  <div class="fgeo fg4"></div>
+
+  <div class="nzt-section-header">
+    <div class="section-eyebrow">Get In Touch</div>
+    <h1 class="nzt-main-title">Contact Us</h1>
+    <div class="title-rule">
+      <span class="tr-l"></span><span class="tr-m"></span><span class="tr-r"></span>
+    </div>
+  </div>
+
+  <div class="card-scene">
+    <div class="card-3d-wrapper" id="cardWrapper">
+      <div class="nzt-contact-grid" id="contactCard">
+
+        <!-- LEFT: Animated gradient panel -->
+        <div class="nzt-info-panel">
+          <div class="panel-shimmer"></div>
+          <div class="panel-dots-w"></div>
+
+          <div class="nzt-info-top">
+            <div class="nzt-live-badge">
+              <span class="live-dot"></span>We're Online
+            </div>
+            <h2 class="nzt-info-heading">Get In Touch</h2>
+            <p class="nzt-info-sub">Have a question about a product or your order? We're here to help.</p>
+          </div>
+
+          <ul class="nzt-items">
+            <li class="nzt-item">
+              <div class="nzt-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+              <div class="nzt-item-text">
+                <strong>Email</strong>
+                <span>onztelecom@gmail.com</span>
+              </div>
+            </li>
+            <li class="nzt-item">
+              <div class="nzt-item-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="nzt-item-text">
+                <strong>Business Hours</strong>
+                <span>Every Day, 10:00 AM – 8:00 PM</span>
+              </div>
+            </li>
+            <li class="nzt-item">
+              <div class="nzt-item-icon">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div class="nzt-item-text">
+                <strong>Location</strong>
+                <span>India</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="nzt-reply">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            We typically reply within 24 hours
+          </div>
+        </div>
+
+        <!-- RIGHT: Pure white form -->
+        <div class="nzt-form-panel">
+          <p class="form-heading">
+            Questions or comments?<br>
+            <em>Get in touch</em> and we'll be happy to help.
+          </p>
+          <div class="contact-fields">
+            <div class="field"><input type="text" placeholder="Name"></div>
+            <div class="field"><input type="email" placeholder="Email *"></div>
+          </div>
+          <div class="field"><input type="tel" placeholder="Phone number"></div>
+          <div class="field"><textarea placeholder="Comment"></textarea></div>
+          <button class="submit-btn" type="button">
+            Send Message
+            <svg class="btn-arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const wrapper = document.getElementById('cardWrapper');
+  const card    = document.getElementById('contactCard');
+  let tX=2, tY=-3, cX=2, cY=-3;
+
+  wrapper.addEventListener('mousemove', e => {
+    const r = wrapper.getBoundingClientRect();
+    tY = ((e.clientX - r.left)  / r.width  - 0.5) * 13;
+    tX = ((e.clientY - r.top)   / r.height - 0.5) * -9;
+  });
+  wrapper.addEventListener('mouseleave', () => { tX=0; tY=0; });
+
+  (function tick() {
+    cX += (tX-cX)*0.07; cY += (tY-cY)*0.07;
+    const d = Math.sqrt(cX*cX+cY*cY);
+    card.style.transform = `perspective(1600px) rotateX(${cX}deg) rotateY(${cY}deg)`;
+    card.style.boxShadow = `
+      0 0 0 1px rgba(109,40,217,${0.1+d*0.01}),
+      0 ${4+d}px ${14+d}px rgba(109,40,217,${0.09+d*0.01}),
+      0 ${16+d*2}px ${44+d*3}px rgba(109,40,217,${0.08+d*0.008}),
+      0 ${42+d*3}px ${90+d*4}px rgba(109,40,217,0.06),
+      0 2px 0 rgba(255,255,255,0.9) inset
+    `;
+    requestAnimationFrame(tick);
+  })();
+</script>
+</body>
+</html>
