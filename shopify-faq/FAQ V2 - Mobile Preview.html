@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAQ V2 — Mobile Preview</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:radial-gradient(900px 600px at 50% -10%,#16203b,#0A0F1E 70%);
+    color:#fff;min-height:100vh;padding:40px 20px 60px}
+  .head{text-align:center;max-width:720px;margin:0 auto 36px}
+  .head .eyebrow{display:inline-block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:#FF6B6B;font-weight:700;border:1px solid rgba(255,107,107,.35);background:rgba(220,38,38,.1);
+    padding:6px 14px;border-radius:999px;margin-bottom:16px}
+  .head h1{font-size:clamp(24px,4vw,34px);font-weight:800;letter-spacing:-.02em}
+  .head p{color:#c7cedb;margin-top:10px;font-size:15px;line-height:1.6}
+  .stagewrap{display:flex;flex-wrap:wrap;gap:48px;justify-content:center;align-items:flex-start;margin-top:10px}
+  .col{display:flex;flex-direction:column;align-items:center;gap:14px}
+  .col .label{font-size:13px;font-weight:700;color:#aab2c8;letter-spacing:.04em;
+    display:inline-flex;align-items:center;gap:8px}
+  .col .label .d{width:7px;height:7px;border-radius:50%;background:#FF6B6B}
+  #root{display:flex;flex-wrap:wrap;gap:48px;justify-content:center;align-items:flex-start}
+  .hint{margin:42px auto 0;max-width:560px;text-align:center;font-size:13px;color:#8b95b0;line-height:1.7;
+    border-top:1px dashed rgba(255,255,255,.14);padding-top:18px}
+  .hint b{color:#c7cedb}
+</style>
+</head>
+<body>
+  <div class="head">
+    <span class="eyebrow">Mobile Preview · iPhone</span>
+    <h1>How the FAQ page looks on a phone</h1>
+    <p>These are live, scrollable phones running the actual V2 page — the 3D phone scene scales down, the layout stacks to a single column, hover effects switch off for touch, and everything stays tappable. Scroll and tap inside each frame.</p>
+  </div>
+  <div id="root"></div>
+  <div class="hint">Left: top of page with the scaled <b>3D hero</b>. Right: the <b>accordion</b> in use. Both are fully interactive — try scrolling and opening questions. Nothing here is saved to your live theme.</div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel">
+  const SRC = "FAQ - REDESIGN - V2.html";
+
+  function Phone({ onReady }){
+    const ref = React.useRef(null);
+    return (
+      <IOSDevice dark width={372} height={780}>
+        <div style={{position:'absolute',inset:0,background:'#0A0F1E'}}>
+          <iframe ref={ref} src={SRC} title="FAQ mobile"
+            onLoad={()=>{ if(onReady) onReady(ref.current); }}
+            style={{width:'100%',height:'100%',border:0,display:'block'}} />
+        </div>
+      </IOSDevice>
+    );
+  }
+
+  function App(){
+    const openAccordion = (frame)=>{
+      try{
+        const win = frame.contentWindow, doc = frame.contentDocument;
+        const item = doc.querySelector('.item .q');
+        if(item) item.click();
+        // scroll to the questions area
+        setTimeout(()=>{
+          const faqs = doc.getElementById('faqs');
+          if(faqs) win.scrollTo({top: faqs.offsetTop - 90, behavior:'auto'});
+        }, 120);
+      }catch(e){}
+    };
+    return (
+      <React.Fragment>
+        <div className="col">
+          <span className="label"><span className="d"></span>Top of page</span>
+          <Phone />
+        </div>
+        <div className="col">
+          <span className="label"><span className="d"></span>Questions open</span>
+          <Phone onReady={openAccordion} />
+        </div>
+      </React.Fragment>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

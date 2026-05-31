@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nazakat Telecom — FAQ Redesign V2 (3D + Motion)</title>
+<style>
+  :root{
+    --navy:#0A0F1E; --navy-2:#141d36; --white:#FFFFFF;
+    --red:#DC2626; --red-dark:#B91C1C; --red-light:#FF6B6B;
+    --text-dark:#111827; --text-mid:#374151; --text-light:#6B7280;
+    --border:#E5E7EB; --bg:#F8F8F8;
+    --radius:18px; --shadow:0 10px 30px -12px rgba(10,15,30,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--text-dark);line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px}
+  svg{display:block}
+
+  /* ---------- SCROLL PROGRESS ---------- */
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:99;
+    background:linear-gradient(90deg,var(--red),var(--red-light));box-shadow:0 0 12px rgba(220,38,38,.6)}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;overflow:hidden;
+    background:radial-gradient(1200px 520px at 78% -10%,#16203b 0%,var(--navy) 58%);
+    color:var(--white);padding:70px 0 96px}
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:64px;
+    background:var(--bg);clip-path:ellipse(78% 100% at 50% 100%);z-index:6}
+  .hero-grid{max-width:1100px;margin:0 auto;padding:0 28px;position:relative;z-index:5;
+    display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:30px}
+
+  /* animated aurora blobs */
+  .aurora{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .aurora b{position:absolute;border-radius:50%;filter:blur(64px);opacity:.5}
+  .aurora .b1{width:360px;height:360px;left:-90px;top:-70px;background:rgba(220,38,38,.32);animation:drift1 14s ease-in-out infinite}
+  .aurora .b2{width:320px;height:320px;right:-50px;bottom:-90px;background:rgba(37,55,99,.6);animation:drift2 18s ease-in-out infinite}
+  .aurora .b3{width:240px;height:240px;left:42%;top:28%;background:rgba(255,107,107,.16);animation:drift3 12s ease-in-out infinite}
+  @keyframes drift1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translate(-50px,-20px)}}
+  @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,20px) scale(1.15)}}
+  /* subtle grid mesh */
+  .mesh{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.35;
+    background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+    background-size:46px 46px;mask-image:radial-gradient(600px 400px at 70% 20%,#000,transparent 75%)}
+
+  .hero-copy{text-align:left}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--red-light);font-weight:600;margin-bottom:18px;
+    border:1px solid rgba(255,107,107,.35);padding:7px 16px;border-radius:999px;
+    background:rgba(220,38,38,.08);opacity:0;animation:heroUp .7s .1s forwards}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--red-light);
+    box-shadow:0 0 0 0 rgba(255,107,107,.7);animation:pulse 2s infinite}
+  @keyframes pulse{70%{box-shadow:0 0 0 9px rgba(255,107,107,0)}100%{box-shadow:0 0 0 0 rgba(255,107,107,0)}}
+  .hero h1{font-size:clamp(32px,4.6vw,52px);font-weight:800;letter-spacing:-.02em;line-height:1.08;
+    opacity:0;animation:heroUp .7s .22s forwards}
+  .hero h1 .accent{color:var(--red-light);background:linear-gradient(100deg,var(--red-light),#fff,var(--red-light));
+    background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    animation:shine 4s linear infinite}
+  @keyframes shine{to{background-position:200% center}}
+  .hero p{max-width:520px;margin:18px 0 0;color:#c7cedb;font-size:17px;opacity:0;animation:heroUp .7s .34s forwards}
+  @keyframes heroUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  .trust-strip{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px}
+  .trust-chip{position:relative;overflow:hidden;display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(6px);
+    padding:12px 18px;border-radius:14px;font-size:14px;font-weight:600;
+    transition:transform .3s,border-color .3s;opacity:0;animation:heroUp .6s forwards}
+  .trust-chip:nth-child(1){animation-delay:.46s}
+  .trust-chip:nth-child(2){animation-delay:.56s}
+  .trust-chip:nth-child(3){animation-delay:.66s}
+  .trust-chip::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.25),transparent);
+    transform:skewX(-20deg);animation:sweep 5s ease-in-out infinite}
+  .trust-chip:nth-child(2)::after{animation-delay:1.6s}
+  .trust-chip:nth-child(3)::after{animation-delay:3.2s}
+  @keyframes sweep{0%{left:-120%}35%,100%{left:160%}}
+  .trust-chip:hover{transform:translateY(-4px);border-color:var(--red-light)}
+  .trust-chip .num{font-size:20px;font-weight:800;color:var(--white)}
+  .trust-chip .star{color:#FACC15;display:inline-block;animation:twinkle 2.4s ease-in-out infinite}
+  @keyframes twinkle{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.25) rotate(8deg);opacity:.85}}
+
+  /* ---------- 3D PHONE SCENE ---------- */
+  .scene{position:relative;height:420px;perspective:1200px;padding:0 26px;
+    opacity:0;animation:heroUp .9s .4s forwards}
+  .stage{position:absolute;inset:0;transform-style:preserve-3d;
+    transition:transform .25s ease-out;will-change:transform}
+  .phone{position:absolute;left:50%;top:50%;width:210px;height:430px;margin:-215px 0 0 -105px;
+    border-radius:34px;transform-style:preserve-3d;
+    background:linear-gradient(155deg,#1b2440,#0a0f1e);
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 40px 80px -30px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.18);
+    animation:phoneFloat 7s ease-in-out infinite}
+  @keyframes phoneFloat{0%,100%{transform:translateZ(0) rotateX(8deg) rotateY(-18deg) translateY(0)}
+    50%{transform:translateZ(0) rotateX(8deg) rotateY(-18deg) translateY(-16px)}}
+  .phone .screen{position:absolute;inset:9px;border-radius:26px;overflow:hidden;
+    background:radial-gradient(120% 90% at 30% 0%,#1d2950,#0b1124 70%)}
+  .phone .notch{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:64px;height:7px;
+    border-radius:99px;background:rgba(0,0,0,.55);z-index:4}
+  .scr-pad{position:absolute;inset:0;padding:30px 18px 18px;display:flex;flex-direction:column;align-items:center}
+  .scr-logo{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:24px;color:#fff;background:linear-gradient(135deg,var(--red),var(--red-dark));
+    box-shadow:0 10px 24px -8px rgba(220,38,38,.7);animation:logoPulse 2.6s ease-in-out infinite}
+  @keyframes logoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+  .scr-name{margin-top:14px;font-size:15px;font-weight:800;color:#fff;letter-spacing:.02em}
+  .scr-sub{margin-top:3px;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:#8b95b0}
+  .scr-bars{margin-top:20px;width:100%;display:flex;flex-direction:column;gap:9px}
+  .scr-bar{height:9px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden;position:relative}
+  .scr-bar i{position:absolute;inset:0;width:0;border-radius:99px;background:linear-gradient(90deg,#2b3a63,#42548a);
+    animation:fill 3.4s ease-in-out infinite}
+  .scr-bar:nth-child(1) i{animation-delay:.2s}
+  .scr-bar:nth-child(2) i{animation-delay:.7s;background:linear-gradient(90deg,var(--red),var(--red-light))}
+  .scr-bar:nth-child(3) i{animation-delay:1.2s}
+  @keyframes fill{0%{width:0}45%,70%{width:var(--w,80%)}100%{width:0}}
+  .scr-grid{margin-top:auto;width:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+  .scr-grid span{aspect-ratio:1;border-radius:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.05)}
+  .phone .glare{position:absolute;inset:0;border-radius:26px;pointer-events:none;
+    background:linear-gradient(120deg,rgba(255,255,255,.16),transparent 42%);mix-blend-mode:screen}
+
+  /* floating glass chips orbiting the phone */
+  .float-card{position:absolute;display:flex;align-items:center;gap:9px;padding:11px 14px;border-radius:14px;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(10px);
+    box-shadow:0 18px 40px -16px rgba(0,0,0,.6);color:#fff;font-size:13px;font-weight:700;white-space:nowrap}
+  .float-card .ico{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .fc-rating{left:-6%;top:14%;transform:translateZ(70px);animation:floatA 6s ease-in-out infinite}
+  .fc-rating .ico{background:rgba(250,204,21,.18);color:#FACC15}
+  .fc-genuine{right:2%;top:34%;transform:translateZ(80px);animation:floatB 7.5s ease-in-out infinite}
+  .fc-genuine .ico{background:rgba(37,211,102,.18);color:#34d399}
+  .fc-delivery{left:2%;bottom:8%;transform:translateZ(60px);animation:floatC 6.8s ease-in-out infinite}
+  .fc-delivery .ico{background:rgba(220,38,38,.2);color:var(--red-light)}
+  .fc-small{font-size:10px;font-weight:600;color:#aab2c8;display:block;margin-top:1px}
+  @keyframes floatA{0%,100%{transform:translateZ(70px) translateY(0)}50%{transform:translateZ(70px) translateY(-14px)}}
+  @keyframes floatB{0%,100%{transform:translateZ(80px) translateY(0)}50%{transform:translateZ(80px) translateY(13px)}}
+  @keyframes floatC{0%,100%{transform:translateZ(60px) translateY(0)}50%{transform:translateZ(60px) translateY(-10px)}}
+  .glow-ring{position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;
+    border-radius:50%;transform:translateZ(-60px);
+    background:radial-gradient(circle,rgba(220,38,38,.22),transparent 62%);filter:blur(12px);
+    animation:logoPulse 5s ease-in-out infinite}
+
+  @media(max-width:900px){
+    .hero{padding:54px 0 92px}
+    .hero-grid{grid-template-columns:1fr;text-align:center;gap:6px}
+    .hero-copy{text-align:center}
+    .hero p{margin-left:auto;margin-right:auto}
+    .trust-strip{justify-content:center}
+    .scene{height:400px;margin-top:20px;perspective:900px}
+    .scene .stage{transform:scale(.9)}
+  }
+  @media(max-width:480px){
+    .scene{height:362px;margin-top:14px}
+    .scene .stage{transform:scale(.76)}
+    .float-card{font-size:12px;padding:9px 12px}
+    .trust-chip{padding:11px 15px;font-size:13px}
+  }
+
+  /* ---------- SEARCH ---------- */
+  .toolbar{margin-top:-52px;position:relative;z-index:7}
+  .search{display:flex;align-items:center;gap:12px;background:var(--white);
+    border:1px solid var(--border);border-radius:16px;padding:14px 20px;box-shadow:var(--shadow);
+    transition:box-shadow .3s,border-color .3s,transform .3s;opacity:0;animation:heroUp .6s .55s forwards}
+  .search:focus-within{border-color:var(--red);box-shadow:0 0 0 4px rgba(220,38,38,.12),var(--shadow);transform:translateY(-2px)}
+  .search svg{flex:0 0 20px;color:var(--text-light);transition:color .3s}
+  .search:focus-within svg{color:var(--red)}
+  .search input{border:0;outline:0;flex:1;font-size:16px;color:var(--text-dark);background:transparent}
+  .search input::placeholder{color:var(--text-light)}
+  .count{font-size:13px;color:var(--text-light);white-space:nowrap}
+
+  /* ---------- ACCORDION ---------- */
+  .faqs{margin-top:26px;display:flex;flex-direction:column;gap:14px;padding-bottom:10px;perspective:1400px}
+  .item{position:relative;background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;transform-style:preserve-3d;
+    transition:box-shadow .35s,border-color .35s,transform .25s ease-out,opacity .55s;
+    opacity:0;transform:translateY(22px)}
+  .item.reveal{opacity:1;transform:translateY(0)}
+  .item::before{content:"";position:absolute;inset:0;z-index:0;opacity:0;transition:opacity .35s;pointer-events:none;
+    background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(220,38,38,.07),transparent 42%)}
+  .item:hover::before{opacity:1}
+  .item:hover{box-shadow:0 24px 50px -22px rgba(10,15,30,.4);border-color:#d4d9e2}
+  .q{position:relative;z-index:1;display:flex;align-items:center;gap:16px;width:100%;text-align:left;cursor:pointer;
+    padding:20px 22px;background:none;border:0;font-size:16.5px;font-weight:700;
+    color:var(--text-dark);font-family:inherit}
+  .q .ic{flex:0 0 38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--navy),#1c2742);color:var(--white);font-size:17px;
+    transition:transform .4s,background .4s;transform:translateZ(22px)}
+  .item:hover .q .ic{transform:translateZ(30px) rotate(-6deg) scale(1.08)}
+  .item.open .q .ic{background:linear-gradient(135deg,var(--red),var(--red-dark));transform:translateZ(30px) scale(1.1)}
+  .q .chev{margin-left:auto;flex:0 0 auto;color:var(--text-light);transition:transform .4s,color .4s}
+  .item.open .q .chev{transform:rotate(180deg);color:var(--red)}
+  .q .txt{flex:1}
+  .a{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1);position:relative;z-index:1}
+  .a-inner{padding:2px 22px 22px 76px;color:var(--text-mid);font-size:15.5px}
+  .a-inner a{color:var(--red-dark);font-weight:600;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+  .a-inner a:hover{border-color:var(--red-dark)}
+  .no-results{display:none;text-align:center;color:var(--text-light);padding:40px;font-size:15px}
+
+  /* ---------- CONTACT CARD ---------- */
+  .contact-card{margin:34px 0 60px;background:linear-gradient(135deg,var(--navy),#141d36);
+    border-radius:24px;padding:38px 30px;text-align:center;color:var(--white);position:relative;overflow:hidden}
+  .contact-card::before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;
+    background:radial-gradient(circle,rgba(220,38,38,.35),transparent 70%);top:-80px;right:-60px;animation:floaty 9s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translate(0,0)}50%{transform:translate(-26px,18px)}}
+  .contact-card h3{font-size:24px;font-weight:800;position:relative}
+  .contact-card p{color:#c7cedb;margin-top:6px;position:relative}
+  .contact-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:24px;position:relative}
+  .btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:9px;padding:13px 24px;border-radius:13px;
+    font-weight:700;font-size:15px;text-decoration:none;transition:transform .15s ease-out,box-shadow .25s;will-change:transform}
+  .btn::after{content:"";position:absolute;top:0;left:-130%;width:55%;height:100%;
+    background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg)}
+  .btn:hover::after{animation:btnSweep .8s forwards}
+  @keyframes btnSweep{to{left:170%}}
+  .btn-red{background:linear-gradient(135deg,var(--red),var(--red-dark));color:#fff;
+    box-shadow:0 10px 24px -8px rgba(220,38,38,.6);animation:redPulse 2.6s ease-in-out infinite}
+  @keyframes redPulse{0%,100%{box-shadow:0 10px 24px -8px rgba(220,38,38,.55)}50%{box-shadow:0 10px 30px -6px rgba(220,38,38,.9)}}
+  .btn-wa{background:#25D366;color:#0b3d1f}
+  .btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2)}
+
+  /* ---------- STICKY RAIL ---------- */
+  .rail{position:fixed;right:20px;bottom:24px;display:flex;flex-direction:column;gap:12px;z-index:50}
+  .rail a{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    color:#fff;box-shadow:0 8px 22px -6px rgba(10,15,30,.4);transition:transform .25s;position:relative}
+  .rail a::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid currentColor;opacity:0;animation:ring 2.8s ease-out infinite}
+  .rail .call{background:linear-gradient(135deg,var(--red),var(--red-dark))}
+  .rail .wa{background:#25D366}.rail .wa::before{animation-delay:.9s}
+  .rail .map{background:var(--navy)}.rail .map::before{animation-delay:1.8s}
+  @keyframes ring{0%{opacity:.55;transform:scale(1)}80%,100%{opacity:0;transform:scale(1.55)}}
+  .rail a:hover{transform:scale(1.12)}
+  .rail a .tip{position:absolute;right:64px;top:50%;transform:translateY(-50%);
+    background:var(--navy);color:#fff;font-size:12px;font-weight:600;padding:6px 11px;border-radius:8px;
+    white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s}
+  .rail a:hover .tip{opacity:1}
+  @media(max-width:760px){.rail a{width:48px;height:48px}.a-inner{padding-left:22px}}
+  .note{max-width:920px;margin:0 auto 40px;padding:14px 20px;font-size:12.5px;color:var(--text-light);
+    text-align:center;border-top:1px dashed var(--border)}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+    .item{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<header class="hero">
+  <div class="aurora"><b class="b1"></b><b class="b2"></b><b class="b3"></b></div>
+  <div class="mesh"></div>
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="dot"></span> Pathankot's Trusted Mobile Store Since 1992</span>
+      <h1>Frequently Asked <span class="accent">Questions</span></h1>
+      <p>Everything you need to know about Nazakat Telecom, Pathankot's most trusted mobile accessories store since 1992.</p>
+      <div class="trust-strip">
+        <div class="trust-chip" style="border-width: 2px 1px 1px; border-style: solid; padding: 12px 22px 12px 18px">Trusted Since <span class="num" data-target="1992" data-plain="1" style="color: rgb(255, 28, 28); font-weight: 800; font-size: 26px; line-height: 1.55; letter-spacing: 2px; width: 51px; opacity: 1; padding: 2px; border-width: 1px; border-style: solid; border-radius: 5px; border-color: rgb(255, 255, 255); margin: 1px; height: 42px">1992</span></div>
+        <div class="trust-chip"><span class="num" data-target="4.6" data-dec="1">4.6</span><span class="star">★</span> Google · <span data-target="308">308</span> reviews</div>
+        <div class="trust-chip"><span class="num" data-target="4.9" data-dec="1">4.9</span><span class="star">★</span> JustDial · <span data-target="516">516</span> ratings</div>
+      </div>
+    </div>
+
+    <div class="scene" id="scene">
+      <div class="stage" id="stage">
+        <div class="glow-ring"></div>
+        <div class="float-card fc-rating"><span class="ico">★</span><span>4.6 / 5<span class="fc-small">308 Google reviews</span></span></div>
+        <div class="float-card fc-genuine"><span class="ico">✓</span><span>100% Genuine<span class="fc-small">Authorised dealer</span></span></div>
+        <div class="float-card fc-delivery"><span class="ico">🚚</span><span>Free Delivery<span class="fc-small">Across Pathankot</span></span></div>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="scr-pad">
+              <div class="scr-logo">N</div>
+              <div class="scr-name">Nazakat Telecom</div>
+              <div class="scr-sub">Since 1992</div>
+              <div class="scr-bars">
+                <div class="scr-bar"><i style="--w:88%"></i></div>
+                <div class="scr-bar"><i style="--w:70%"></i></div>
+                <div class="scr-bar"><i style="--w:80%"></i></div>
+              </div>
+              <div class="scr-grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+            <div class="glare"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <div class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="text" placeholder="Search questions… e.g. repair, delivery, second-hand">
+      <span class="count" id="count">11 questions</span>
+    </div>
+  </div>
+
+  <div class="faqs" id="faqs">
+
+    <div class="item"><button class="q"><span class="ic">📍</span><span class="txt">Where is Nazakat Telecom located?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">Nazakat Telecom is located at Mamun Defence Road, opposite Gurudwara Sahib, near TCP Gate, Mamun Cantt, Pathankot, Punjab 145001. We are 8 minutes by car from Pathankot city centre with ample parking available.</div></div></div>
+
+    <div class="item"><button class="q"><span class="ic">🕙</span><span class="txt">What are Nazakat Telecom's opening hours?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">We are open every day including Sundays. Monday to Sunday: 10:00 AM to 8:00 PM. Walk-ins are always welcome. No appointment needed.</div></div></div>
+
+    <div class="item"><button class="q"><span class="ic">🛍️</span><span class="txt">What products does Nazakat Telecom sell?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">We sell smartphones (new and second-hand), power banks, wireless earbuds, Bluetooth speakers, keyboards, mouse, chargers, cables, smart watches, and all mobile accessories. We stock top brands including Ambrane, iGear, boAt, Samsung, Apple, Oppo, Vivo, Redmi, Realme and Many More.</div></div></div>
+
+    <div class="item"><button class="q"><span class="ic">📱</span><span class="txt">Does Nazakat Telecom buy and sell second-hand phones?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">Yes. We buy and sell certified pre-owned and refurbished smartphones. Visit our store in Mamun Cantt for the best price on your old phone or to browse our second-hand smartphone collection.</div></div></div>
+
+    <div class="item"><button class="q"><span class="ic">🔧</span><span class="txt">Does Nazakat Telecom offer mobile repair services?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">Yes. Our trained technicians handle screen replacements, battery replacements, charging port repairs, software issues and more. Walk in anytime between 10am and 8pm for a quick repair assessment. We Also offer Puckup and drop facility for our clients.</div></div></div>
+
+    <div class="item"><button class="q"><span class="ic">✅</span><span class="txt">Are the products at Nazakat Telecom genuine and original?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">Yes. Every product we sell is 100% genuine and with bill. We are an authorised dealer for all the companies we deal in. We never sell duplicate or fake accessories. This is the trust we have maintained since 1992.</div></div></div>
+
+    <div class="item"><button class="q"><span class="ic">🚚</span><span class="txt">Does Nazakat Telecom offer home delivery in Pathankot?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">Yes! We offer free home delivery in Pathankot and nearby areas. For orders across the rest of India, a nominal shipping charge applies. Cash on delivery is also available. Orders are dispatched within 24 hours.</div></div></div>
+
+    <div class="item"><button class="q"><span class="ic">📦</span><span class="txt">Does Nazakat Telecom sell wholesale or bulk orders?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">Yes. We are one of Pathankot's leading wholesalers of mobile accessories, power banks, data cables and Bluetooth accessories. Call <a href="tel:9988969696">9988969696</a> or WhatsApp <a href="https://wa.me/918196848484">8196848484</a> for bulk pricing.</div></div></div>
+
+    <div class="item"><button class="q"><span class="ic">💳</span><span class="txt">What payment methods does Nazakat Telecom accept?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">We accept cash, UPI, all major debit and credit cards, and online payments. Cash on delivery is available on our website for orders across India.</div></div></div>
+
+    <div class="item"><button class="q"><span class="ic">💬</span><span class="txt">How can I contact Nazakat Telecom on WhatsApp?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">WhatsApp us directly on <a href="https://wa.me/918196848484">8196848484</a>. We reply within 30 minutes during store hours. You can also browse our product catalog and place orders directly on WhatsApp.</div></div></div>
+
+    <div class="item"><button class="q"><span class="ic">⭐</span><span class="txt">What is Nazakat Telecom's Google rating?</span><svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="a"><div class="a-inner">Nazakat Telecom has a 4.6 star rating on Google with 308 verified customer reviews, and a 4.9 star rating on JustDial with 516 customer ratings — making us Pathankot's highest rated mobile accessories store.</div></div></div>
+
+  </div>
+  <div class="no-results" id="noResults">No questions match your search. Try another keyword.</div>
+
+  <div class="contact-card">
+    <h3>Have more questions?</h3>
+    <p>We're here to help — reach us anytime during store hours.</p>
+    <div class="contact-actions">
+      <a class="btn btn-red mag" href="tel:9988969696">📞 Call 9988969696</a>
+      <a class="btn btn-wa mag" href="https://wa.me/918196848484">📱 WhatsApp 8196848484</a>
+      <a class="btn btn-ghost mag" href="https://nazakattelecom.shop">🌐 Shop Online</a>
+      <a class="btn btn-ghost mag" href="https://maps.google.com/?q=Nazakat+Telecom+Pathankot">📍 Mamun Cantt, Pathankot</a>
+    </div>
+  </div>
+</div>
+
+<!-- Sticky quick-contact rail -->
+<div class="rail">
+  <a class="call" href="tel:9988969696"><span class="tip">Call us</span><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .8-.3 1l-2.2 2.2z"/></svg></a>
+  <a class="wa" href="https://wa.me/918196848484"><span class="tip">WhatsApp</span><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.8-.6-3.1-1.3-5.1-4.5-5.3-4.7-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.1.1.3 0 .5l-.4.6-.3.3c-.2.2-.3.4-.2.6.2.4.9 1.4 1.9 2.3 1.3 1.1 2.3 1.5 2.6 1.6.2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.6-.1l2 .9c.2.1.4.2.4.4.1.3.1.9-.1 1.4z"/></svg></a>
+  <a class="map" href="https://maps.google.com/?q=Nazakat+Telecom+Pathankot"><span class="tip">Visit store</span><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg></a>
+</div>
+
+<div class="note">PREVIEW MOCKUP V2 — not live. Content is 100% identical to the current page. Final version will be staged on a theme duplicate after your approval.</div>
+
+<script>
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Accordion ---- */
+  document.querySelectorAll('.item').forEach(function(item){
+    var a=item.querySelector('.a');
+    item.querySelector('.q').addEventListener('click',function(){
+      var open=item.classList.contains('open');
+      document.querySelectorAll('.item.open').forEach(function(o){o.classList.remove('open');o.querySelector('.a').style.maxHeight=null});
+      if(!open){item.classList.add('open');a.style.maxHeight=a.scrollHeight+'px';}
+    });
+  });
+
+  /* ---- Scroll-reveal ---- */
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.style.transitionDelay=(e.target.dataset.d||0)+'ms';e.target.classList.add('reveal');io.unobserve(e.target);}
+    });
+  },{threshold:.15});
+  document.querySelectorAll('.item').forEach(function(it,i){it.dataset.d=(i%4)*70;io.observe(it);});
+
+  /* ---- Search ---- */
+  var q=document.getElementById('q'),count=document.getElementById('count'),nr=document.getElementById('noResults');
+  q.addEventListener('input',function(){
+    var t=q.value.toLowerCase().trim(),shown=0;
+    document.querySelectorAll('.item').forEach(function(it){
+      var match=it.textContent.toLowerCase().indexOf(t)>-1;
+      it.style.display=match?'':'none';
+      if(match){shown++;it.classList.add('reveal');}
+      if(!match){it.classList.remove('open');var a=it.querySelector('.a');if(a)a.style.maxHeight=null;}
+    });
+    count.textContent=shown+(shown===1?' question':' questions');
+    nr.style.display=shown===0?'block':'none';
+  });
+
+  /* ---- Scroll progress bar ---- */
+  var prog=document.getElementById('progress');
+  function onScroll(){
+    var h=document.documentElement,sc=h.scrollTop||document.body.scrollTop,
+        max=(h.scrollHeight-h.clientHeight)||1;
+    prog.style.width=(sc/max*100)+'%';
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  if(!reduce){
+    var fineHover = window.matchMedia('(min-width:901px) and (hover:hover) and (pointer:fine)').matches;
+    if(fineHover){
+    /* ---- 3D phone scene: cursor parallax ---- */
+    var scene=document.getElementById('scene'),stage=document.getElementById('stage');
+    if(scene){
+      scene.addEventListener('pointermove',function(e){
+        var r=scene.getBoundingClientRect();
+        var px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+        stage.style.transform='rotateY('+(px*16)+'deg) rotateX('+(-py*14)+'deg)';
+      });
+      scene.addEventListener('pointerleave',function(){stage.style.transform='';});
+    }
+
+    /* ---- FAQ card 3D tilt + spotlight ---- */
+    document.querySelectorAll('.item').forEach(function(it){
+      it.addEventListener('pointermove',function(e){
+        var r=it.getBoundingClientRect();
+        var px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
+        it.style.setProperty('--mx',(e.clientX-r.left)+'px');
+        it.style.setProperty('--my',(e.clientY-r.top)+'px');
+        if(!it.classList.contains('open')){
+          it.style.transform='translateY(-3px) rotateX('+(-py*4)+'deg) rotateY('+(px*5)+'deg)';
+        }
+      });
+      it.addEventListener('pointerleave',function(){
+        if(!it.classList.contains('open')) it.style.transform='';
+      });
+    });
+
+    /* ---- Magnetic buttons ---- */
+    document.querySelectorAll('.mag').forEach(function(b){
+      b.addEventListener('pointermove',function(e){
+        var r=b.getBoundingClientRect();
+        var x=(e.clientX-r.left-r.width/2)*.3, y=(e.clientY-r.top-r.height/2)*.4;
+        b.style.transform='translate('+x+'px,'+y+'px) translateY(-3px)';
+      });
+      b.addEventListener('pointerleave',function(){b.style.transform='';});
+    });
+    }
+
+    /* ---- Count-up stats ---- */
+    var statIO=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        var el=e.target;statIO.unobserve(el);
+        if(el.dataset.plain){return;} // 1992 stays as-is
+        var target=parseFloat(el.dataset.target),dec=el.dataset.dec?parseInt(el.dataset.dec):0,
+            start=performance.now(),dur=1100;
+        function step(t){
+          var p=Math.min((t-start)/dur,1),ease=1-Math.pow(1-p,3),val=target*ease;
+          el.textContent=dec?val.toFixed(dec):Math.round(val);
+          if(p<1)requestAnimationFrame(step);else el.textContent=dec?target.toFixed(dec):target;
+        }
+        requestAnimationFrame(step);
+      });
+    },{threshold:.6});
+    document.querySelectorAll('[data-target]').forEach(function(el){statIO.observe(el);});
+  }
+</script>
+</body>
+</html>
