@@ -127,6 +127,12 @@
       "skillPath": "skills/image/SKILL.md",
       "computedHash": "e4b5511566d08a79f6f5fd26319eaaac0e18e1e238848c5a3fb2e9839e306ebe"
     },
+    "impeccable": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "skillPath": ".claude/skills/impeccable/SKILL.md",
+      "computedHash": "b5c5c3592237f1305f8076f7679d56e6d3359e5c4e13144a3ba2242d25ffa477"
+    },
     "launch": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
