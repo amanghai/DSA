@@ -1,0 +1,272 @@
+---
+title: 'Landing Page Key Point'
+date: '2024-04-04'
+lastmod: '2025-06-01'
+tags:
+  - 'guide'
+  - 'components'
+  - 'documentation'
+  - 'landing-page'
+  - 'key-points'
+  - 'bullet-points'
+  - 'ui-library'
+  - 'react'
+  - 'nextjs'
+  - 'tailwind-css'
+  - 'shadcn-ui'
+  - 'shadcn-ui-bullet-points'
+  - 'shadcn-ui-key-points'
+
+summary: 'A component meant to be used in the landing page. This component displays bullet points (key features) in the description of LandingProductFeature.'
+layout: PostHub
+
+showThemeSelector: true
+showInstallNotice: true
+
+canonicalUrl: 'https://shipixen.com/boilerplate-documentation/landing-page-components/feature-key-points'
+---
+
+Use this to display a bullet point in the description of a [Product Feature](/boilerplate-documentation/landing-page-components/product-feature). This component can clarify the key features of the product or service, especially when the description is long and detailed.
+
+Can also be used as a standalone component.
+
+<ComponentExample
+  previewComponent={
+    <div className="p-6">
+      <LandingProductFeatureKeyPoints
+        keyPoints={[
+          {
+            title: 'Intelligent Assistance',
+            description:
+              'Receive personalized recommendations and insights tailored to your workflow.',
+          },
+          {
+            title: 'Seamless Collaboration',
+            description:
+              'Easily collaborate with team members and clients in real-time.',
+          },
+          {
+            title: 'Advanced Customization',
+            description:
+              'Tailor your app to fit your unique requirements with extensive customization.',
+          },
+        ]}
+      />
+    </div>
+  }
+>
+
+```jsx
+import { LandingProductFeatureKeyPoints } from '@/components/landing/LandingProductFeatureKeyPoints';
+
+<LandingProductFeatureKeyPoints
+  keyPoints={[
+    {
+      title: 'Intelligent Assistance',
+      description:
+        'Receive personalized recommendations and insights tailored to your workflow.',
+    },
+    {
+      title: 'Seamless Collaboration',
+      description:
+        'Easily collaborate with team members and clients in real-time.',
+    },
+    {
+      title: 'Advanced Customization',
+      description:
+        'Tailor your app to fit your unique requirements with extensive customization.',
+    },
+  ]}
+/>;
+```
+
+</ComponentExample>
+
+## Usage
+
+```jsx
+import { LandingProductFeatureKeyPoints } from '@/components/landing/LandingProductFeatureKeyPoints';
+```
+
+```jsx
+<LandingProductFeatureKeyPoints
+  keyPoints={[
+    {
+      title: 'Intelligent Assistance',
+      description:
+        'Receive personalized recommendations and insights tailored to your workflow.',
+    },
+    {
+      title: 'Seamless Collaboration',
+      description:
+        'Easily collaborate with team members and clients in real-time.',
+    },
+    {
+      title: 'Advanced Customization',
+      description:
+        'Tailor your app to fit your unique requirements with extensive customization.',
+    },
+  ]}
+/>
+```
+
+## Examples
+
+### With inline description style
+
+<ComponentExample
+  previewComponent={
+    <div className="p-6">
+      <LandingProductFeatureKeyPoints
+        keyPoints={[
+          {
+            title: 'Intelligent Assistance',
+            description:
+              'Receive personalized recommendations and insights tailored to your workflow.',
+          },
+          {
+            title: 'Seamless Collaboration',
+            description:
+              'Easily collaborate with team members and clients in real-time.',
+          },
+          {
+            title: 'Advanced Customization',
+            description:
+              'Tailor your app to fit your unique requirements with extensive customization.',
+          },
+        ]}
+        descriptionStyle="inline"
+      />
+    </div>
+  }
+>
+
+```jsx
+import { LandingProductFeatureKeyPoints } from '@/components/landing/LandingProductFeatureKeyPoints';
+
+<LandingProductFeatureKeyPoints
+  keyPoints={[
+    {
+      title: 'Intelligent Assistance',
+      description:
+        'Receive personalized recommendations and insights tailored to your workflow.',
+    },
+    {
+      title: 'Seamless Collaboration',
+      description:
+        'Easily collaborate with team members and clients in real-time.',
+    },
+    {
+      title: 'Advanced Customization',
+      description:
+        'Tailor your app to fit your unique requirements with extensive customization.',
+    },
+  ]}
+/>;
+```
+
+</ComponentExample>
+
+### With Cta Section
+
+<ComponentExample
+  previewComponent={
+    <LandingPrimaryImageCtaSection
+      title="Want more?"
+      descriptionComponent={
+        <LandingProductFeatureKeyPoints
+          keyPoints={[
+            {
+              title: 'Intelligent Assistance',
+              description:
+                'Receive personalized recommendations and insights tailored to your workflow.',
+            },
+            {
+              title: 'Seamless Collaboration',
+              description:
+                'Easily collaborate with team members and clients in real-time.',
+            },
+            {
+              title: 'Advanced Customization',
+              description:
+                'Tailor your app to fit your unique requirements with extensive customization.',
+            },
+          ]}
+        />
+      }
+      imageSrc="/static/images/shipixen/product/1.webp"
+      imageAlt="Sample image"
+    >
+      <Button size="xl" asChild>
+        <a href="#">
+          Buy now
+        </a>
+      </Button>
+    </LandingPrimaryImageCtaSection>
+  }
+>
+
+```jsx
+import { Button } from '@/components/shared/ui/button';
+import { LandingPrimaryImageCtaSection } from '@/components/landing/cta/LandingPrimaryCta';
+import { LandingProductFeatureKeyPoints } from '@/components/landing/LandingProductFeatureKeyPoints';
+
+<LandingPrimaryImageCtaSection
+  title="Want more?"
+  descriptionComponent={
+    <LandingProductFeatureKeyPoints
+      keyPoints={[
+        {
+          title: 'Intelligent Assistance',
+          description:
+            'Receive personalized recommendations and insights tailored to your workflow.',
+        },
+        {
+          title: 'Seamless Collaboration',
+          description:
+            'Easily collaborate with team members and clients in real-time.',
+        },
+        {
+          title: 'Advanced Customization',
+          description:
+            'Tailor your app to fit your unique requirements with extensive customization.',
+        },
+      ]}
+    />
+  }
+  imageSrc="/static/images/shipixen/product/1.webp"
+  imageAlt="Sample image"
+>
+  <Button size="xl" asChild>
+    <a href="#">Buy now</a>
+  </Button>
+</LandingPrimaryImageCtaSection>;
+```
+
+</ComponentExample>
+
+## API Reference
+
+| Prop Name                                                                                                               | Prop Type                   | Required | Default     |
+| ----------------------------------------------------------------------------------------------------------------------- | --------------------------- | -------- | ----------- |
+| **keyPoints** <Tippy>Array of objects each containing a title and description to be displayed as bullet points.</Tippy> | `KeyPoint[]`                | Yes      | -           |
+| **variant** <Tippy>Styling variant for the bullet points, determining the icon and text color.</Tippy>                  | `'primary'` ǀ `'secondary'` | No       | `'primary'` |
+| **icon** <Tippy>Custom icon to be displayed instead of the default checkmark. NB: if you use a custom icon, iconClassName will be ignored.</Tippy>                                  | `React.ReactNode` ǀ `LucideIcon`          | No       | -           |
+| **descriptionStyle** <Tippy>Determines if the description should be displayed inline or as a block.</Tippy>             | `'inline'` ǀ `'block'`                  | No       | `'block'`   |
+| **iconClassName** <Tippy>Custom class name for the icon, use to override color and size etc. Only applies if no custom icon is provided.</Tippy>                                                      | `string`                        | No       | -           |
+
+```ts
+export interface KeyPoint {
+  title: string;
+  description: string;
+}
+```
+
+## More Examples
+
+For more even more examples, see our <a href="/demo/landing-page-component-examples" className="fancy-link">Landing Page Component Examples</a> page or see complete landing page examples by <a href="/demo/landing-page-templates" className="fancy-link">Exploring Our Landing Page Templates</a>.
+
+Also see:
+
+- [LandingProductFeature](/boilerplate-documentation/landing-page-components/product-feature)
+- [LandingProblemSolution](/boilerplate-documentation/landing-page-components/problem-solution)
