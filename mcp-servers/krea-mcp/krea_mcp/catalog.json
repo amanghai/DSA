@@ -1,0 +1,3585 @@
+{
+  "enhance": {
+    "topaz/bloom-enhance": {
+      "description": "Creative upscaler that adds new details. Max 10K.",
+      "endpoint": "/generate/enhance/topaz/bloom-enhance",
+      "model": "bloom-enhance",
+      "properties": {
+        "color_preservation": {
+          "default": false,
+          "type": "boolean"
+        },
+        "creativity": {
+          "default": 3,
+          "maximum": 9,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "crop_to_fill": {
+          "default": false,
+          "type": "boolean"
+        },
+        "face_preservation": {
+          "default": false,
+          "type": "boolean"
+        },
+        "height": {
+          "maximum": 10000,
+          "minimum": 1,
+          "type": "number"
+        },
+        "image_scaling_factor": {
+          "default": 1,
+          "maximum": 32,
+          "minimum": 1,
+          "type": "number"
+        },
+        "image_url": {
+          "format": "uri",
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "output_format": {
+          "default": "jpg",
+          "enum": [
+            "png",
+            "jpg",
+            "webp"
+          ],
+          "type": "string"
+        },
+        "prompt": {
+          "default": "",
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "upscaling_activated": {
+          "default": false,
+          "type": "boolean"
+        },
+        "width": {
+          "maximum": 10000,
+          "minimum": 1,
+          "type": "number"
+        }
+      },
+      "provider": "topaz",
+      "required": [
+        "width",
+        "height",
+        "image_url",
+        "model"
+      ],
+      "summary": "Topaz Bloom",
+      "supports_webhook": true
+    },
+    "topaz/generative-enhance": {
+      "description": "Most powerful creative enhancer. Max 16K.",
+      "endpoint": "/generate/enhance/topaz/generative-enhance",
+      "model": "generative-enhance",
+      "properties": {
+        "creativity": {
+          "default": 3,
+          "maximum": 6,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "crop_to_fill": {
+          "default": false,
+          "type": "boolean"
+        },
+        "denoise": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "detail": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "face_enhancement": {
+          "default": false,
+          "type": "boolean"
+        },
+        "face_enhancement_creativity": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "face_enhancement_strength": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "height": {
+          "maximum": 32000,
+          "minimum": 1,
+          "type": "number"
+        },
+        "image_scaling_factor": {
+          "default": 1,
+          "maximum": 32,
+          "minimum": 1,
+          "type": "number"
+        },
+        "image_url": {
+          "format": "uri",
+          "type": "string"
+        },
+        "model": {
+          "default": "Redefine",
+          "enum": [
+            "Redefine",
+            "Recovery",
+            "Recovery V2",
+            "Reimagine"
+          ],
+          "type": "string"
+        },
+        "output_format": {
+          "default": "jpg",
+          "enum": [
+            "png",
+            "jpg",
+            "webp"
+          ],
+          "type": "string"
+        },
+        "prompt": {
+          "default": "",
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "sharpen": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "subject_detection": {
+          "default": "All",
+          "enum": [
+            "All",
+            "Foreground",
+            "Background"
+          ],
+          "type": "string"
+        },
+        "texture": {
+          "default": 3,
+          "maximum": 5,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "upscaling_activated": {
+          "default": false,
+          "type": "boolean"
+        },
+        "width": {
+          "maximum": 32000,
+          "minimum": 1,
+          "type": "number"
+        }
+      },
+      "provider": "topaz",
+      "required": [
+        "width",
+        "height",
+        "image_url"
+      ],
+      "summary": "Topaz Generative",
+      "supports_webhook": true
+    },
+    "topaz/standard-enhance": {
+      "description": "Powerful faithful upscaler. Up to 22K resolution. Best for photos.",
+      "endpoint": "/generate/enhance/topaz/standard-enhance",
+      "model": "standard-enhance",
+      "properties": {
+        "crop_to_fill": {
+          "default": false,
+          "type": "boolean"
+        },
+        "denoise": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "face_enhancement": {
+          "default": false,
+          "type": "boolean"
+        },
+        "face_enhancement_creativity": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "face_enhancement_strength": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "fix_compression": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "height": {
+          "maximum": 32000,
+          "minimum": 1,
+          "type": "number"
+        },
+        "image_scaling_factor": {
+          "default": 1,
+          "maximum": 32,
+          "minimum": 1,
+          "type": "number"
+        },
+        "image_url": {
+          "format": "uri",
+          "type": "string"
+        },
+        "model": {
+          "enum": [
+            "Standard V2",
+            "Low Resolution V2",
+            "CGI",
+            "High Fidelity V2",
+            "Text Refine"
+          ],
+          "type": "string"
+        },
+        "output_format": {
+          "default": "jpg",
+          "enum": [
+            "png",
+            "jpg",
+            "webp"
+          ],
+          "type": "string"
+        },
+        "prompt": {
+          "default": "",
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "sharpen": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "strength": {
+          "default": 0.5,
+          "maximum": 1,
+          "minimum": 0.01,
+          "type": "number"
+        },
+        "subject_detection": {
+          "default": "All",
+          "enum": [
+            "All",
+            "Foreground",
+            "Background"
+          ],
+          "type": "string"
+        },
+        "upscaling_activated": {
+          "default": false,
+          "type": "boolean"
+        },
+        "width": {
+          "maximum": 32000,
+          "minimum": 1,
+          "type": "number"
+        }
+      },
+      "provider": "topaz",
+      "required": [
+        "width",
+        "height",
+        "image_url",
+        "model"
+      ],
+      "summary": "Topaz",
+      "supports_webhook": true
+    }
+  },
+  "image": {
+    "bfl/flux-1-dev": {
+      "description": "Fast model. Best for LoRAs.",
+      "endpoint": "/generate/image/bfl/flux-1-dev",
+      "model": "flux-1-dev",
+      "properties": {
+        "guidance_scale_flux": {
+          "default": 3,
+          "maximum": 24,
+          "minimum": 0,
+          "type": "number"
+        },
+        "height": {
+          "default": 1024,
+          "maximum": 2368,
+          "minimum": 512,
+          "type": "number"
+        },
+        "image_style_references": {
+          "description": "Style references to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "image_url": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prompt": {
+          "maxLength": 1800,
+          "type": "string"
+        },
+        "seed": {
+          "default": 3317551338,
+          "type": "number"
+        },
+        "steps": {
+          "default": 25,
+          "maximum": 100,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "strength": {
+          "default": 1,
+          "type": "number"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "styles": {
+          "description": "Styles (typically LoRAs) to use for the generation",
+          "items": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 2368,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "bfl",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Flux",
+      "supports_webhook": true
+    },
+    "bfl/flux-1-kontext-dev": {
+      "description": "Frontier model designed for image editing, optimized for Krea",
+      "endpoint": "/generate/image/bfl/flux-1-kontext-dev",
+      "model": "flux-1-kontext-dev",
+      "properties": {
+        "guidance_scale_flux": {
+          "default": 3,
+          "maximum": 24,
+          "minimum": 0,
+          "type": "number"
+        },
+        "height": {
+          "default": 1024,
+          "maximum": 2368,
+          "minimum": 512,
+          "type": "number"
+        },
+        "image_url": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prompt": {
+          "maxLength": 1800,
+          "type": "string"
+        },
+        "seed": {
+          "default": 3261419148,
+          "type": "number"
+        },
+        "steps": {
+          "default": 25,
+          "maximum": 100,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "strength": {
+          "default": 1,
+          "type": "number"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "maxItems": 1,
+          "type": "array"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 2368,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "bfl",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Flux Kontext",
+      "supports_webhook": true
+    },
+    "bfl/flux-1.1-pro": {
+      "description": "Advanced yet efficent model from BFL.",
+      "endpoint": "/generate/image/bfl/flux-1.1-pro",
+      "model": "flux-1.1-pro",
+      "properties": {
+        "height": {
+          "maximum": 1440,
+          "minimum": 256,
+          "type": "number"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "width": {
+          "maximum": 1440,
+          "minimum": 256,
+          "type": "number"
+        }
+      },
+      "provider": "bfl",
+      "required": [
+        "prompt",
+        "width",
+        "height"
+      ],
+      "summary": "Flux 1.1 Pro",
+      "supports_webhook": true
+    },
+    "bfl/flux-1.1-pro-ultra": {
+      "description": "BFL's highest quality text to image model.",
+      "endpoint": "/generate/image/bfl/flux-1.1-pro-ultra",
+      "model": "flux-1.1-pro-ultra",
+      "properties": {
+        "height": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "raw": {
+          "default": true,
+          "type": "boolean"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "bfl",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Flux 1.1 Pro Ultra",
+      "supports_webhook": true
+    },
+    "bytedance/seededit": {
+      "description": "New frontier model designed for image editing",
+      "endpoint": "/generate/image/bytedance/seededit",
+      "model": "seededit",
+      "properties": {
+        "image_url": {
+          "format": "uri",
+          "type": "string"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        }
+      },
+      "provider": "bytedance",
+      "required": [
+        "prompt",
+        "image_url"
+      ],
+      "summary": "SeedEdit",
+      "supports_webhook": true
+    },
+    "bytedance/seedream-4": {
+      "description": "New high quality model for photorealism and text rendering",
+      "endpoint": "/generate/image/bytedance/seedream-4",
+      "model": "seedream-4",
+      "properties": {
+        "height": {
+          "maximum": 4096,
+          "type": "number"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "width": {
+          "maximum": 4096,
+          "type": "number"
+        }
+      },
+      "provider": "bytedance",
+      "required": [
+        "prompt",
+        "width",
+        "height"
+      ],
+      "summary": "Seedream 4",
+      "supports_webhook": true
+    },
+    "bytedance/seedream-5-lite": {
+      "description": "Medium quality model with reasoning and web search.",
+      "endpoint": "/generate/image/bytedance/seedream-5-lite",
+      "model": "seedream-5-lite",
+      "properties": {
+        "height": {
+          "maximum": 4096,
+          "type": "number"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "maxItems": 14,
+          "type": "array"
+        },
+        "width": {
+          "maximum": 4096,
+          "type": "number"
+        }
+      },
+      "provider": "bytedance",
+      "required": [
+        "prompt",
+        "width",
+        "height"
+      ],
+      "summary": "Seedream 5 Lite",
+      "supports_webhook": true
+    },
+    "google/imagen-3": {
+      "description": "Google's previous generation image model.",
+      "endpoint": "/generate/image/google/imagen-3",
+      "model": "imagen-3",
+      "properties": {
+        "height": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Imagen 3",
+      "supports_webhook": true
+    },
+    "google/imagen-4": {
+      "description": "Google's current generation image model",
+      "endpoint": "/generate/image/google/imagen-4",
+      "model": "imagen-4",
+      "properties": {
+        "height": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Imagen 4",
+      "supports_webhook": true
+    },
+    "google/imagen-4-fast": {
+      "description": "Google's fastest image model",
+      "endpoint": "/generate/image/google/imagen-4-fast",
+      "model": "imagen-4-fast",
+      "properties": {
+        "height": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Imagen 4 Fast",
+      "supports_webhook": true
+    },
+    "google/imagen-4-ultra": {
+      "description": "Google's best image model",
+      "endpoint": "/generate/image/google/imagen-4-ultra",
+      "model": "imagen-4-ultra",
+      "properties": {
+        "height": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Imagen 4 Ultra",
+      "supports_webhook": true
+    },
+    "google/nano-banana": {
+      "description": "Most versatile intelligent model.",
+      "endpoint": "/generate/image/google/nano-banana",
+      "model": "nano-banana",
+      "properties": {
+        "aspect_ratio": {
+          "enum": [
+            "21:9",
+            "1:1",
+            "4:3",
+            "3:2",
+            "2:3",
+            "5:4",
+            "4:5",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "height": {
+          "description": "Height of the generated image.",
+          "type": "number"
+        },
+        "image_urls": {
+          "description": "Image prompts to use for the generation. If provided, style images are ignored.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "width": {
+          "description": "Width of the generated image.",
+          "type": "number"
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Nano Banana",
+      "supports_webhook": true
+    },
+    "google/nano-banana-2": {
+      "description": "Cheaper quality version of Nano Banana.",
+      "endpoint": "/generate/image/google/nano-banana-2",
+      "model": "nano-banana-2",
+      "properties": {
+        "aspect_ratio": {
+          "enum": [
+            "4:1",
+            "21:9",
+            "1:1",
+            "4:3",
+            "3:2",
+            "2:3",
+            "5:4",
+            "4:5",
+            "3:4",
+            "16:9",
+            "9:16",
+            "1:4",
+            "1:8"
+          ],
+          "type": "string"
+        },
+        "height": {
+          "description": "Height of the generated image.",
+          "type": "number"
+        },
+        "image_urls": {
+          "description": "Image prompts to use for the generation. If provided, style images are ignored.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "prompt": {
+          "minLength": 3,
+          "type": "string"
+        },
+        "resolution": {
+          "default": "1K",
+          "enum": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "type": "string"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "width": {
+          "description": "Width of the generated image.",
+          "type": "number"
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Nano Banana 2",
+      "supports_webhook": true
+    },
+    "google/nano-banana-pro": {
+      "description": "World's most intelligent model.",
+      "endpoint": "/generate/image/google/nano-banana-pro",
+      "model": "nano-banana-pro",
+      "properties": {
+        "aspect_ratio": {
+          "enum": [
+            "21:9",
+            "1:1",
+            "4:3",
+            "3:2",
+            "2:3",
+            "5:4",
+            "4:5",
+            "3:4",
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "height": {
+          "description": "Height of the generated image.",
+          "type": "number"
+        },
+        "image_urls": {
+          "description": "Image prompts to use for the generation. If provided, style images are ignored.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "prompt": {
+          "minLength": 3,
+          "type": "string"
+        },
+        "resolution": {
+          "default": "1K",
+          "enum": [
+            "1K",
+            "2K",
+            "4K"
+          ],
+          "type": "string"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "width": {
+          "description": "Width of the generated image.",
+          "type": "number"
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Nano Banana Pro",
+      "supports_webhook": true
+    },
+    "ideogram/ideogram-2-turbo": {
+      "description": "Distilled version of Ideogram 2.0",
+      "endpoint": "/generate/image/ideogram/ideogram-2-turbo",
+      "model": "ideogram-2-turbo",
+      "properties": {
+        "height": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "ideogram",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Ideogram 2.0A Turbo",
+      "supports_webhook": true
+    },
+    "ideogram/ideogram-3": {
+      "description": "Highly aesthetic, general-purpose model.",
+      "endpoint": "/generate/image/ideogram/ideogram-3",
+      "model": "ideogram-3",
+      "properties": {
+        "character_reference_images": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "height": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "ideogram",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Ideogram 3.0",
+      "supports_webhook": true
+    },
+    "luma/uni-1": {
+      "description": "Reasoning image model for prompt-faithful text to image.",
+      "endpoint": "/generate/image/luma/uni-1",
+      "model": "uni-1",
+      "properties": {
+        "height": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        },
+        "mode": {
+          "default": "standard",
+          "enum": [
+            "standard",
+            "max"
+          ],
+          "type": "string"
+        },
+        "output_format": {
+          "enum": [
+            "png",
+            "jpeg",
+            null
+          ],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prompt": {
+          "maxLength": 6000,
+          "minLength": 1,
+          "type": "string"
+        },
+        "style": {
+          "default": "auto",
+          "enum": [
+            "auto",
+            "manga"
+          ],
+          "type": "string"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "maxItems": 9,
+          "type": "array"
+        },
+        "web_search": {
+          "default": false,
+          "type": "boolean"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "luma",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Luma UNI-1",
+      "supports_webhook": true
+    },
+    "openai/gpt-image": {
+      "description": "Original ChatGPT image model.",
+      "endpoint": "/generate/image/openai/gpt-image",
+      "model": "gpt-image",
+      "properties": {
+        "height": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        },
+        "image_urls": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "quality": {
+          "default": "auto",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "auto"
+          ],
+          "type": "string"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "maxItems": 15,
+          "type": "array"
+        },
+        "styles": {
+          "items": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "strength"
+            ],
+            "type": "object"
+          },
+          "maxItems": 5,
+          "type": "array"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "openai",
+      "required": [
+        "prompt"
+      ],
+      "summary": "ChatGPT Image",
+      "supports_webhook": true
+    },
+    "openai/gpt-image-2": {
+      "description": "Smart powerful model for editing.",
+      "endpoint": "/generate/image/openai/gpt-image-2",
+      "model": "gpt-image-2",
+      "properties": {
+        "height": {
+          "type": "number"
+        },
+        "image_urls": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "quality": {
+          "default": "high",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "auto"
+          ],
+          "type": "string"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "maxItems": 10,
+          "type": "array"
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "provider": "openai",
+      "required": [
+        "prompt",
+        "width",
+        "height"
+      ],
+      "summary": "ChatGPT 2",
+      "supports_webhook": true
+    },
+    "qwen/2512": {
+      "description": "Affordable medium quality model.",
+      "endpoint": "/generate/image/qwen/2512",
+      "model": "2512",
+      "properties": {
+        "cfg_scale": {
+          "default": 4,
+          "type": "number"
+        },
+        "height": {
+          "default": 1024,
+          "type": "integer"
+        },
+        "negative_prompt": {
+          "default": "",
+          "type": "string"
+        },
+        "num_inference_steps": {
+          "default": 30,
+          "type": "integer"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "seed": {
+          "type": "number"
+        },
+        "skip_prompt_expansion": {
+          "type": "boolean"
+        },
+        "styles": {
+          "description": "Styles (typically LoRAs) to use for the generation",
+          "items": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "width": {
+          "default": 1024,
+          "type": "integer"
+        }
+      },
+      "provider": "qwen",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Qwen 2512",
+      "supports_webhook": true
+    },
+    "runway/gen-4-image": {
+      "description": "Cinematic image model with references.",
+      "endpoint": "/generate/image/runway/gen-4-image",
+      "model": "gen-4-image",
+      "properties": {
+        "height": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        },
+        "prompt": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        "reference_images": {
+          "items": {
+            "properties": {
+              "tag": {
+                "maxLength": 16,
+                "minLength": 3,
+                "pattern": "^[a-z][a-z0-9_]+$",
+                "type": "string"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "url",
+              "tag"
+            ],
+            "type": "object"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "type": "array"
+        },
+        "seed": {
+          "default": 1337,
+          "type": "number"
+        },
+        "width": {
+          "default": 1024,
+          "maximum": 8192,
+          "minimum": 512,
+          "type": "number"
+        }
+      },
+      "provider": "runway",
+      "required": [
+        "prompt",
+        "reference_images"
+      ],
+      "summary": "Runway Gen-4",
+      "supports_webhook": true
+    },
+    "z-image/z-image": {
+      "description": "Fastest model. Realistic, low diversity.",
+      "endpoint": "/generate/image/z-image/z-image",
+      "model": "z-image",
+      "properties": {
+        "aspect_ratio": {
+          "description": "Aspect ratio. One of: 1:1, 4:3, 2:3, 16:9, 9:16.",
+          "enum": [
+            "1:1",
+            "4:3",
+            "2:3",
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "denoising_strength": {
+          "default": 0.6,
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "image_url": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "resolution": {
+          "description": "Resolution scale. One of: 1K.",
+          "enum": [
+            "1K"
+          ],
+          "type": "string"
+        },
+        "seed": {
+          "type": "number"
+        },
+        "skip_prompt_expansion": {
+          "default": false,
+          "type": "boolean"
+        },
+        "style_images": {
+          "description": "Image prompts to use for the generation",
+          "items": {
+            "properties": {
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "strength"
+            ],
+            "type": "object"
+          },
+          "maxItems": 1,
+          "type": "array"
+        },
+        "styles": {
+          "description": "Styles (typically LoRAs) to use for the generation",
+          "items": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "provider": "z-image",
+      "required": [
+        "prompt",
+        "aspect_ratio",
+        "resolution"
+      ],
+      "summary": "Z Image",
+      "supports_webhook": true
+    }
+  },
+  "video": {
+    "alibaba/wan-2.1": {
+      "description": "Fastest low-quality model with LoRA.",
+      "endpoint": "/generate/video/alibaba/wan-2.1",
+      "model": "wan-2.1",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "end_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "end_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "frame_num": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "styles": {
+          "items": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "provider": "alibaba",
+      "required": [
+        "prompt",
+        "width",
+        "height"
+      ],
+      "summary": "Wan 2.1",
+      "supports_webhook": true
+    },
+    "alibaba/wan-2.2": {
+      "description": "Fast, lower-quality model from Alibaba.",
+      "endpoint": "/generate/video/alibaba/wan-2.2",
+      "model": "wan-2.2",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "end_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "frame_num": {
+          "type": "number"
+        },
+        "guide_scale": {
+          "default": [
+            4,
+            3.5
+          ],
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "height": {
+          "type": "number"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "styles": {
+          "items": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "provider": "alibaba",
+      "required": [
+        "prompt",
+        "width",
+        "height"
+      ],
+      "summary": "Wan 2.2",
+      "supports_webhook": true
+    },
+    "alibaba/wan-2.5": {
+      "description": "Latest medium quality model from Alibaba.",
+      "endpoint": "/generate/video/alibaba/wan-2.5",
+      "model": "wan-2.5",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ],
+          "type": "string"
+        },
+        "audio_url": {
+          "format": "uri",
+          "type": "string"
+        },
+        "duration": {
+          "default": 5,
+          "maximum": 10,
+          "minimum": 5,
+          "type": "number"
+        },
+        "enable_prompt_expansion": {
+          "default": true,
+          "type": "boolean"
+        },
+        "generate_audio": {
+          "default": false,
+          "type": "boolean"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "resolution": {
+          "default": "1080p",
+          "enum": [
+            "480p",
+            "720p",
+            "1080p"
+          ],
+          "type": "string"
+        },
+        "seed": {
+          "type": "number"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "alibaba",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Wan 2.5",
+      "supports_webhook": true
+    },
+    "bytedance/seedance-1.0-pro": {
+      "description": "Fast, high-quality model from ByteDance.",
+      "endpoint": "/generate/video/bytedance/seedance-1.0-pro",
+      "model": "seedance-1.0-pro",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "21:9",
+            "9:21"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5,
+          "type": "number"
+        },
+        "end_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "end_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "reference_images": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4,
+          "type": "array"
+        },
+        "resolution": {
+          "default": "720p",
+          "enum": [
+            "720p",
+            "1080p"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "bytedance",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Seedance Pro",
+      "supports_webhook": true
+    },
+    "bytedance/seedance-1.0-pro-fast": {
+      "description": "Fast and cheap model. Up to 12 seconds.",
+      "endpoint": "/generate/video/bytedance/seedance-1.0-pro-fast",
+      "model": "seedance-1.0-pro-fast",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "21:9",
+            "9:21"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5,
+          "maximum": 12,
+          "minimum": 2,
+          "type": "number"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "resolution": {
+          "default": "720p",
+          "enum": [
+            "480p",
+            "720p",
+            "1080p"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "bytedance",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Seedance Pro Fast",
+      "supports_webhook": true
+    },
+    "google/veo-2": {
+      "description": "Expensive high-quality model from Google.",
+      "endpoint": "/generate/video/google/veo-2",
+      "model": "veo-2",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5,
+          "maximum": 8,
+          "minimum": 5,
+          "type": "number"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Veo 2",
+      "supports_webhook": true
+    },
+    "google/veo-3": {
+      "description": "Older version of Veo 3.1.",
+      "endpoint": "/generate/video/google/veo-3",
+      "model": "veo-3",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 8,
+          "enum": [
+            4,
+            6,
+            8
+          ],
+          "type": "number"
+        },
+        "generate_audio": {
+          "default": false,
+          "type": "boolean"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "resolution": {
+          "default": "720p",
+          "enum": [
+            "720p",
+            "1080p"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Veo 3",
+      "supports_webhook": true
+    },
+    "google/veo-3-fast": {
+      "description": "Faster, affordable Veo 3 with audio.",
+      "endpoint": "/generate/video/google/veo-3-fast",
+      "model": "veo-3-fast",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 8,
+          "enum": [
+            4,
+            6,
+            8
+          ],
+          "type": "number"
+        },
+        "generate_audio": {
+          "default": false,
+          "type": "boolean"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "resolution": {
+          "default": "720p",
+          "enum": [
+            "720p",
+            "1080p"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Veo 3 Fast",
+      "supports_webhook": true
+    },
+    "google/veo-3.1": {
+      "description": "Best video model. Highest quality with audio.",
+      "endpoint": "/generate/video/google/veo-3.1",
+      "model": "veo-3.1",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 8,
+          "enum": [
+            4,
+            6,
+            8
+          ],
+          "type": "number"
+        },
+        "end_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "end_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "generate_audio": {
+          "default": false,
+          "type": "boolean"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "reference_images": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "resolution": {
+          "default": "720p",
+          "enum": [
+            "720p",
+            "1080p",
+            "4K"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Veo 3.1",
+      "supports_webhook": true
+    },
+    "google/veo-3.1-fast": {
+      "description": "Faster, affordable Veo 3.1 with audio.",
+      "endpoint": "/generate/video/google/veo-3.1-fast",
+      "model": "veo-3.1-fast",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 8,
+          "enum": [
+            4,
+            6,
+            8
+          ],
+          "type": "number"
+        },
+        "end_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "end_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "generate_audio": {
+          "default": false,
+          "type": "boolean"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "reference_images": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "resolution": {
+          "default": "720p",
+          "enum": [
+            "720p",
+            "1080p",
+            "4K"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Veo 3.1 Fast",
+      "supports_webhook": true
+    },
+    "google/veo-3.1-lite": {
+      "description": "Faster, affordable Veo 3.1.",
+      "endpoint": "/generate/video/google/veo-3.1-lite",
+      "model": "veo-3.1-lite",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 8,
+          "enum": [
+            4,
+            6,
+            8
+          ],
+          "type": "number"
+        },
+        "end_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "end_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "resolution": {
+          "default": "720p",
+          "enum": [
+            "720p",
+            "1080p"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "google",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Veo 3.1 Lite",
+      "supports_webhook": true
+    },
+    "kling/kling-1": {
+      "description": "High-control model with 10s duration.",
+      "endpoint": "/generate/video/kling/kling-1",
+      "model": "kling-1",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ],
+          "type": "string"
+        },
+        "camera_control": {},
+        "duration": {
+          "default": 5
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "end_video": {
+          "format": "uri",
+          "type": "string"
+        },
+        "mode": {
+          "default": "std",
+          "enum": [
+            "std",
+            "pro"
+          ],
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "kling",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Kling 1.0",
+      "supports_webhook": true
+    },
+    "kling/kling-1.5": {
+      "description": "Slow, quality model for complex scenes.",
+      "endpoint": "/generate/video/kling/kling-1.5",
+      "model": "kling-1.5",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ],
+          "type": "string"
+        },
+        "camera_control": {},
+        "duration": {
+          "default": 5
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "end_video": {
+          "format": "uri",
+          "type": "string"
+        },
+        "mode": {
+          "default": "pro",
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "kling",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Kling 1.5",
+      "supports_webhook": true
+    },
+    "kling/kling-1.6": {
+      "description": "Previous gen model for complex scenes.",
+      "endpoint": "/generate/video/kling/kling-1.6",
+      "model": "kling-1.6",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ],
+          "type": "string"
+        },
+        "camera_control": {},
+        "duration": {
+          "default": 5
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "end_video": {
+          "format": "uri",
+          "type": "string"
+        },
+        "mode": {
+          "default": "std",
+          "enum": [
+            "std",
+            "pro"
+          ],
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "kling",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Kling 1.6",
+      "supports_webhook": true
+    },
+    "kling/kling-2": {
+      "description": "High-quality model with great aesthetics.",
+      "endpoint": "/generate/video/kling/kling-2",
+      "model": "kling-2",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5,
+          "type": "number"
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "mode": {
+          "default": "master",
+          "enum": [
+            "master",
+            "pro"
+          ],
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "kling",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Kling 2.0",
+      "supports_webhook": true
+    },
+    "kling/kling-2.1": {
+      "description": "Frontier model with 1080p resolution.",
+      "endpoint": "/generate/video/kling/kling-2.1",
+      "model": "kling-2.1",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "mode": {
+          "default": "master",
+          "enum": [
+            "master",
+            "pro"
+          ],
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "kling",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Kling 2.1",
+      "supports_webhook": true
+    },
+    "kling/kling-2.5": {
+      "description": "Improved dynamics and style adaptation.",
+      "endpoint": "/generate/video/kling/kling-2.5",
+      "model": "kling-2.5",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "mode": {
+          "default": "pro",
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "kling",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Kling 2.5",
+      "supports_webhook": true
+    },
+    "kling/kling-2.6": {
+      "description": "Frontier model with native audio.",
+      "endpoint": "/generate/video/kling/kling-2.6",
+      "model": "kling-2.6",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "end_video": {
+          "format": "uri",
+          "type": "string"
+        },
+        "generate_audio": {
+          "default": false,
+          "type": "boolean"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "kling",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Kling 2.6",
+      "supports_webhook": true
+    },
+    "kling/kling-3.0": {
+      "description": "Frontier model with audio and up to 15s.",
+      "endpoint": "/generate/video/kling/kling-3.0",
+      "model": "kling-3.0",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5,
+          "maximum": 15,
+          "minimum": 3,
+          "type": "number"
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "generate_audio": {
+          "default": false,
+          "type": "boolean"
+        },
+        "mode": {
+          "default": "std",
+          "enum": [
+            "std",
+            "pro",
+            "4k"
+          ],
+          "type": "string"
+        },
+        "multi_prompt": {
+          "items": {
+            "properties": {
+              "duration": {
+                "maximum": 15,
+                "minimum": 1,
+                "type": "number"
+              },
+              "prompt": {
+                "maxLength": 512,
+                "type": "string"
+              }
+            },
+            "required": [
+              "prompt",
+              "duration"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "prompt": {
+          "maxLength": 2500,
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "kling",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Kling 3.0",
+      "supports_webhook": true
+    },
+    "kling/kling-o1": {
+      "description": "Intelligent model that thinks before generating.",
+      "endpoint": "/generate/video/kling/kling-o1",
+      "model": "kling-o1",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5,
+          "maximum": 10,
+          "minimum": 3,
+          "type": "number"
+        },
+        "element_references": {
+          "items": {
+            "properties": {
+              "images": {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 3,
+                "minItems": 1,
+                "type": "array"
+              },
+              "tag": {
+                "maxLength": 16,
+                "minLength": 3,
+                "pattern": "^[a-z][a-z0-9_-]+$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "images",
+              "tag"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "style_references": {
+          "items": {
+            "properties": {
+              "tag": {
+                "maxLength": 16,
+                "minLength": 3,
+                "pattern": "^[a-z][a-z0-9_-]+$",
+                "type": "string"
+              },
+              "url": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "url",
+              "tag"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "video_reference": {
+          "type": "object"
+        }
+      },
+      "provider": "kling",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Kling o1",
+      "supports_webhook": true
+    },
+    "lightricks/ltx-video-2.3-22b": {
+      "description": "High-quality audio-video model from Lightricks.",
+      "endpoint": "/generate/video/lightricks/ltx-video-2.3-22b",
+      "model": "ltx-video-2.3-22b",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5
+        },
+        "end_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "generate_audio": {
+          "default": true,
+          "type": "boolean"
+        },
+        "has_lora": {
+          "type": "boolean"
+        },
+        "num_frames": {
+          "maximum": 481,
+          "minimum": 9,
+          "type": "integer"
+        },
+        "prompt": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "seed": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "styles": {
+          "items": {
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "strength": {
+                "maximum": 2,
+                "minimum": -2,
+                "type": "number"
+              }
+            },
+            "required": [
+              "id",
+              "strength"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "provider": "lightricks",
+      "required": [
+        "prompt"
+      ],
+      "summary": "LTX-2.3 22B",
+      "supports_webhook": true
+    },
+    "luma/ray-2": {
+      "description": "Older model with natural motion.",
+      "endpoint": "/generate/video/luma/ray-2",
+      "model": "ray-2",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "1:1",
+            "16:9",
+            "9:16",
+            "4:3",
+            "3:4",
+            "21:9",
+            "9:21"
+          ],
+          "type": "string"
+        },
+        "height": {
+          "type": "number"
+        },
+        "loop": {
+          "default": false,
+          "type": "boolean"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "width": {
+          "type": "number"
+        }
+      },
+      "provider": "luma",
+      "required": [
+        "prompt",
+        "width",
+        "height"
+      ],
+      "summary": "Ray 2",
+      "supports_webhook": true
+    },
+    "minimax/hailuo": {
+      "description": "High-quality model with camera control.",
+      "endpoint": "/generate/video/minimax/hailuo",
+      "model": "hailuo",
+      "properties": {
+        "camera_control": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "expand_prompt": {
+          "default": true,
+          "type": "boolean"
+        },
+        "model": {
+          "default": "video-01",
+          "enum": [
+            "video-01",
+            "S2V-01",
+            "T2V-01-Director",
+            "I2V-01-Director"
+          ],
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "subjects": {
+          "items": {
+            "properties": {
+              "image": {
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "type": "array"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "image"
+            ],
+            "type": "object"
+          },
+          "maxItems": 1,
+          "type": "array"
+        }
+      },
+      "provider": "minimax",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Hailuo",
+      "supports_webhook": true
+    },
+    "minimax/hailuo-02": {
+      "description": "Frontier model with dynamic motion.",
+      "endpoint": "/generate/video/minimax/hailuo-02",
+      "model": "hailuo-02",
+      "properties": {
+        "duration": {
+          "default": 6,
+          "maximum": 10,
+          "minimum": 6,
+          "type": "number"
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "expand_prompt": {
+          "default": true,
+          "type": "boolean"
+        },
+        "model": {
+          "default": "MiniMax-Hailuo-02",
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "resolution": {
+          "default": "768p",
+          "enum": [
+            "512p",
+            "768p",
+            "1080p"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "minimax",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Hailuo 02",
+      "supports_webhook": true
+    },
+    "minimax/hailuo-2.3": {
+      "description": "Frontier model with dynamic motion.",
+      "endpoint": "/generate/video/minimax/hailuo-2.3",
+      "model": "hailuo-2.3",
+      "properties": {
+        "duration": {
+          "default": 6
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "expand_prompt": {
+          "default": true,
+          "type": "boolean"
+        },
+        "model": {
+          "default": "MiniMax-Hailuo-2.3",
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "resolution": {
+          "default": "768p",
+          "enum": [
+            "768p",
+            "1080p"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "minimax",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Hailuo 2.3",
+      "supports_webhook": true
+    },
+    "minimax/hailuo-2.3-fast": {
+      "description": "Cheapest medium-quality model.",
+      "endpoint": "/generate/video/minimax/hailuo-2.3-fast",
+      "model": "hailuo-2.3-fast",
+      "properties": {
+        "duration": {
+          "default": 6
+        },
+        "end_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "expand_prompt": {
+          "default": true,
+          "type": "boolean"
+        },
+        "model": {
+          "default": "MiniMax-Hailuo-2.3-fast",
+          "type": "string"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "resolution": {
+          "default": "768p",
+          "enum": [
+            "768p",
+            "1080p"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "minimax",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Hailuo 2.3 Fast",
+      "supports_webhook": true
+    },
+    "runway/aleph": {
+      "description": "Runway's Gen-4 Aleph model for advanced video-to-video transformation",
+      "endpoint": "/generate/video/runway/aleph",
+      "model": "aleph",
+      "properties": {
+        "init_image_url": {
+          "format": "uri",
+          "type": "string"
+        },
+        "init_video": {
+          "format": "uri",
+          "type": "string"
+        },
+        "prompt": {
+          "maxLength": 1000,
+          "type": "string"
+        },
+        "ratio": {
+          "default": "1280:720",
+          "enum": [
+            "1280:720",
+            "720:1280",
+            "1104:832",
+            "960:960",
+            "832:1104",
+            "1584:672",
+            "848:480",
+            "640:480"
+          ],
+          "type": "string"
+        },
+        "references": {
+          "items": {
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "uri": {
+                "format": "uri",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "uri"
+            ],
+            "type": "object"
+          },
+          "maxItems": 1,
+          "type": "array"
+        },
+        "seed": {
+          "maximum": 4294967295,
+          "minimum": 0,
+          "type": "number"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "runway",
+      "required": [
+        "prompt",
+        "init_video"
+      ],
+      "summary": "Runway Aleph",
+      "supports_webhook": true
+    },
+    "runway/gen-3": {
+      "description": "Old cinematic model, higher consistency.",
+      "endpoint": "/generate/video/runway/gen-3",
+      "model": "gen-3",
+      "properties": {
+        "aspect_ratio": {
+          "default": "16:9",
+          "enum": [
+            "16:9",
+            "9:16"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "seed": {
+          "type": "number"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "runway",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Runway Gen-3",
+      "supports_webhook": true
+    },
+    "runway/gen-4-video": {
+      "description": "Cinematic visuals, weaker structure.",
+      "endpoint": "/generate/video/runway/gen-4-video",
+      "model": "gen-4-video",
+      "properties": {
+        "aspect_ratio": {
+          "default": "1280:720",
+          "enum": [
+            "1280:720",
+            "720:1280"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "seed": {
+          "type": "number"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "runway",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Runway Gen-4",
+      "supports_webhook": true
+    },
+    "runway/gen-4.5": {
+      "description": "Frontier model with native text-to-video.",
+      "endpoint": "/generate/video/runway/gen-4.5",
+      "model": "gen-4.5",
+      "properties": {
+        "aspect_ratio": {
+          "default": "1280:720",
+          "enum": [
+            "1280:720",
+            "720:1280",
+            "1104:832",
+            "832:1104",
+            "960:960",
+            "1584:672",
+            "672:1584"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 5,
+          "maximum": 10,
+          "minimum": 2,
+          "type": "number"
+        },
+        "prompt": {
+          "type": "string"
+        },
+        "seed": {
+          "type": "number"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": "string"
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "runway",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Runway Gen-4.5",
+      "supports_webhook": true
+    },
+    "xai/grok-video": {
+      "description": "Fast, high-quality video generation by xAI.",
+      "endpoint": "/generate/video/xai/grok-video",
+      "model": "grok-video",
+      "properties": {
+        "aspect_ratio": {
+          "enum": [
+            "16:9",
+            "9:16",
+            "1:1",
+            "4:3",
+            "3:4",
+            "3:2",
+            "2:3"
+          ],
+          "type": "string"
+        },
+        "duration": {
+          "default": 6,
+          "maximum": 15,
+          "minimum": 1,
+          "type": "number"
+        },
+        "edit_video": {
+          "format": "uri",
+          "type": "string"
+        },
+        "prompt": {
+          "maxLength": 4096,
+          "type": "string"
+        },
+        "reference_images": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 7,
+          "type": "array"
+        },
+        "resolution": {
+          "default": "720p",
+          "enum": [
+            "480p",
+            "720p"
+          ],
+          "type": "string"
+        },
+        "start_image": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_video": {
+          "format": "uri",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "provider": "xai",
+      "required": [
+        "prompt"
+      ],
+      "summary": "Grok Imagine",
+      "supports_webhook": true
+    }
+  }
+}
