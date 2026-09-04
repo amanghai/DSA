@@ -1,0 +1,3710 @@
+openapi: 3.1.0
+info:
+  title: Krea Assets Image API
+  version: v1
+  description: Asset management endpoints for uploading and managing images, videos, audio files, and 3D models
+servers:
+- url: https://api.krea.ai
+  description: Krea API
+security:
+- bearerAuth: []
+tags:
+- name: Image
+  description: Image generation endpoints
+paths:
+  /generate/image/bfl/flux-1-dev:
+    post:
+      tags:
+      - Image
+      description: 'Fast model. Best for LoRAs.
+
+        | Compute Units | Average Completion Time |
+
+        |---------------|-------------------------|
+
+        | ~3 | ~7 seconds |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrl` -> `image_url` until 2026-06-19
+
+        > - `presetStyles` -> `styles` until 2026-06-19
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        > - `imageStyleRefs` -> `image_style_references` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Flux
+      x-krea-deprecated-field-aliases:
+      - from: imageUrl
+        to: image_url
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: presetStyles
+        to: styles
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: imageStyleRefs
+        to: image_style_references
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  maxLength: 1800
+                strength:
+                  type: number
+                  default: 1
+                seed:
+                  type: number
+                  default: 3317551338
+                steps:
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+                  default: 25
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 2368
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 2368
+                  default: 1024
+                guidance_scale_flux:
+                  type: number
+                  minimum: 0
+                  maximum: 24
+                  default: 3
+                image_url:
+                  type:
+                  - string
+                  - 'null'
+                  format: uri
+                styles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                    required:
+                    - id
+                    - strength
+                  description: Styles (typically LoRAs) to use for the generation
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  description: Image prompts to use for the generation
+                image_style_references:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  description: Style references to use for the generation
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: An anime-inspired cyberpunk market in Neo Tokyo's heart.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/bfl/flux-1-kontext-dev:
+    post:
+      tags:
+      - Image
+      description: 'Frontier model designed for image editing, optimized for Krea
+
+        | Compute Units | Average Completion Time |
+
+        |---------------|-------------------------|
+
+        | ~6 | ~23 seconds |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrl` -> `image_url` until 2026-06-19
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Flux Kontext
+      x-krea-deprecated-field-aliases:
+      - from: imageUrl
+        to: image_url
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  maxLength: 1800
+                strength:
+                  type: number
+                  default: 1
+                seed:
+                  type: number
+                  default: 3261419148
+                steps:
+                  type: integer
+                  minimum: 1
+                  maximum: 100
+                  default: 25
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 2368
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 2368
+                  default: 1024
+                guidance_scale_flux:
+                  type: number
+                  minimum: 0
+                  maximum: 24
+                  default: 3
+                image_url:
+                  type:
+                  - string
+                  - 'null'
+                  format: uri
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  maxItems: 1
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: Treehouses in the Amazon, woven amidst emerald canopies.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/google/nano-banana-pro:
+    post:
+      tags:
+      - Image
+      description: 'World''s most intelligent model.
+
+        | Resolution | Compute Units |
+
+        |------------|---------------|
+
+        | 1K | 60.1 |
+
+        | 2K | 60.1 |
+
+        | 4K | 120 |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrls` -> `image_urls` until 2026-06-19
+
+        > - `aspectRatio` -> `aspect_ratio` until 2026-06-19
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Nano Banana Pro
+      x-krea-deprecated-field-aliases:
+      - from: imageUrls
+        to: image_urls
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: aspectRatio
+        to: aspect_ratio
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 3
+                width:
+                  type: number
+                  description: Width of the generated image.
+                height:
+                  type: number
+                  description: Height of the generated image.
+                image_urls:
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                  description: Image prompts to use for the generation. If provided, style images are ignored.
+                aspect_ratio:
+                  type: string
+                  enum:
+                  - '21:9'
+                  - '1:1'
+                  - '4:3'
+                  - '3:2'
+                  - '2:3'
+                  - '5:4'
+                  - '4:5'
+                  - '3:4'
+                  - '16:9'
+                  - '9:16'
+                resolution:
+                  type: string
+                  enum:
+                  - 1K
+                  - 2K
+                  - 4K
+                  default: 1K
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: Rolling sand dunes, with the silhouette of a solitary camel caravan at dusk.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/google/nano-banana-2:
+    post:
+      tags:
+      - Image
+      description: 'Cheaper quality version of Nano Banana.
+
+        | Resolution | Compute Units |
+
+        |------------|---------------|
+
+        | 1K | 34.4 |
+
+        | 2K | 57.8 |
+
+        | 4K | 86.5 |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrls` -> `image_urls` until 2026-06-19
+
+        > - `aspectRatio` -> `aspect_ratio` until 2026-06-19
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Nano Banana 2
+      x-krea-deprecated-field-aliases:
+      - from: imageUrls
+        to: image_urls
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: aspectRatio
+        to: aspect_ratio
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 3
+                width:
+                  type: number
+                  description: Width of the generated image.
+                height:
+                  type: number
+                  description: Height of the generated image.
+                image_urls:
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                  description: Image prompts to use for the generation. If provided, style images are ignored.
+                aspect_ratio:
+                  type: string
+                  enum:
+                  - '4:1'
+                  - '21:9'
+                  - '1:1'
+                  - '4:3'
+                  - '3:2'
+                  - '2:3'
+                  - '5:4'
+                  - '4:5'
+                  - '3:4'
+                  - '16:9'
+                  - '9:16'
+                  - '1:4'
+                  - '1:8'
+                resolution:
+                  type: string
+                  enum:
+                  - 1K
+                  - 2K
+                  - 4K
+                  default: 1K
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: A sprawling vineyard, with a rustic chateau overlooking the grape-laden vines.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/google/nano-banana:
+    post:
+      tags:
+      - Image
+      description: 'Most versatile intelligent model.
+
+        | Compute Units |
+
+        |---------------|
+
+        | 22.3 |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrls` -> `image_urls` until 2026-06-19
+
+        > - `aspectRatio` -> `aspect_ratio` until 2026-06-19
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Nano Banana
+      x-krea-deprecated-field-aliases:
+      - from: imageUrls
+        to: image_urls
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: aspectRatio
+        to: aspect_ratio
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  description: Width of the generated image.
+                height:
+                  type: number
+                  description: Height of the generated image.
+                image_urls:
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                  description: Image prompts to use for the generation. If provided, style images are ignored.
+                aspect_ratio:
+                  type: string
+                  enum:
+                  - '21:9'
+                  - '1:1'
+                  - '4:3'
+                  - '3:2'
+                  - '2:3'
+                  - '5:4'
+                  - '4:5'
+                  - '3:4'
+                  - '16:9'
+                  - '9:16'
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: Seaside town at dusk, lantern boats setting sail, echoing serene slice-of-life anime aesthetics.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/bfl/flux-1.1-pro:
+    post:
+      tags:
+      - Image
+      description: 'Advanced yet efficent model from BFL.
+
+        | Compute Units |
+
+        |---------------|
+
+        | 22.9 |'
+      summary: Flux 1.1 Pro
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  minimum: 256
+                  maximum: 1440
+                height:
+                  type: number
+                  minimum: 256
+                  maximum: 1440
+                seed:
+                  type: number
+                  default: 1337
+              required:
+              - prompt
+              - width
+              - height
+              additionalProperties: false
+            example:
+              prompt: Rolling countryside with magical bathhouses and whispering forests, reminiscent of a Ghibli masterpiece.
+              width: 1024
+              height: 1024
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/bfl/flux-1.1-pro-ultra:
+    post:
+      tags:
+      - Image
+      description: 'BFL''s highest quality text to image model.
+
+        | Compute Units |
+
+        |---------------|
+
+        | 34.4 |'
+      summary: Flux 1.1 Pro Ultra
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                seed:
+                  type: number
+                  default: 1337
+                raw:
+                  type: boolean
+                  default: true
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: Cobblestone streets of a medieval town, with lanterns lighting up historic facades.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/ideogram/ideogram-2-turbo:
+    post:
+      tags:
+      - Image
+      description: 'Distilled version of Ideogram 2.0
+
+        | Compute Units |
+
+        |---------------|
+
+        | 14.3 |'
+      summary: Ideogram 2.0A Turbo
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                seed:
+                  type: number
+                  default: 1337
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: A bayou with moss-draped trees, silent except for the chorus of frogs and crickets.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/ideogram/ideogram-3:
+    post:
+      tags:
+      - Image
+      description: 'Highly aesthetic, general-purpose model.
+
+        | Character Reference | Compute Units |
+
+        |---------------------|---------------|
+
+        | Yes | 85.9 |
+
+        | No | 34.4 |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `characterReferenceImages` -> `character_reference_images` until 2026-06-19
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Ideogram 3.0
+      x-krea-deprecated-field-aliases:
+      - from: characterReferenceImages
+        to: character_reference_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                seed:
+                  type: number
+                  default: 1337
+                character_reference_images:
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: Cliff dwellings in Colorado, echoing Anasazi songs.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/google/imagen-3:
+    post:
+      tags:
+      - Image
+      description: 'Google''s previous generation image model.
+
+        | Model | Compute Units |
+
+        |-------|---------------|
+
+        | Standard | 22.9 |'
+      summary: Imagen 3
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                seed:
+                  type: number
+                  default: 1337
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: Adobe castles in Mali, sculpted by wind and time's hands.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/google/imagen-4:
+    post:
+      tags:
+      - Image
+      description: 'Google''s current generation image model
+
+        | Compute Units |
+
+        |---------------|
+
+        | 22.9 |'
+      summary: Imagen 4
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                seed:
+                  type: number
+                  default: 1337
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: A sunflower field, stretching endlessly, turning in unison towards the sun.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/google/imagen-4-fast:
+    post:
+      tags:
+      - Image
+      description: 'Google''s fastest image model
+
+        | Compute Units |
+
+        |---------------|
+
+        | 11.5 |'
+      summary: Imagen 4 Fast
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                seed:
+                  type: number
+                  default: 1337
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: Vibrant marketplace in the heart of a bamboo forest, influenced by traditional anime aesthetics.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/google/imagen-4-ultra:
+    post:
+      tags:
+      - Image
+      description: 'Google''s best image model
+
+        | Compute Units |
+
+        |---------------|
+
+        | 34.4 |'
+      summary: Imagen 4 Ultra
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                seed:
+                  type: number
+                  default: 1337
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: Night market under a starry sky, spirits peddling wares, echoing spirited-away vibes.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/runway/gen-4-image:
+    post:
+      tags:
+      - Image
+      description: 'Cinematic image model with references.
+
+        | Compute Units | Average Completion Time |
+
+        |---------------|-------------------------|
+
+        | ~44 | ~38 seconds |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `referenceImages` -> `reference_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Runway Gen-4
+      x-krea-deprecated-field-aliases:
+      - from: referenceImages
+        to: reference_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                  maxLength: 1000
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                seed:
+                  type: number
+                  default: 1337
+                reference_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        format: uri
+                      tag:
+                        type: string
+                        pattern: ^[a-z][a-z0-9_]+$
+                        minLength: 3
+                        maxLength: 16
+                    required:
+                    - url
+                    - tag
+                  minItems: 1
+                  maxItems: 3
+              required:
+              - prompt
+              - reference_images
+              additionalProperties: false
+            example:
+              prompt: A bustling boardwalk beside a tranquil beach, with carnival lights twinkling at dusk.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/openai/gpt-image:
+    post:
+      tags:
+      - Image
+      description: 'Original ChatGPT image model.
+
+        | Compute Units | Average Completion Time |
+
+        |---------------|-------------------------|
+
+        | ~179 | ~72 seconds |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrls` -> `image_urls` until 2026-06-19
+
+        > - `presetStyles` -> `styles` until 2026-06-19
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: ChatGPT Image
+      x-krea-deprecated-field-aliases:
+      - from: imageUrls
+        to: image_urls
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: presetStyles
+        to: styles
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                quality:
+                  type: string
+                  enum:
+                  - low
+                  - medium
+                  - high
+                  - auto
+                  default: auto
+                image_urls:
+                  type: array
+                  items:
+                    type: string
+                styles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                    required:
+                    - id
+                    - strength
+                  maxItems: 5
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  maxItems: 15
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: A coral atoll, with hues of blue revealing marine life in clear lagoon waters.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/openai/gpt-image-2:
+    post:
+      tags:
+      - Image
+      description: 'Smart powerful model for editing.
+
+        | Compute Units | Average Completion Time |
+
+        |---------------|-------------------------|
+
+        | ~127 | ~55 seconds |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrls` -> `image_urls` until 2026-06-19
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: ChatGPT 2
+      x-krea-deprecated-field-aliases:
+      - from: imageUrls
+        to: image_urls
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                height:
+                  type: number
+                quality:
+                  type: string
+                  enum:
+                  - low
+                  - medium
+                  - high
+                  - auto
+                  default: high
+                image_urls:
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 10
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  maxItems: 10
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              - width
+              - height
+              additionalProperties: false
+            example:
+              prompt: Rocky shoreline, with tide pools teeming with life and seabirds soaring above.
+              width: 1024
+              height: 1024
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/luma/uni-1:
+    post:
+      tags:
+      - Image
+      description: 'Reasoning image model for prompt-faithful text to image.
+
+        | Mode | Reference Images | Compute Units |
+
+        |------|------------------|---------------|
+
+        | standard | 0 | 23.1 |
+
+        | standard | 1 | 24.9 |
+
+        | standard | 2 | 26.6 |
+
+        | standard | 3 | 28.3 |
+
+        | standard | 4 | 30.0 |
+
+        | standard | 5 | 31.7 |
+
+        | standard | 6 | 33.4 |
+
+        | standard | 7 | 35.2 |
+
+        | standard | 8 | 36.9 |
+
+        | standard | 9 | 38.6 |
+
+        | max | 0 | 57.3 |
+
+        | max | 1 | 59.0 |
+
+        | max | 2 | 60.7 |
+
+        | max | 3 | 62.4 |
+
+        | max | 4 | 64.1 |
+
+        | max | 5 | 65.9 |
+
+        | max | 6 | 67.6 |
+
+        | max | 7 | 69.3 |
+
+        | max | 8 | 71.0 |
+
+        | max | 9 | 72.7 |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `outputFormat` -> `output_format` until 2026-06-19
+
+        > - `webSearch` -> `web_search` until 2026-06-19
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Luma UNI-1
+      x-krea-deprecated-field-aliases:
+      - from: outputFormat
+        to: output_format
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: webSearch
+        to: web_search
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                  maxLength: 6000
+                width:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                height:
+                  type: number
+                  minimum: 512
+                  maximum: 8192
+                  default: 1024
+                mode:
+                  type: string
+                  enum:
+                  - standard
+                  - max
+                  default: standard
+                style:
+                  type: string
+                  enum:
+                  - auto
+                  - manga
+                  default: auto
+                output_format:
+                  type:
+                  - string
+                  - 'null'
+                  enum:
+                  - png
+                  - jpeg
+                  - null
+                web_search:
+                  type: boolean
+                  default: false
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  maxItems: 9
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: Stepping stones across a tranquil pond, leading to a tea house.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/bytedance/seedream-4:
+    post:
+      tags:
+      - Image
+      description: 'New high quality model for photorealism and text rendering
+
+        | Compute Units |
+
+        |---------------|
+
+        | 17.2 |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Seedream 4
+      x-krea-deprecated-field-aliases:
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  maximum: 4096
+                height:
+                  type: number
+                  maximum: 4096
+                seed:
+                  type: number
+                  default: 1337
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              - width
+              - height
+              additionalProperties: false
+            example:
+              prompt: A Victorian greenhouse where each pane frames a universe.
+              width: 1024
+              height: 1024
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/bytedance/seedream-5-lite:
+    post:
+      tags:
+      - Image
+      description: 'Medium quality model with reasoning and web search.
+
+        | Compute Units |
+
+        |---------------|
+
+        | 20.0 |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Seedream 5 Lite
+      x-krea-deprecated-field-aliases:
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                width:
+                  type: number
+                  maximum: 4096
+                height:
+                  type: number
+                  maximum: 4096
+                seed:
+                  type: number
+                  default: 1337
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  maxItems: 14
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              - width
+              - height
+              additionalProperties: false
+            example:
+              prompt: Maori marae in New Zealand, carvings guarding ancient lore.
+              width: 1024
+              height: 1024
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/qwen/2512:
+    post:
+      tags:
+      - Image
+      description: 'Affordable medium quality model.
+
+        | Compute Units | Average Completion Time |
+
+        |---------------|-------------------------|
+
+        | ~9 | ~22 seconds |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `skipPromptExpansion` -> `skip_prompt_expansion` until 2026-06-19
+
+        > - `presetStyles` -> `styles` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Qwen 2512
+      x-krea-deprecated-field-aliases:
+      - from: skipPromptExpansion
+        to: skip_prompt_expansion
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: presetStyles
+        to: styles
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                negative_prompt:
+                  type: string
+                  default: ''
+                width:
+                  type: integer
+                  default: 1024
+                height:
+                  type: integer
+                  default: 1024
+                num_inference_steps:
+                  type: integer
+                  default: 30
+                cfg_scale:
+                  type: number
+                  default: 4
+                seed:
+                  type: number
+                skip_prompt_expansion:
+                  type: boolean
+                styles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                    required:
+                    - id
+                    - strength
+                  description: Styles (typically LoRAs) to use for the generation
+              required:
+              - prompt
+              additionalProperties: false
+            example:
+              prompt: Majestic fjords with small fishing villages nestled at their bases.
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/z-image/z-image:
+    post:
+      tags:
+      - Image
+      description: 'Fastest model. Realistic, low diversity.
+
+        | Compute Units | Average Completion Time |
+
+        |---------------|-------------------------|
+
+        | ~1 | ~5 seconds |
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `presetStyles` -> `styles` until 2026-06-19
+
+        > - `skipPromptExpansion` -> `skip_prompt_expansion` until 2026-06-19
+
+        > - `aspectRatio` -> `aspect_ratio` until 2026-06-19
+
+        > - `imageUrl` -> `image_url` until 2026-06-19
+
+        > - `styleImages` -> `style_images` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Z Image
+      x-krea-deprecated-field-aliases:
+      - from: presetStyles
+        to: styles
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: skipPromptExpansion
+        to: skip_prompt_expansion
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: aspectRatio
+        to: aspect_ratio
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: imageUrl
+        to: image_url
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      - from: styleImages
+        to: style_images
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                seed:
+                  type: number
+                denoising_strength:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.6
+                styles:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                    required:
+                    - id
+                    - strength
+                  description: Styles (typically LoRAs) to use for the generation
+                skip_prompt_expansion:
+                  type: boolean
+                  default: false
+                aspect_ratio:
+                  type: string
+                  enum:
+                  - '1:1'
+                  - '4:3'
+                  - '2:3'
+                  - '16:9'
+                  - '9:16'
+                  description: 'Aspect ratio. One of: 1:1, 4:3, 2:3, 16:9, 9:16.'
+                resolution:
+                  type: string
+                  enum:
+                  - 1K
+                  description: 'Resolution scale. One of: 1K.'
+                image_url:
+                  type:
+                  - string
+                  - 'null'
+                  format: uri
+                style_images:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      strength:
+                        type: number
+                        minimum: -2
+                        maximum: 2
+                      url:
+                        type: string
+                        format: uri
+                    required:
+                    - strength
+                  maxItems: 1
+                  description: Image prompts to use for the generation
+              required:
+              - prompt
+              - aspect_ratio
+              - resolution
+              additionalProperties: false
+            example:
+              prompt: Bustling train station, portals to different realms, in the style of adventure anime.
+              aspect_ratio: '1:1'
+              resolution: 1K
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/image/bytedance/seededit:
+    post:
+      tags:
+      - Image
+      description: 'New frontier model designed for image editing
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrl` -> `image_url` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: SeedEdit
+      x-krea-deprecated-field-aliases:
+      - from: imageUrl
+        to: image_url
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  minLength: 1
+                seed:
+                  type: number
+                  default: 1337
+                image_url:
+                  type: string
+                  format: uri
+              required:
+              - prompt
+              - image_url
+              additionalProperties: false
+            example:
+              prompt: Vast terracotta badlands, sculpted by wind and water over millennia.
+              image_url: https://gen.krea.ai/images/0424f602-2999-4d0c-a46e-39cbf0ef384b.png
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+components:
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      bearerFormat: Bearer
+      type: http

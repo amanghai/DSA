@@ -1,0 +1,30 @@
+[project]
+name = "krea-mcp"
+version = "0.1.0"
+description = "MCP server for the Krea AI creative API (image/video generation, upscaling, custom styles)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "mcp>=1.2.0,<2",
+    "httpx>=0.27",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+krea-mcp = "krea_mcp.server:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["krea_mcp*"]
+
+[tool.setuptools.package-data]
+krea_mcp = ["catalog.json"]
