@@ -121,6 +121,24 @@
       "skillPath": "skills/free-tools/SKILL.md",
       "computedHash": "3fd8ab504b9b6d791b307baed7a87f49b455fc084ff367772c7418b8a57ce56d"
     },
+    "heygen-avatar": {
+      "source": "heygen-com/skills",
+      "sourceType": "github",
+      "skillPath": "heygen-avatar/SKILL.md",
+      "computedHash": "c58cb4db3b2fd3a6ca81b2c0dfc16abab2e17fc77c4c5a613a3eb83fc215ed22"
+    },
+    "heygen-translate": {
+      "source": "heygen-com/skills",
+      "sourceType": "github",
+      "skillPath": "heygen-translate/SKILL.md",
+      "computedHash": "e6e5839c5637ca417f32a61159a10a5674a561c1d0a6d7835812ed8d82704b2d"
+    },
+    "heygen-video": {
+      "source": "heygen-com/skills",
+      "sourceType": "github",
+      "skillPath": "heygen-video/SKILL.md",
+      "computedHash": "15e19b8aca06f767574382f1323f6cb5b9cc0e964295ca8a75835c6bd87ce12c"
+    },
     "image": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
