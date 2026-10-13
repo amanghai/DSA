@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nazakat Telecom — Contact | Design 1: NEON NIGHT</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cyan: #00D4FF;
+    --bg: #050812;
+    --bg2: #0D1117;
+    --panel-l: rgba(8,18,35,0.93);
+    --panel-r: rgba(13,17,23,0.90);
+    --text: #E0F4FF;
+    --text-dim: #7AA3B8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* PREVIEW BAR */
+  .preview-bar {
+    background: linear-gradient(90deg, rgba(0,212,255,0.08), rgba(0,212,255,0.18), rgba(0,212,255,0.08));
+    border-bottom: 1px solid var(--cyan);
+    color: var(--cyan);
+    text-align: center;
+    padding: 8px 16px;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1000;
+    animation: previewPulse 3s ease-in-out infinite;
+  }
+  @keyframes previewPulse { 0%,100%{opacity:1;} 50%{opacity:0.7;} }
+
+  /* SCANLINE */
+  .scanline-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .scanline-bg::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(0,212,255,0.1), rgba(0,212,255,0.22), rgba(0,212,255,0.1), transparent);
+    animation: scanSweep 6s linear infinite;
+    box-shadow: 0 0 20px 4px rgba(0,212,255,0.07);
+  }
+  @keyframes scanSweep { 0%{top:-10px;} 100%{top:calc(100vh + 10px);} }
+
+  /* GRID DOTS */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(0,212,255,0.18) 1px, transparent 1px);
+    background-size: 48px 48px;
+    animation: gridDrift 25s linear infinite;
+    opacity: 0.45;
+  }
+  @keyframes gridDrift { 0%{background-position:0 0;} 100%{background-position:48px 48px;} }
+  .grid-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, transparent 40%, var(--bg) 100%);
+  }
+
+  /* HEADER */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+    background: rgba(5,8,18,0.96);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,212,255,0.22);
+    box-shadow: 0 0 30px rgba(0,212,255,0.05);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .logo-wrap img {
+    height: 44px;
+    width: auto;
+    filter: drop-shadow(0 0 8px rgba(0,212,255,0.45));
+    transition: filter 0.3s;
+  }
+  .logo-wrap img:hover { filter: drop-shadow(0 0 16px rgba(0,212,255,0.9)); }
+
+  nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  nav a:hover {
+    color: var(--cyan);
+    border-color: rgba(0,212,255,0.4);
+    background: rgba(0,212,255,0.06);
+    text-shadow: 0 0 8px var(--cyan);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    height: 230px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #050812 0%, #060d1a 100%);
+  }
+  .hero-grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.07) 1px, transparent 1px);
+    background-size: 42px 42px;
+    animation: heroGridScroll 10s linear infinite;
+  }
+  @keyframes heroGridScroll { 0%{background-position:0 0;} 100%{background-position:42px 42px;} }
+  .hero-ghost {
+    position: absolute;
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(70px, 15vw, 170px);
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(0,212,255,0.07);
+    letter-spacing: 18px;
+    user-select: none;
+    animation: ghostPulse 4s ease-in-out infinite;
+  }
+  @keyframes ghostPulse { 0%,100%{-webkit-text-stroke-color:rgba(0,212,255,0.05);} 50%{-webkit-text-stroke-color:rgba(0,212,255,0.13);} }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+  .hero-eyebrow {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    animation: fadeInDown 0.8s ease both;
+  }
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(26px, 4.5vw, 50px);
+    font-weight: 900;
+    letter-spacing: 5px;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0,212,255,0.8), 0 0 60px rgba(0,212,255,0.35), 0 0 100px rgba(0,212,255,0.18);
+    animation: fadeInDown 0.8s 0.15s ease both, neonFlicker 9s 2s ease-in-out infinite;
+  }
+  @keyframes neonFlicker {
+    0%,100%{text-shadow:0 0 20px rgba(0,212,255,0.8),0 0 60px rgba(0,212,255,0.35),0 0 100px rgba(0,212,255,0.18);}
+    92%{text-shadow:0 0 20px rgba(0,212,255,0.8),0 0 60px rgba(0,212,255,0.35),0 0 100px rgba(0,212,255,0.18);}
+    93%{text-shadow:none;}
+    94%{text-shadow:0 0 20px rgba(0,212,255,0.8),0 0 60px rgba(0,212,255,0.35);}
+    95%{text-shadow:none;}
+    96%{text-shadow:0 0 20px rgba(0,212,255,0.8),0 0 60px rgba(0,212,255,0.35),0 0 100px rgba(0,212,255,0.18);}
+  }
+  @keyframes fadeInDown { from{opacity:0;transform:translateY(-18px);} to{opacity:1;transform:translateY(0);} }
+  .hero-sub {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    margin-top: 10px;
+    text-transform: uppercase;
+    animation: fadeInDown 0.8s 0.3s ease both;
+  }
+  .hero-line-l, .hero-line-r {
+    position: absolute;
+    top: 50%;
+    width: 20%;
+    height: 1px;
+    opacity: 0.5;
+  }
+  .hero-line-l { left: 5%; background: linear-gradient(90deg, transparent, rgba(0,212,255,0.6)); }
+  .hero-line-r { right: 5%; background: linear-gradient(270deg, transparent, rgba(0,212,255,0.6)); }
+
+  /* MAIN */
+  .page-wrap { position: relative; z-index: 1; }
+  .contact-section {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+  .card-outer { perspective: 1200px; }
+  .card {
+    display: grid;
+    grid-template-columns: 370px 1fr;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(0,212,255,0.22);
+    box-shadow: 0 0 80px rgba(0,212,255,0.07), inset 0 0 40px rgba(0,212,255,0.02);
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: box-shadow 0.3s;
+  }
+  .card:hover {
+    box-shadow: 0 0 120px rgba(0,212,255,0.13), 0 0 0 1px rgba(0,212,255,0.14), inset 0 0 40px rgba(0,212,255,0.04);
+  }
+
+  /* LEFT PANEL */
+  .panel-left {
+    background: var(--panel-l);
+    backdrop-filter: blur(24px);
+    border-right: 1px solid rgba(0,212,255,0.18);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .panel-left::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    animation: topLineGlow 2.5s ease-in-out infinite;
+  }
+  @keyframes topLineGlow { 0%,100%{opacity:0.4;} 50%{opacity:1; box-shadow:0 0 14px var(--cyan);} }
+  .panel-left::after {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%);
+    animation: orb1 9s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes orb1 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-25px,25px);} }
+
+  .store-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,212,255,0.07);
+    border: 1px solid rgba(0,212,255,0.32);
+    border-radius: 3px;
+    padding: 5px 12px 5px 8px;
+    margin-bottom: 28px;
+    animation: badgeFlicker 6s 3s ease-in-out infinite;
+  }
+  .badge-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 6px var(--cyan), 0 0 12px var(--cyan);
+    animation: dotPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes dotPulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.4);opacity:0.7;} }
+  @keyframes badgeFlicker {
+    0%,100%{border-color:rgba(0,212,255,0.32);}
+    93%{border-color:rgba(0,212,255,0.32);}
+    94%{border-color:transparent;}
+    95%{border-color:rgba(0,212,255,0.32);}
+    96%{border-color:transparent;}
+    97%{border-color:rgba(0,212,255,0.32);}
+  }
+  .badge-text {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-transform: uppercase;
+  }
+
+  .panel-heading {
+    font-family: 'Orbitron', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px rgba(0,212,255,0.4);
+  }
+  .panel-sub {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.65;
+    margin-bottom: 34px;
+    letter-spacing: 0.4px;
+  }
+
+  .contact-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 34px; }
+  .contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 13px 16px;
+    border-left: 2px solid rgba(0,212,255,0.12);
+    background: rgba(0,212,255,0.025);
+    border-radius: 0 3px 3px 0;
+    transition: all 0.25s;
+    cursor: default;
+  }
+  .contact-item:hover {
+    border-left-color: var(--cyan);
+    background: rgba(0,212,255,0.065);
+    box-shadow: inset 0 0 20px rgba(0,212,255,0.04), -2px 0 14px rgba(0,212,255,0.28);
+    transform: translateX(3px);
+  }
+  .contact-icon {
+    width: 32px; height: 32px;
+    border-radius: 3px;
+    background: rgba(0,212,255,0.09);
+    border: 1px solid rgba(0,212,255,0.22);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 14px;
+    transition: all 0.25s;
+  }
+  .contact-item:hover .contact-icon {
+    background: rgba(0,212,255,0.16);
+    box-shadow: 0 0 12px rgba(0,212,255,0.38);
+  }
+  .contact-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 3px;
+    opacity: 0.8;
+  }
+  .contact-value { font-size: 13px; color: var(--text); font-weight: 500; }
+
+  .social-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .social-btn {
+    width: 38px; height: 38px;
+    border-radius: 3px;
+    background: rgba(0,212,255,0.055);
+    border: 1px solid rgba(0,212,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim);
+    font-size: 15px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .social-btn:hover {
+    background: rgba(0,212,255,0.13);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 12px rgba(0,212,255,0.32);
+  }
+
+  /* RIGHT PANEL */
+  .panel-right {
+    background: var(--panel-r);
+    backdrop-filter: blur(24px);
+    padding: 48px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .panel-right::before {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,255,0.04) 0%, transparent 70%);
+    animation: orb2 11s ease-in-out infinite reverse;
+    pointer-events: none;
+  }
+  @keyframes orb2 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(20px,-20px);} }
+
+  .form-header { margin-bottom: 36px; }
+  .form-label-top {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.75;
+  }
+  .form-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(20px, 2.5vw, 27px);
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0,212,255,0.28);
+  }
+  .form-divider {
+    width: 56px; height: 2px;
+    background: linear-gradient(90deg, var(--cyan), transparent);
+    margin-top: 14px;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .form-group input,
+  .form-group textarea {
+    background: rgba(0,212,255,0.035);
+    border: 1px solid rgba(0,212,255,0.13);
+    border-radius: 3px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.25s;
+    resize: none;
+  }
+  .form-group textarea { height: 110px; }
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: rgba(0,212,255,0.6);
+    background: rgba(0,212,255,0.065);
+    box-shadow: 0 0 0 3px rgba(0,212,255,0.07), 0 0 20px rgba(0,212,255,0.09);
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(120,160,190,0.38); }
+
+  .submit-btn {
+    margin-top: 28px;
+    width: 100%;
+    padding: 16px 32px;
+    background: transparent;
+    border: 1px solid var(--cyan);
+    border-radius: 3px;
+    color: var(--cyan);
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(0,212,255,0.09), inset 0 0 20px rgba(0,212,255,0.03);
+  }
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0,212,255,0.07), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+  .submit-btn:hover {
+    background: rgba(0,212,255,0.07);
+    box-shadow: 0 0 40px rgba(0,212,255,0.28), inset 0 0 20px rgba(0,212,255,0.055);
+    text-shadow: 0 0 10px var(--cyan);
+  }
+  .submit-btn:hover::before { transform: translateX(100%); }
+  .submit-btn:active { transform: scale(0.98); }
+
+  @media (max-width: 900px) {
+    .card { grid-template-columns: 1fr; }
+    .panel-left { border-right: none; border-bottom: 1px solid rgba(0,212,255,0.18); padding: 36px 24px; }
+    .panel-right { padding: 36px 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+    nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="scanline-bg"></div>
+<div class="grid-bg"></div>
+
+<div class="preview-bar">&#9632;&nbsp;&nbsp;DESIGN 1 &mdash; NEON NIGHT &mdash; Preview Only&nbsp;&nbsp;&#9632;</div>
+
+<header>
+  <div class="header-inner">
+    <a href="#" class="logo-wrap">
+      <img src="https://cdn.shopify.com/s/files/1/0610/3639/6632/files/snapchat_2892b502-7fbc-4d45-b9aa-1b31e8aeb078.png?v=1726684601" alt="Nazakat Telecom">
+    </a>
+    <nav>
+      <a href="#">Shop</a>
+      <a href="#">Mobiles</a>
+      <a href="#">Audio &amp; Party Speakers</a>
+      <a href="#">Accessories</a>
+      <a href="#">About Us</a>
+      <a href="#">FAQ</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-wrap">
+  <section class="hero">
+    <div class="hero-grid-lines"></div>
+    <div class="hero-ghost">CONTACT</div>
+    <div class="hero-line-l"></div>
+    <div class="hero-line-r"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Nazakat Telecom &mdash; Transmission Hub</div>
+      <h1 class="hero-title">GET IN TOUCH</h1>
+      <p class="hero-sub">Signal open &mdash; awaiting your transmission</p>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <div class="card-outer">
+      <div class="card" id="tilt-card">
+
+        <div class="panel-left">
+          <div class="store-badge">
+            <span class="badge-dot"></span>
+            <span class="badge-text">Online Now</span>
+          </div>
+          <h2 class="panel-heading">Nazakat<br>Telecom</h2>
+          <p class="panel-sub">Your trusted tech destination. Connect with us &mdash; we&rsquo;re always ready to assist.</p>
+
+          <div class="contact-list">
+            <div class="contact-item">
+              <div class="contact-icon">&#9993;</div>
+              <div>
+                <div class="contact-label">Email</div>
+                <div class="contact-value">onztelecom@gmail.com</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">&#9203;</div>
+              <div>
+                <div class="contact-label">Hours</div>
+                <div class="contact-value">Every Day, 10:00 AM &ndash; 8:00 PM</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">&#9679;</div>
+              <div>
+                <div class="contact-label">Location</div>
+                <div class="contact-value">India</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="social-row">
+            <a class="social-btn" title="Instagram">&#9651;</a>
+            <a class="social-btn" title="Facebook">&#9670;</a>
+            <a class="social-btn" title="WhatsApp">&#9632;</a>
+            <a class="social-btn" title="Twitter">&#9653;</a>
+          </div>
+        </div>
+
+        <div class="panel-right">
+          <div class="form-header">
+            <div class="form-label-top">Initiate Contact</div>
+            <h3 class="form-title">Send Us a Message</h3>
+            <div class="form-divider"></div>
+          </div>
+          <form onsubmit="return false;">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="d1-name">Name</label>
+                <input type="text" id="d1-name" placeholder="Your full name">
+              </div>
+              <div class="form-group">
+                <label for="d1-email">Email *</label>
+                <input type="email" id="d1-email" placeholder="your@email.com" required>
+              </div>
+              <div class="form-group">
+                <label for="d1-phone">Phone</label>
+                <input type="tel" id="d1-phone" placeholder="+91 00000 00000">
+              </div>
+              <div class="form-group full">
+                <label for="d1-comment">Comment</label>
+                <textarea id="d1-comment" placeholder="How can we help you today?"></textarea>
+              </div>
+            </div>
+            <button class="submit-btn" type="submit">&#9658;&nbsp;&nbsp; Send Message</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function() {
+  var card = document.getElementById('tilt-card');
+  var targetX = 0, targetY = 0;
+  var currentX = 0, currentY = 0;
+  var rafId = null;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function loop() {
+    currentX = lerp(currentX, targetX, 0.08);
+    currentY = lerp(currentY, targetY, 0.08);
+    card.style.transform = 'rotateY(' + currentX + 'deg) rotateX(' + currentY + 'deg)';
+    rafId = requestAnimationFrame(loop);
+  }
+
+  card.addEventListener('mouseenter', function() {
+    if (!rafId) loop();
+  });
+
+  card.addEventListener('mousemove', function(e) {
+    var rect = card.getBoundingClientRect();
+    var cx = rect.left + rect.width / 2;
+    var cy = rect.top + rect.height / 2;
+    var dx = (e.clientX - cx) / (rect.width / 2);
+    var dy = (e.clientY - cy) / (rect.height / 2);
+    targetX = dx * 8;
+    targetY = -dy * 6;
+  });
+
+  card.addEventListener('mouseleave', function() {
+    targetX = 0;
+    targetY = 0;
+    cancelAnimationFrame(rafId);
+    rafId = null;
+    (function resetLoop() {
+      currentX = lerp(currentX, 0, 0.1);
+      currentY = lerp(currentY, 0, 0.1);
+      card.style.transform = 'rotateY(' + currentX + 'deg) rotateX(' + currentY + 'deg)';
+      if (Math.abs(currentX) > 0.02 || Math.abs(currentY) > 0.02) {
+        rafId = requestAnimationFrame(resetLoop);
+      } else {
+        card.style.transform = '';
+        rafId = null;
+      }
+    })();
+  });
+})();
+</script>
+</body>
+</html>
