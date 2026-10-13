@@ -1,0 +1,57 @@
+{
+  "_note": "v3 reel: 2 customers unbox iPhone 18 Pro + Pro Max, then the customer (white tee) reviews the showroom. Segment from/to are SOURCE seconds; beats, flashes, sfx, badge are REEL seconds ('end' = when footage ends).",
+  "source": "../input/20261008_185220.mp4",
+  "output": "../output/iphone18_testimonial.mp4",
+  "resolution": "4k",
+  "brand": {
+    "address": "Defence Road, Mamun Cantt, Pathankot",
+    "street": "Defence Road, Mamun Cantt",
+    "city": "PATHANKOT",
+    "since": "1992",
+    "phones": ["81968 48484", "99889 69696"],
+    "product_line": "iPhone 18 Pro  |  18 Pro Max"
+  },
+  "crops": {
+    "_note": "[left, top, size] as fractions: left of frame width, top/size of frame height. Square crop.",
+    "two": [0.18, 0.0, 1.0],
+    "hook": [0.10, 0.0, 1.0],
+    "cu": [0.42, 0.0, 0.78]
+  },
+  "segments": [
+    {"from": 65.8, "to": 67.8, "speed": 1.0, "crop": "hook"},
+    {"from": 0.0,  "to": 3.0,  "speed": 1.5, "crop": "two"},
+    {"from": 7.0,  "to": 19.0, "speed": 3.0, "crop": "two"},
+    {"from": 19.0, "to": 22.0, "speed": 1.5, "crop": "two"},
+    {"from": 22.0, "to": 23.5, "speed": 1.0, "crop": "cu"},
+    {"from": 24.0, "to": 36.0, "speed": 2.4, "crop": "two"},
+    {"from": 38.1, "to": 43.0, "speed": 1.0, "crop": "two"},
+    {"from": 43.5, "to": 44.7, "speed": 1.0, "crop": "cu"},
+    {"from": 45.6, "to": 50.3, "speed": 1.0, "crop": "cu"},
+    {"from": 50.3, "to": 53.7, "speed": 1.0, "crop": "two"},
+    {"from": 53.7, "to": 58.5, "speed": 1.0, "crop": "cu"},
+    {"from": 58.5, "to": 65.0, "speed": 1.0, "crop": "two"}
+  ],
+  "speech": {"at": 16.5, "ranges": [[38.1, 43.0], [43.5, 44.7], [45.6, 65.0]]},
+  "music_sections": [[0, 8, "full"], [8, 11.5, "break"], [11.5, 16.5, "full"], [16.5, "end", "light"]],
+  "motion": {"push": [8, 11.5], "shake": 11.5},
+  "beats": [
+    [0, 2, "EK SAATH 2", "iPhone 18 Pro!", "Nazakat Telecom, Pathankot"],
+    [2, 4, "iPhone 18 PRO", "& 18 PRO MAX", "Unboxing LIVE"],
+    [4, 8, "SEAL PACK.", "FRESH STOCK.", "Seedha counter pe unboxing"],
+    [8, 11.5, "WAIT", "FOR IT..."],
+    [11.5, 14, "PEHLI", "JHALAK!"],
+    [14, 16.5, "PRO. PRO MAX.", "DONO!"],
+    [16.5, 22, "CUSTOMER", "KI ZUBAANI", "Asli customer, asli review"],
+    [22, 28, "PEHLE PHONE SE", "AAJ TAK", "Hamesha Nazakat Telecom se"],
+    [28, 34, "SERVICE", "PE BHAROSA", "Sale ke baad bhi saath"],
+    [34, 38.5, "SINCE 1992", "PATHANKOT", "ka apna mobile store"],
+    [38.5, "end", "AAP BHI", "AAO!", "Call: 81968 48484"]
+  ],
+  "badge": {"text": "CUSTOMER REVIEW", "from": 16.8, "to": "end"},
+  "captions": [],
+  "flashes": [2, 4, 11.5, 16.5],
+  "sfx": [["impact", 0, 0.7], ["swish", 2, 0.5], ["swish", 4, 0.35], ["impact", 11.5, 0.7],
+          ["swish", 16.5, 0.4], ["pop", 38.5, 0.5], ["shutter", "end", 0.7]],
+  "logo_bug_from": 2,
+  "endcard_seconds": 5
+}
