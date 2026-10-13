@@ -1,0 +1,5 @@
+
+# FavStash local runtime and scratch
+.favstash-studio/runtime/
+.favstash-studio/setup-check/
+.favstash-studio/setup.log

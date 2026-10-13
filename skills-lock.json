@@ -13,6 +13,11 @@
       "skillPath": "skills/ad-creative/SKILL.md",
       "computedHash": "822b7c608a6546680bb1389f619bcd00556974b7bc1a060b217cec94afc22ae0"
     },
+    "adaptive-glass": {
+      "source": "../../../tmp/claude-0/-home-user-DSA/42ad367c-2f93-5c4e-adb5-99311fe817e4/scratchpad/fav/src",
+      "sourceType": "local",
+      "computedHash": "c7774c5bdc0f9f6bfe6608b3da168f109752b8ddd1f7f29b518ae58e56a471e4"
+    },
     "ads": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
@@ -36,6 +41,11 @@
       "sourceType": "github",
       "skillPath": "skills/aso/SKILL.md",
       "computedHash": "f84a1fb5cb1a8a7f7171bd60ae6850f24a82fa6af94bd5f12e5b3e9227480a34"
+    },
+    "breakout-card": {
+      "source": "../../../tmp/claude-0/-home-user-DSA/42ad367c-2f93-5c4e-adb5-99311fe817e4/scratchpad/fav/src",
+      "sourceType": "local",
+      "computedHash": "1bd72101fe667fac6c041e29dbff98edc69e5a3e2320ba8ee6fe76891be7dd59"
     },
     "churn-prevention": {
       "source": "coreyhaines31/marketingskills",
@@ -109,11 +119,21 @@
       "skillPath": "skills/directory-submissions/SKILL.md",
       "computedHash": "b737c3b9b9387bbeefd4fb5a003c1debaf273563f170665f6b9341c6818d121b"
     },
+    "edit-video": {
+      "source": "../../../tmp/claude-0/-home-user-DSA/42ad367c-2f93-5c4e-adb5-99311fe817e4/scratchpad/fav/src",
+      "sourceType": "local",
+      "computedHash": "ba5500dee2244071a49ed936a45ac631af2eaeed0e0f41f7c385b4cc8595ada2"
+    },
     "emails": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
       "skillPath": "skills/emails/SKILL.md",
       "computedHash": "261d986c2a1f1f5f823f8c889e16db723edb8a9d0fa5ede8412f981594715c49"
+    },
+    "find-ideas": {
+      "source": "../../../tmp/claude-0/-home-user-DSA/42ad367c-2f93-5c4e-adb5-99311fe817e4/scratchpad/fav/src",
+      "sourceType": "local",
+      "computedHash": "c378b43192a81dd09f18bfdde63f91187a2f1070cb710e20971f3156fdff31da"
     },
     "free-tools": {
       "source": "coreyhaines31/marketingskills",
@@ -157,6 +177,11 @@
       "skillPath": "skills/onboarding/SKILL.md",
       "computedHash": "634b9ba0a4446d9358d3cbc316feefc2e9d618cd88d5a77f0bc6ec895ed5eb5f"
     },
+    "paper-grid": {
+      "source": "../../../tmp/claude-0/-home-user-DSA/42ad367c-2f93-5c4e-adb5-99311fe817e4/scratchpad/fav/src",
+      "sourceType": "local",
+      "computedHash": "39b6d273a594da0e4dac3f5bb75d285c8b14aece81b700393503b2280b258c62"
+    },
     "paywalls": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
@@ -186,6 +211,11 @@
       "sourceType": "github",
       "skillPath": "skills/programmatic-seo/SKILL.md",
       "computedHash": "0bbdcbacfbe46fd78d774041ee49afd313505bb435b775dc246f4b8e6981d797"
+    },
+    "publish-and-analyze": {
+      "source": "../../../tmp/claude-0/-home-user-DSA/42ad367c-2f93-5c4e-adb5-99311fe817e4/scratchpad/fav/src",
+      "sourceType": "local",
+      "computedHash": "e1599c8012dbe76f1c9ae8105f0e426730dd43f8c8bf390f1a8006fa045f08cf"
     },
     "referrals": {
       "source": "coreyhaines31/marketingskills",
@@ -235,11 +265,21 @@
       "skillPath": "skills/social/SKILL.md",
       "computedHash": "45f19eb1da07de3505f4db57ea0a83906c73bc30bc6af1fdb4d576d5d2dee310"
     },
+    "text-over-footage": {
+      "source": "../../../tmp/claude-0/-home-user-DSA/42ad367c-2f93-5c4e-adb5-99311fe817e4/scratchpad/fav/src",
+      "sourceType": "local",
+      "computedHash": "c9afa15ffc6d250d54d8e40e5ec5dc659946b4746ea231b9f65dee590abedd7c"
+    },
     "video": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
       "skillPath": "skills/video/SKILL.md",
       "computedHash": "8286d39be8d86f9fc1c39b3c340cdebcf9a490f7606ffde566572baa163b1fe7"
+    },
+    "write-script": {
+      "source": "../../../tmp/claude-0/-home-user-DSA/42ad367c-2f93-5c4e-adb5-99311fe817e4/scratchpad/fav/src",
+      "sourceType": "local",
+      "computedHash": "14c07443d0e8f7a62ac1da789e59752437fb5fe2ccb438055dfa690e30e76025"
     }
   }
 }
