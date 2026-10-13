@@ -5,8 +5,9 @@ Turns one landscape phone video + a JSON plan into a branded 9:16 reel:
 square footage panel with beat-synced zoom pulses, pop-in headline text,
 customer-review badge, optional captions, original synthesized music,
 sound effects and a contact end card. Exports 1080x1920 or true 4K (2160x3840).
+Plans with "format": "16:9" are rendered by landscape.py instead (GenZ landscape edit).
 
-Usage:  python make_reel.py examples/iphone18_testimonial.json [--res 4k|1080] [--out file.mp4]
+Usage:  python make_reel.py examples/iphone18_testimonial.json [--res 4k|1080] [--out file.mp4] [--only A:B]
 Needs:  ffmpeg + ffprobe on PATH, Python 3.9+, pip install pillow numpy scipy
 """
 import argparse, json, os, subprocess, sys
@@ -45,9 +46,14 @@ def main():
     ap.add_argument("plan")
     ap.add_argument("--res", choices=["1080", "4k"])
     ap.add_argument("--out")
+    ap.add_argument("--only", help="test render: only reel seconds A:B of the final export")
+    ap.add_argument("--plan-only", action="store_true", help="16:9 mode: print the timeline and stop")
     args = ap.parse_args()
     plan_path = os.path.abspath(args.plan)
     P = json.load(open(plan_path, encoding="utf-8"))
+    if P.get("format") in ("16:9", "16x9"):
+        import landscape
+        return landscape.build(P, plan_path, args)
     base = os.path.dirname(plan_path)
     src = os.path.abspath(os.path.join(base, P["source"]))
     out = os.path.abspath(args.out or os.path.join(base, P.get("output", "reel.mp4")))
@@ -217,8 +223,11 @@ def main():
              "loudnorm=I=-14:TP=-1.5:LRA=9,alimiter=limit=0.8:level=disabled[aout]")
 
     crf = "18" if S == 2 else "17"
+    span = ["-t", f"{TOTAL:.3f}"]
+    if args.only:
+        a, b = (float(x) for x in args.only.split(":")); span = ["-ss", f"{a}", "-to", f"{b}"]
     run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "[vout]", "-map", "[aout]",
-         "-t", f"{TOTAL:.3f}", "-r", "30", "-c:v", "libx264", "-preset", "medium", "-crf", crf,
+         *span, "-r", "30", "-c:v", "libx264", "-preset", "medium", "-crf", crf,
          "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", out])
     print("wrote", out)
 

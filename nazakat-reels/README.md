@@ -9,7 +9,7 @@ sound effects and a contact end card.
 - ffmpeg + ffprobe on PATH
   - Mac: `brew install ffmpeg`
   - Windows: `winget install Gyan.FFmpeg`
-- Python 3.9+, then `pip install pillow numpy scipy`
+- Python 3.9+, then `pip install pillow numpy scipy` (`faster-whisper` too if you want auto transcripts for captions)
 
 ## Use
 1. Copy the original video into `nazakat-reels/input/` (USB / Google Drive desktop, not WhatsApp, which compresses).
@@ -23,6 +23,22 @@ The output goes to `output/`. Intermediate files go to `work/`, which git ignore
 - `crops` are square crops as fractions: `[left of width, top of height, size of height]`.
 - `beats`, `flashes`, `sfx`, `badge`, `captions` and `music_sections` use reel seconds; `"end"` means where the footage ends and the end card begins.
 - `speech.ranges` are source seconds of the customer audio kept under the reel from `speech.at`.
+
+## 16:9 GenZ mode
+Set `"format": "16:9"` in the plan (see `examples/iphone18_genz_16x9.json`) to get a landscape
+edit (1920x1080, or 3840x2160 with `--res 4k`): full-frame footage with 16:9 punch-in crops, smooth
+speed ramps (`"ramp": [1.5, 4.5, 2]`), zoom punches, flash + RGB-split glitch hits, emoji stickers,
+word-by-word pop captions and a red brand end card. It is rendered by `landscape.py`.
+- Segments can carry an `id`; any time can then be written `"@id"`, `"@id.end"` or `"@id+0.5"`.
+- `crops` are 16:9: `[left of width, top of height, height fraction]`; `"full"` (default) is the whole frame.
+- `texts` are stickers/headlines (`pos` = centre as frame fractions, `rotate`, `style: "pill"`, emoji allowed).
+- `captions.words` are `[source start, source end, word]`; chunks end at punctuation, a trailing `/`, a pause or `max_words`.
+- `music` takes `bpm` and an `anchor` time so a beat lands exactly on the drop.
+- Colour emoji are drawn with Pillow (`C:\Windows\Fonts\seguiemj.ttf` on Windows); without an emoji font they are dropped, never shown as boxes.
+- All text stays inside a 5% title-safe margin.
+
+Test a few seconds first: `python make_reel.py plan.json --res 4k --only 8:16`.
+`--plan-only` prints the 16:9 timeline (segment start times) without rendering.
 
 ## Assets
 - Montserrat fonts: SIL Open Font License (`assets/fonts/OFL.txt`).

@@ -29,9 +29,9 @@
     {"from": 45.6, "to": 50.3, "speed": 1.0, "crop": "cu"},
     {"from": 50.3, "to": 53.7, "speed": 1.0, "crop": "two"},
     {"from": 53.7, "to": 58.5, "speed": 1.0, "crop": "cu"},
-    {"from": 58.5, "to": 65.0, "speed": 1.0, "crop": "two"}
+    {"from": 58.5, "to": 62.58, "speed": 1.0, "crop": "two"}
   ],
-  "speech": {"at": 16.5, "ranges": [[38.1, 43.0], [43.5, 44.7], [45.6, 65.0]]},
+  "speech": {"at": 16.5, "ranges": [[38.1, 43.0], [43.5, 44.7], [45.6, 62.58]]},
   "music_sections": [[0, 8, "full"], [8, 11.5, "break"], [11.5, 16.5, "full"], [16.5, "end", "light"]],
   "motion": {"push": [8, 11.5], "shake": 11.5},
   "beats": [
@@ -43,15 +43,25 @@
     [14, 16.5, "PRO. PRO MAX.", "DONO!"],
     [16.5, 22, "CUSTOMER", "KI ZUBAANI", "Asli customer, asli review"],
     [22, 28, "PEHLE PHONE SE", "AAJ TAK", "Hamesha Nazakat Telecom se"],
-    [28, 34, "SERVICE", "PE BHAROSA", "Sale ke baad bhi saath"],
-    [34, 38.5, "SINCE 1992", "PATHANKOT", "ka apna mobile store"],
-    [38.5, "end", "AAP BHI", "AAO!", "Call: 81968 48484"]
+    [28, 33, "SERVICE", "PE BHAROSA", "Sale ke baad bhi saath"],
+    [33, 36.5, "SINCE 1992", "PATHANKOT", "ka apna mobile store"],
+    [36.5, "end", "AAP BHI", "AAO!", "Call: 81968 48484"]
   ],
   "badge": {"text": "CUSTOMER REVIEW", "from": 16.8, "to": "end"},
-  "captions": [],
+  "_captions_note": "Reel seconds (source - 23.0 from 45.6 on). Only phrases where 2+ Whisper passes agreed; speech ends 62.58, before a price/comparison line.",
+  "captions": [
+    [22.80, 24.60, "Bilkul meri favourite shop hai"],
+    [24.60, 27.30, "Koi bhi product, Apple, kuch bhi"],
+    [27.52, 28.48, "Main to chhote hote the,"],
+    [28.48, 29.50, "aa raha hoon yahan se"],
+    [30.70, 32.14, "Koi bhi phone, mere saare phone"],
+    [32.14, 33.10, "yahan se jaate hain"],
+    [36.50, 38.30, "Saare phone, Apple, kuch bhi,"],
+    [38.84, "end", "yeh idhar hi aana hai"]
+  ],
   "flashes": [2, 4, 11.5, 16.5],
   "sfx": [["impact", 0, 0.7], ["swish", 2, 0.5], ["swish", 4, 0.35], ["impact", 11.5, 0.7],
-          ["swish", 16.5, 0.4], ["pop", 38.5, 0.5], ["shutter", "end", 0.7]],
+          ["swish", 16.5, 0.4], ["pop", 36.5, 0.5], ["shutter", "end", 0.7]],
   "logo_bug_from": 2,
   "endcard_seconds": 5
 }

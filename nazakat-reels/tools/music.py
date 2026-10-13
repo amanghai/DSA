@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """Original synthesized music bed (no samples, no third-party audio) for the Nazakat reel.
-120 BPM, A minor. Sections are passed as JSON: [[start, end, kind], ...] with kind in
-full | break | light | out. Usage: music.py OUT.wav TOTAL_SECONDS SECTIONS_JSON"""
+120 BPM (or BPM), A minor. Sections are passed as JSON: [[start, end, kind], ...] with kind in
+full | break | light | out. OFFSET shifts the beat grid so a beat lands on a chosen moment.
+Usage: music.py OUT.wav TOTAL_SECONDS SECTIONS_JSON [BPM] [OFFSET_SECONDS]"""
 import json, sys
 import numpy as np
 from scipy.io import wavfile
 from scipy.signal import butter, sosfilt
 
 SR = 48000
-BPM = 120
+BPM = float(sys.argv[4]) if len(sys.argv) > 4 else 120
 BEAT = 60 / BPM
+OFFSET = float(sys.argv[5]) % BEAT if len(sys.argv) > 5 else 0.0
 out_path, total, sections = sys.argv[1], float(sys.argv[2]), json.loads(sys.argv[3])
 N = int(total * SR) + SR
 rng = np.random.default_rng(7)
@@ -54,14 +56,15 @@ mix = np.zeros(N)
 def add(sig, at, g=1.0):
     i = int(at * SR)
     if i >= N: return
+    if i < 0: sig, i = sig[-i:], 0  # hits before 0 s (beat grid shifted by OFFSET)
     j = min(N, i + len(sig)); mix[i:j] += sig[: j - i] * g
 
 duck = np.ones(N)
 step = BEAT / 2
-t = 0.0; k8 = 0
+t = OFFSET - BEAT * 4 if OFFSET else 0.0; k8 = 0  # start a bar early so the grid runs through OFFSET
 while t < total:
-    kd = kind_at(t)
-    bar = int(t / (BEAT * 4)); root, chord = PROG[bar % 4]
+    kd = kind_at(t)  # "out" before 0 s, so no hits land at negative times
+    bar = int(np.floor((t - OFFSET) / (BEAT * 4))) % 4; root, chord = PROG[bar]
     on_beat = k8 % 2 == 0
     if kd in ("full",) and on_beat:
         add(kick(), t, 1.0)
@@ -81,9 +84,10 @@ while t < total:
 
 # pads: one chord per bar, everywhere except "out" tail fades
 bar_len = BEAT * 4
-b = 0
-while b * bar_len < total:
-    s = b * bar_len; kd = kind_at(s)
+b = -1 if OFFSET else 0
+while OFFSET + b * bar_len < total:
+    s = OFFSET + b * bar_len
+    kd = kind_at(max(0.0, s))
     root, chord = PROG[b % 4]
     n = int(bar_len * SR)
     tt = np.arange(n) / SR
