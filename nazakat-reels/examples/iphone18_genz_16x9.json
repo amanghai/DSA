@@ -1,0 +1,78 @@
+{
+  "_note": "16:9 GenZ cut of the iPhone 18 unboxing + review. Segment from/to are SOURCE seconds; all other times are REEL seconds, 'end', or '@id' / '@id.end' / '@id+1.5' (relative to a tagged segment). Crops are 16:9 punch-ins: [left of width, top of height, height fraction].",
+  "format": "16:9",
+  "source": "../input/20261008_185220.mp4",
+  "output": "../output/iphone18_genz_16x9.mp4",
+  "resolution": "4k",
+  "brand": {
+    "name": "NAZAKAT TELECOM",
+    "street": "Defence Road, Mamun Cantt",
+    "city": "PATHANKOT",
+    "since": "1992",
+    "phones": ["81968 48484", "99889 69696"],
+    "product_line": "iPhone 18 Pro  |  18 Pro Max"
+  },
+  "crops": {
+    "cu": [0.28, 0.0, 0.62],
+    "cu2": [0.33, 0.0, 0.5],
+    "boxes": [0.30, 0.47, 0.5]
+  },
+  "segments": [
+    {"id": "hook",   "from": 21.9,  "to": 23.4,  "speed": 1.0, "crop": "cu"},
+    {"id": "boxes",  "from": 0.25,  "to": 1.45,  "speed": 1.0, "crop": "boxes"},
+    {"id": "unbox",  "from": 7.0,   "to": 19.5,  "ramp": [1.5, 4.5, 4.5, 2.0]},
+    {"id": "wait",   "from": 19.5,  "to": 21.75, "speed": 1.0},
+    {"id": "drop",   "from": 21.75, "to": 23.6,  "speed": 1.0, "crop": "cu2"},
+    {"id": "vibe",   "from": 24.0,  "to": 36.0,  "ramp": [2.5, 4.5, 2.5]},
+    {"id": "review", "from": 38.0,  "to": 43.0,  "speed": 1.0},
+    {"from": 43.5, "to": 44.65, "speed": 1.0, "crop": "cu"},
+    {"from": 45.6, "to": 50.3,  "speed": 1.0, "crop": "cu"},
+    {"from": 50.3, "to": 53.7,  "speed": 1.0},
+    {"from": 53.7, "to": 58.5,  "speed": 1.0, "crop": "cu"},
+    {"id": "last", "from": 58.5, "to": 62.58, "speed": 1.0}
+  ],
+  "speech": {"at": "@review", "ranges": [[38.0, 43.0], [43.5, 44.65], [45.6, 62.58]]},
+  "music": {
+    "bpm": 128,
+    "anchor": "@drop",
+    "sections": [[0, "@wait", "full"], ["@wait", "@drop", "break"], ["@drop", "@review", "full"], ["@review", "end", "light"]]
+  },
+  "fx": {
+    "punches": ["@boxes", "@unbox", "@drop", "@vibe"],
+    "push": [["@wait", "@drop"]],
+    "shake": ["@drop"],
+    "glitch": ["@boxes", "@unbox", "@drop", "@vibe", "@review"],
+    "flashes": ["@drop", "@review", "end"]
+  },
+  "logo": {"size": 110, "pos": [0.93, 0.12], "from": 0, "to": "end"},
+  "texts": [
+    {"t": [0, "@boxes"], "text": "POV: Pathankot mein\n2 iPhone 18 Pro ek saath 😳", "color": ["white", "#FFD54F"], "size": 84, "pos": [0.5, 0.82], "pop": false},
+    {"t": ["@boxes", "@boxes.end"], "text": "SEAL PACK 📦", "color": "#FFD54F", "size": 72, "pos": [0.22, 0.18], "rotate": -5},
+    {"t": ["@unbox+0.1", "@unbox.end"], "text": "unboxing ASMR 🎧", "size": 66, "pos": [0.82, 0.30], "rotate": -4},
+    {"t": ["@wait+0.1", "@drop"], "text": "WAIT FOR IT... 👀", "color": "#FFD54F", "size": 104, "pos": [0.5, 0.82]},
+    {"t": ["@drop", "@drop.end"], "text": "PEHLI JHALAK ✨", "size": 96, "pos": [0.06, 0.84], "align": "left"},
+    {"t": ["@drop+0.3", "@drop.end"], "text": "main character\nenergy", "color": "#FFD54F", "size": 64, "pos": [0.82, 0.30], "rotate": 5},
+    {"t": ["@vibe+0.1", "@vibe.end"], "text": "vibe check ✅", "size": 66, "pos": [0.82, 0.30], "rotate": -4},
+    {"t": ["@vibe+0.3", "@vibe.end"], "text": "18 PRO + 18 PRO MAX", "color": "#FFD54F", "size": 84, "pos": [0.5, 0.84]},
+    {"t": ["@review", "end"], "text": "CUSTOMER REVIEW", "style": "pill", "bg": "#D32F2F", "font": "xbold", "size": 38, "pos": [0.05, 0.08], "align": "left", "pop": false},
+    {"t": ["@review+0.3", "@review+4.8"], "text": "customer ne bola,\nhum nahi 😌", "size": 64, "pos": [0.82, 0.30], "rotate": -4},
+    {"t": ["@review+11", "@review+19"], "text": "PEHLE PHONE SE\nAAJ TAK 📱", "color": ["white", "#FFD54F"], "size": 66, "pos": [0.82, 0.30], "rotate": -4},
+    {"t": ["@last+1.2", "end"], "text": "Pathankot ka\niPhone plug 🔌", "color": ["white", "#FFD54F"], "size": 66, "pos": [0.82, 0.30], "rotate": 4}
+  ],
+  "_captions_note": "Roman Hinglish, SOURCE seconds. faster-whisper medium + large-v3 (full clip and short clips); kept only where passes agreed, unsure words left out. 52.2-53.6 and 55.6-59.1 uncaptioned (models disagreed). A trailing '/' or punctuation ends a caption chunk. Speech ends 62.58, before a price/comparison line.",
+  "captions": {"pos": [0.5, 0.86], "size": 66, "max_words": 5, "highlight": "#FFD54F", "words": [
+    [45.80, 46.00, "bilkul"], [46.00, 46.30, "meri"], [46.30, 46.68, "favourite"], [46.68, 47.06, "shop"], [47.06, 47.30, "hai."],
+    [47.60, 47.98, "koi"], [47.98, 48.12, "bhi"], [48.12, 48.64, "product,"],
+    [48.82, 49.18, "Apple,"], [49.52, 49.78, "kuch"], [49.78, 50.00, "bhi."],
+    [50.52, 50.66, "main"], [50.66, 50.80, "to"], [50.80, 51.06, "chhote"], [51.06, 51.30, "hote"], [51.30, 51.48, "the,"],
+    [51.48, 51.60, "aa"], [51.60, 51.72, "raha"], [51.72, 51.80, "hoon"], [51.80, 52.00, "yahan"], [52.00, 52.20, "se."],
+    [53.70, 54.02, "koi"], [54.02, 54.18, "bhi"], [54.18, 54.36, "phone,"],
+    [54.36, 54.58, "mere"], [54.58, 54.94, "saare"], [54.94, 55.14, "phone/"], [55.14, 55.34, "yahan"], [55.34, 55.44, "se"], [55.44, 55.62, "jaate"], [55.62, 55.80, "hain."],
+    [59.50, 59.84, "saare"], [59.84, 60.20, "phone,"], [60.20, 60.48, "Apple,"], [60.62, 60.90, "kuch"], [60.90, 61.08, "bhi,"],
+    [61.84, 61.94, "yeh"], [61.94, 62.08, "idhar"], [62.08, 62.24, "hi"], [62.24, 62.42, "aana"], [62.42, 62.50, "hai."]
+  ]},
+  "sfx": [["impact", 0, 0.55], ["swish", "@boxes", 0.35], ["pop", "@boxes", 0.35], ["swish", "@unbox", 0.35],
+          ["pop", "@wait+0.1", 0.35], ["impact", "@drop", 0.7], ["swish", "@vibe", 0.35], ["pop", "@vibe+0.1", 0.35],
+          ["swish", "@review", 0.3], ["shutter", "end", 0.6]],
+  "endcard_seconds": 4.5
+}
