@@ -27,7 +27,7 @@
     {"from": 45.6, "to": 50.3, "crop": "cu", "audio": true},
     {"from": 50.3, "to": 53.7, "crop": "two", "audio": true},
     {"mark": "cu2",    "from": 53.7, "to": 58.5, "crop": "cu", "audio": true},
-    {"mark": "last",   "from": 58.5, "to": 65.6, "crop": "two", "audio": true}
+    {"mark": "last",   "from": 58.5, "to": 62.8, "crop": "two", "audio": true}
   ],
   "bpm": 128,
   "music_sections": [[0, "wait", "full"], ["wait", "drop", "break"], ["drop", "speech", "full"], ["speech", "end", "light"]],
