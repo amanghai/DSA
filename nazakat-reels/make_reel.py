@@ -10,7 +10,7 @@ Plans with "format": "16:9" are rendered by landscape.py instead (GenZ landscape
 Usage:  python make_reel.py examples/iphone18_testimonial.json [--res 4k|1080] [--out file.mp4] [--only A:B]
 Needs:  ffmpeg + ffprobe on PATH, Python 3.9+, pip install pillow numpy scipy
 """
-import argparse, json, os, subprocess, sys
+import argparse, hashlib, json, os, subprocess, sys
 from PIL import ImageFont
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -85,11 +85,15 @@ def main():
         cx, cy, cs = P["crops"][s.get("crop", "two")]
         size = int(cs * SH) // 2 * 2
         x = min(max(0, int(cx * SW)), SW - size); y = min(max(0, int(cy * SH)), SH - size)
-        name = f"s{i:02d}.mp4"
-        run(["ffmpeg", "-v", "error", "-y", "-ss", f"{s['from']}", "-t", f"{s['to'] - s['from']}", "-i", src, "-an",
-             "-vf", f"setpts=(PTS-STARTPTS)/{s.get('speed', 1)},fps=30,crop={size}:{size}:{x}:{y},"
-                    f"scale={PS}:{PS}:flags=lanczos,setsar=1",
-             "-c:v", "libx264", "-crf", "12", "-preset", "fast", "-pix_fmt", "yuv420p", f"work/segs/{name}"])
+        cmd = ["-ss", f"{s['from']}", "-t", f"{s['to'] - s['from']}", "-i", src, "-an",
+               "-vf", f"setpts=(PTS-STARTPTS)/{s.get('speed', 1)},fps=30,crop={size}:{size}:{x}:{y},"
+                      f"scale={PS}:{PS}:flags=lanczos,setsar=1",
+               "-c:v", "libx264", "-crf", "12", "-preset", "fast", "-pix_fmt", "yuv420p"]
+        # cache by parameters so a short --only test and the full render share the clips
+        name = "s" + hashlib.sha1(json.dumps([cmd, os.path.getmtime(src)]).encode()).hexdigest()[:12] + ".mp4"
+        if not os.path.exists(f"{work}/segs/{name}"):
+            run(["ffmpeg", "-v", "error", "-y", *cmd, f"work/segs/{name}.part.mp4"])
+            os.replace(f"{work}/segs/{name}.part.mp4", f"{work}/segs/{name}")
         lst.append(f"file '{name}'")
     open(f"{work}/segs/list.txt", "w").write("\n".join(lst))
     run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "work/segs/list.txt", "-c", "copy", "work/panel.mp4"])
@@ -152,7 +156,8 @@ def main():
         a = fx_cfg["shake"]; shake = f"{px(12)}*sin(it*90)*exp(-(it-{a})*7)*between(it,{a},{a + 0.5})"
 
     f = []
-    f.append("[0:v]setpts=PTS-STARTPTS,fps=30,split[vbg][vfg0]")
+    # hold the last frame under the end card, otherwise the graph ends with the footage
+    f.append(f"[0:v]setpts=PTS-STARTPTS,fps=30,tpad=stop_mode=clone:stop_duration={END + 0.5},split[vbg][vfg0]")
     f.append(f"[vfg0]scale={int(PS * 1.5)}:{int(PS * 1.5)}:flags=lanczos[vfg]")
     f.append(f"[vbg]scale=-2:{OH},crop={OW}:{OH},boxblur={px(30)}:3,eq=brightness=-0.25:saturation=1.3[bg]")
     f.append(f"[vfg]zoompan=z='1+{'+'.join(terms)}':x='iw/2-(iw/zoom/2)+{shake}':y='ih/2-(ih/zoom/2)':d=1:s={PS}x{PS}:fps=30,"
