@@ -9,7 +9,7 @@ sound effects and a contact end card.
 - ffmpeg + ffprobe on PATH
   - Mac: `brew install ffmpeg`
   - Windows: `winget install Gyan.FFmpeg`
-- Python 3.9+, then `pip install pillow numpy scipy`
+- Python 3.9+, then `pip install pillow numpy scipy` (`faster-whisper` too if you want to transcribe captions)
 
 ## Use
 1. Copy the original video into `nazakat-reels/input/` (USB / Google Drive desktop, not WhatsApp, which compresses).
@@ -18,11 +18,25 @@ sound effects and a contact end card.
 
 The output goes to `output/`. Intermediate files go to `work/`, which git ignores.
 
+### 16:9 landscape (GenZ cut)
+`python make_wide.py examples/iphone18_genz_16x9.json --res 4k`
+(same as `python make_reel.py examples/iphone18_genz_16x9.json --format 16x9 --res 4k`)
+
+Full-frame 16:9 footage (1920x1080 or 3840x2160) with 16:9 punch-in crops, speed ramps, zoom punches,
+flash + RGB-split glitches, colour-emoji stickers (drawn with Pillow + Segoe UI Emoji, since ffmpeg
+drawtext cannot draw colour emoji), word-by-word pop captions (current word yellow), a faster music bed
+ducked under the customer's speech, and a red contact end card. Text stays inside the 5% title-safe area.
+Add `--seconds 6` to render only the first 6 s as a quick test.
+
 ## Plan format
 - `segments[].from/to` are seconds in the source video; `speed` > 1 speeds a clip up.
 - `crops` are square crops as fractions: `[left of width, top of height, size of height]`.
 - `beats`, `flashes`, `sfx`, `badge`, `captions` and `music_sections` use reel seconds; `"end"` means where the footage ends and the end card begins.
 - `speech.ranges` are source seconds of the customer audio kept under the reel from `speech.at`.
+- 16:9 plans: `crops` are `[left, top, width]` fractions (16:9 box); a segment may have `ramp`
+  (list of speeds over equal parts), `mark` (a name other times can use, e.g. `"drop+0.5"`),
+  `audio: true` (real speech) or `ambient` (real sound mixed low). `words` are
+  `[source_start, source_end, word]` for the pop captions; add only words you are sure of.
 
 ## Assets
 - Montserrat fonts: SIL Open Font License (`assets/fonts/OFL.txt`).

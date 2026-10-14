@@ -1,0 +1,58 @@
+{
+  "_note": "16:9 GenZ cut of the iPhone 18 Pro / Pro Max unboxing + customer review. Build: python make_wide.py examples/iphone18_genz_16x9.json --res 4k. Segment from/to are SOURCE seconds. Every other time is REEL seconds or a segment mark ('drop', 'speech+2.5', 'end'). Crops are 16:9: [left, top, width] as fractions of the frame (height uses the same fraction). 'audio': true keeps the real sound (customer speech); 'ambient' mixes the real sound low under music. 'words' are SOURCE-second word timings for the pop captions; only words you are sure were said.",
+  "source": "../input/20261008_185220.mp4",
+  "output": "../output/iphone18_genz_16x9.mp4",
+  "resolution": "4k",
+  "brand": {
+    "street": "Defence Road, Mamun Cantt",
+    "city": "PATHANKOT",
+    "since": "1992",
+    "phones": ["81968 48484", "99889 69696"],
+    "product_line": "iPhone 18 Pro  |  18 Pro Max"
+  },
+  "crops": {
+    "wide": [0.0, 0.0, 1.0],
+    "two": [0.06, 0.0, 0.8],
+    "cu": [0.36, 0.0, 0.5]
+  },
+  "segments": [
+    {"mark": "hook",   "from": 65.8, "to": 67.3, "speed": 1.0, "crop": "two"},
+    {"mark": "boxes",  "from": 0.0,  "to": 3.0,  "speed": 1.5, "crop": "wide", "ambient": 0.35},
+    {"mark": "unbox",  "from": 7.0,  "to": 19.0, "ramp": [1.5, 3, 5, 5, 3, 1.5], "crop": "two", "ambient": 0.3},
+    {"mark": "wait",   "from": 19.0, "to": 22.0, "speed": 1.2, "crop": "two"},
+    {"mark": "drop",   "from": 22.0, "to": 23.5, "speed": 1.0, "crop": "cu"},
+    {"mark": "dono",   "from": 24.0, "to": 36.0, "ramp": [2, 3, 3, 2], "crop": "wide"},
+    {"mark": "speech", "from": 38.1, "to": 43.0, "crop": "two", "audio": true},
+    {"from": 43.5, "to": 44.7, "crop": "cu", "audio": true},
+    {"from": 45.6, "to": 50.3, "crop": "cu", "audio": true},
+    {"from": 50.3, "to": 53.7, "crop": "two", "audio": true},
+    {"mark": "cu2",    "from": 53.7, "to": 58.5, "crop": "cu", "audio": true},
+    {"mark": "last",   "from": 58.5, "to": 65.6, "crop": "two", "audio": true}
+  ],
+  "bpm": 128,
+  "music_sections": [[0, "wait", "full"], ["wait", "drop", "break"], ["drop", "speech", "full"], ["speech", "end", "light"]],
+  "punches": ["boxes", "unbox", "drop", "dono", "speech"],
+  "pushes": [["wait", "drop"]],
+  "glitches": ["boxes", "unbox", "drop", "dono", "speech", "end"],
+  "flashes": ["drop", "end"],
+  "logo_bug_from": "boxes",
+  "stickers": [
+    {"at": 0, "to": "boxes", "text": "POV: Pathankot mein 2 iPhone 18 Pro ek saath 😳", "style": "outline", "size": 84, "y": 0.5},
+    {"at": "boxes+0.15", "to": "unbox", "text": "seal pack, fresh stock 📦", "style": "white", "rot": -2, "y": 0.74},
+    {"at": "unbox+0.15", "to": "wait", "text": "unboxing ASMR 🎧", "style": "yellow", "rot": 2, "y": 0.74},
+    {"at": "wait+0.1", "to": "drop", "text": "wait for it... 👀", "style": "white", "size": 80, "y": 0.72},
+    {"at": "drop+0.1", "to": "dono", "text": "vibe check ✅", "style": "white", "rot": -3, "x": 0.27, "y": 0.74},
+    {"at": "dono+0.15", "to": "dono+2.5", "text": "iPhone 18 Pro + 18 Pro Max 🔥", "style": "red", "y": 0.74},
+    {"at": "dono+2.6", "to": "speech", "text": "main character energy ✨", "style": "yellow", "rot": -2, "y": 0.74},
+    {"at": "speech+0.3", "to": "speech+4.6", "text": "customer ne bola, hum nahi 😌", "style": "red", "rot": -2, "y": 0.7},
+    {"at": "cu2", "to": "cu2+3.5", "text": "Since 1992 💯", "style": "white", "rot": 2, "x": 0.25, "y": 0.7},
+    {"at": "last+2", "to": "end", "text": "Pathankot ka iPhone plug 🔌", "style": "yellow", "rot": 2, "y": 0.7}
+  ],
+  "caption_style": {"y": 905, "size": 72},
+  "words": [],
+  "sfx": [["impact", 0, 0.7], ["swish", "boxes", 0.5], ["pop", "boxes+0.15", 0.4], ["swish", "unbox", 0.45],
+          ["pop", "unbox+0.15", 0.4], ["pop", "wait+0.1", 0.35], ["impact", "drop", 0.8], ["pop", "drop+0.1", 0.4],
+          ["swish", "dono", 0.45], ["pop", "dono+0.15", 0.35], ["pop", "dono+2.6", 0.35], ["swish", "speech", 0.35],
+          ["pop", "speech+0.3", 0.3], ["pop", "cu2", 0.25], ["pop", "last+2", 0.3], ["shutter", "end", 0.7]],
+  "endcard_seconds": 5
+}

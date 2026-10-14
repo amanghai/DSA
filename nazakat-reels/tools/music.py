@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """Original synthesized music bed (no samples, no third-party audio) for the Nazakat reel.
-120 BPM, A minor. Sections are passed as JSON: [[start, end, kind], ...] with kind in
-full | break | light | out. Usage: music.py OUT.wav TOTAL_SECONDS SECTIONS_JSON"""
+120 BPM by default (pass a 4th arg for a faster, punchier bed), A minor. Sections are passed as
+JSON: [[start, end, kind], ...] with kind in full | break | light | out.
+Usage: music.py OUT.wav TOTAL_SECONDS SECTIONS_JSON [BPM]"""
 import json, sys
 import numpy as np
 from scipy.io import wavfile
 from scipy.signal import butter, sosfilt
 
 SR = 48000
-BPM = 120
+BPM = float(sys.argv[4]) if len(sys.argv) > 4 else 120
 BEAT = 60 / BPM
 out_path, total, sections = sys.argv[1], float(sys.argv[2]), json.loads(sys.argv[3])
 N = int(total * SR) + SR

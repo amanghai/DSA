@@ -6,7 +6,8 @@ square footage panel with beat-synced zoom pulses, pop-in headline text,
 customer-review badge, optional captions, original synthesized music,
 sound effects and a contact end card. Exports 1080x1920 or true 4K (2160x3840).
 
-Usage:  python make_reel.py examples/iphone18_testimonial.json [--res 4k|1080] [--out file.mp4]
+Usage:  python make_reel.py examples/iphone18_testimonial.json [--res 4k|1080] [--seconds N] [--out file.mp4]
+        python make_reel.py examples/iphone18_genz_16x9.json --format 16x9   (landscape, see make_wide.py)
 Needs:  ffmpeg + ffprobe on PATH, Python 3.9+, pip install pillow numpy scipy
 """
 import argparse, json, os, subprocess, sys
@@ -45,7 +46,13 @@ def main():
     ap.add_argument("plan")
     ap.add_argument("--res", choices=["1080", "4k"])
     ap.add_argument("--out")
+    ap.add_argument("--format", choices=["9x16", "16x9"], default="9x16",
+                    help="9x16 vertical reel (this script) or 16x9 landscape GenZ cut (make_wide.py)")
+    ap.add_argument("--seconds", type=float, help="only render the first N seconds (quick test)")
     args = ap.parse_args()
+    if args.format == "16x9":
+        import make_wide
+        return make_wide.build(args)
     plan_path = os.path.abspath(args.plan)
     P = json.load(open(plan_path, encoding="utf-8"))
     base = os.path.dirname(plan_path)
@@ -80,10 +87,15 @@ def main():
         size = int(cs * SH) // 2 * 2
         x = min(max(0, int(cx * SW)), SW - size); y = min(max(0, int(cy * SH)), SH - size)
         name = f"s{i:02d}.mp4"
-        run(["ffmpeg", "-v", "error", "-y", "-ss", f"{s['from']}", "-t", f"{s['to'] - s['from']}", "-i", src, "-an",
-             "-vf", f"setpts=(PTS-STARTPTS)/{s.get('speed', 1)},fps=30,crop={size}:{size}:{x}:{y},"
-                    f"scale={PS}:{PS}:flags=lanczos,setsar=1",
-             "-c:v", "libx264", "-crf", "12", "-preset", "fast", "-pix_fmt", "yuv420p", f"work/segs/{name}"])
+        cmd = ["ffmpeg", "-v", "error", "-y", "-ss", f"{s['from']}", "-t", f"{s['to'] - s['from']}", "-i", src, "-an",
+               "-vf", f"setpts=(PTS-STARTPTS)/{s.get('speed', 1)},fps=30,crop={size}:{size}:{x}:{y},"
+                      f"scale={PS}:{PS}:flags=lanczos,setsar=1",
+               "-c:v", "libx264", "-crf", "12", "-preset", "fast", "-pix_fmt", "yuv420p", f"work/segs/{name}"]
+        key = f"{work}/segs/{name}.cmd"  # skip clips already cut with the same settings
+        if not (os.path.exists(key) and open(key, encoding="utf-8").read() == repr(cmd)
+                and os.path.getsize(f"{work}/segs/{name}") > 0):
+            run(cmd)
+            open(key, "w", encoding="utf-8").write(repr(cmd))
         lst.append(f"file '{name}'")
     open(f"{work}/segs/list.txt", "w").write("\n".join(lst))
     run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", "work/segs/list.txt", "-c", "copy", "work/panel.mp4"])
@@ -146,7 +158,8 @@ def main():
         a = fx_cfg["shake"]; shake = f"{px(12)}*sin(it*90)*exp(-(it-{a})*7)*between(it,{a},{a + 0.5})"
 
     f = []
-    f.append("[0:v]setpts=PTS-STARTPTS,fps=30,split[vbg][vfg0]")
+    # hold the last frame so the main stream outlasts the end card (overlay stops when its main input ends)
+    f.append(f"[0:v]setpts=PTS-STARTPTS,fps=30,tpad=stop_mode=clone:stop_duration={END + 1:.3f},split[vbg][vfg0]")
     f.append(f"[vfg0]scale={int(PS * 1.5)}:{int(PS * 1.5)}:flags=lanczos[vfg]")
     f.append(f"[vbg]scale=-2:{OH},crop={OW}:{OH},boxblur={px(30)}:3,eq=brightness=-0.25:saturation=1.3[bg]")
     f.append(f"[vfg]zoompan=z='1+{'+'.join(terms)}':x='iw/2-(iw/zoom/2)+{shake}':y='ih/2-(ih/zoom/2)':d=1:s={PS}x{PS}:fps=30,"
@@ -159,7 +172,8 @@ def main():
              f"scale={d}:{d},format=rgba,geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='if(lte(hypot(X-{d/2},Y-{d/2}),{d/2 - 2}),255,0)'",
              "-frames:v", "1", f"work/{name}.png"])
     logo_from = P.get("logo_bug_from", 2)
-    f.append(f"[c0][1:v]overlay=W-w-{px(28)}:{PY + px(24)}:shortest=1:enable='gte(t,{logo_from})'[c1]")
+    # bottom-right of the panel (counter top): the top corners are where the customers' heads are
+    f.append(f"[c0][1:v]overlay=W-w-{px(28)}:{PY + PS - ls - px(24)}:shortest=1:enable='gte(t,{logo_from})'[c1]")
 
     fx = [f"drawbox=x=0:y={PY - px(6)}:w={OW}:h={px(6)}:color={RED}:t=fill",
           f"drawbox=x=0:y={PY + PS}:w={OW}:h={px(6)}:color={RED}:t=fill",
@@ -218,7 +232,7 @@ def main():
 
     crf = "18" if S == 2 else "17"
     run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(f), "-map", "[vout]", "-map", "[aout]",
-         "-t", f"{TOTAL:.3f}", "-r", "30", "-c:v", "libx264", "-preset", "medium", "-crf", crf,
+         "-t", f"{min(TOTAL, args.seconds or TOTAL):.3f}", "-r", "30", "-c:v", "libx264", "-preset", "medium", "-crf", crf,
          "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", out])
     print("wrote", out)
 
