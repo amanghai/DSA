@@ -1,0 +1,623 @@
+openapi: 3.1.0
+info:
+  title: Krea Assets Image Enhance API
+  version: v1
+  description: Asset management endpoints for uploading and managing images, videos, audio files, and 3D models
+servers:
+- url: https://api.krea.ai
+  description: Krea API
+security:
+- bearerAuth: []
+tags:
+- name: Image Enhance
+  description: Image enhance endpoints
+paths:
+  /generate/enhance/topaz/generative-enhance:
+    post:
+      tags:
+      - Image Enhance
+      description: 'Most powerful creative enhancer. Max 16K.
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrl` -> `image_url` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Topaz Generative
+      x-krea-deprecated-field-aliases:
+      - from: imageUrl
+        to: image_url
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  default: ''
+                width:
+                  type: number
+                  minimum: 1
+                  maximum: 32000
+                height:
+                  type: number
+                  minimum: 1
+                  maximum: 32000
+                seed:
+                  type: number
+                  default: 1337
+                image_url:
+                  type: string
+                  format: uri
+                model:
+                  type: string
+                  enum:
+                  - Redefine
+                  - Recovery
+                  - Recovery V2
+                  - Reimagine
+                  default: Redefine
+                output_format:
+                  type: string
+                  enum:
+                  - png
+                  - jpg
+                  - webp
+                  default: jpg
+                subject_detection:
+                  type: string
+                  enum:
+                  - All
+                  - Foreground
+                  - Background
+                  default: All
+                face_enhancement:
+                  type: boolean
+                  default: false
+                face_enhancement_creativity:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                face_enhancement_strength:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                crop_to_fill:
+                  type: boolean
+                  default: false
+                upscaling_activated:
+                  type: boolean
+                  default: false
+                image_scaling_factor:
+                  type: number
+                  minimum: 1
+                  maximum: 32
+                  default: 1
+                creativity:
+                  type: integer
+                  minimum: 1
+                  maximum: 6
+                  default: 3
+                texture:
+                  type: integer
+                  minimum: 1
+                  maximum: 5
+                  default: 3
+                sharpen:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                denoise:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                detail:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+              required:
+              - width
+              - height
+              - image_url
+              additionalProperties: false
+            example:
+              width: 1024
+              height: 1024
+              image_url: https://gen.krea.ai/images/0424f602-2999-4d0c-a46e-39cbf0ef384b.png
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/enhance/topaz/standard-enhance:
+    post:
+      tags:
+      - Image Enhance
+      description: 'Powerful faithful upscaler. Up to 22K resolution. Best for photos.
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrl` -> `image_url` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Topaz
+      x-krea-deprecated-field-aliases:
+      - from: imageUrl
+        to: image_url
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  default: ''
+                width:
+                  type: number
+                  minimum: 1
+                  maximum: 32000
+                height:
+                  type: number
+                  minimum: 1
+                  maximum: 32000
+                seed:
+                  type: number
+                  default: 1337
+                image_url:
+                  type: string
+                  format: uri
+                model:
+                  type: string
+                  enum:
+                  - Standard V2
+                  - Low Resolution V2
+                  - CGI
+                  - High Fidelity V2
+                  - Text Refine
+                output_format:
+                  type: string
+                  enum:
+                  - png
+                  - jpg
+                  - webp
+                  default: jpg
+                subject_detection:
+                  type: string
+                  enum:
+                  - All
+                  - Foreground
+                  - Background
+                  default: All
+                face_enhancement:
+                  type: boolean
+                  default: false
+                face_enhancement_creativity:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                face_enhancement_strength:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                crop_to_fill:
+                  type: boolean
+                  default: false
+                upscaling_activated:
+                  type: boolean
+                  default: false
+                image_scaling_factor:
+                  type: number
+                  minimum: 1
+                  maximum: 32
+                  default: 1
+                sharpen:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                denoise:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                fix_compression:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                strength:
+                  type: number
+                  minimum: 0.01
+                  maximum: 1
+                  default: 0.5
+              required:
+              - width
+              - height
+              - image_url
+              - model
+              additionalProperties: false
+            example:
+              width: 1024
+              height: 1024
+              image_url: https://gen.krea.ai/images/0424f602-2999-4d0c-a46e-39cbf0ef384b.png
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+  /generate/enhance/topaz/bloom-enhance:
+    post:
+      tags:
+      - Image Enhance
+      description: 'Creative upscaler that adds new details. Max 10K.
+
+        > **Deprecated request fields:**
+
+        >
+
+        > - `imageUrl` -> `image_url` until 2026-06-19
+
+        >
+
+        > Deprecated fields are accepted for compatibility only and are not shown in the request schema.
+
+        '
+      summary: Topaz Bloom
+      x-krea-deprecated-field-aliases:
+      - from: imageUrl
+        to: image_url
+        sunset_date: '2026-06-19'
+        reason: Public API request fields are moving to snake_case.
+        migration_url: https://docs.krea.ai/developers/deprecations#public-api-snake-case-fields
+      parameters:
+      - name: X-Webhook-URL
+        in: header
+        required: false
+        schema:
+          type: string
+          format: uri
+        description: URL to receive a POST request when the job completes. The webhook will receive the job data including results.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  default: ''
+                width:
+                  type: number
+                  minimum: 1
+                  maximum: 10000
+                height:
+                  type: number
+                  minimum: 1
+                  maximum: 10000
+                seed:
+                  type: number
+                  default: 1337
+                image_url:
+                  type: string
+                  format: uri
+                model:
+                  type: string
+                  const: Reimagine
+                output_format:
+                  type: string
+                  enum:
+                  - png
+                  - jpg
+                  - webp
+                  default: jpg
+                crop_to_fill:
+                  type: boolean
+                  default: false
+                creativity:
+                  type: integer
+                  minimum: 1
+                  maximum: 9
+                  default: 3
+                face_preservation:
+                  type: boolean
+                  default: false
+                color_preservation:
+                  type: boolean
+                  default: false
+                upscaling_activated:
+                  type: boolean
+                  default: false
+                image_scaling_factor:
+                  type: number
+                  minimum: 1
+                  maximum: 32
+                  default: 1
+              required:
+              - width
+              - height
+              - image_url
+              - model
+              additionalProperties: false
+            example:
+              width: 1024
+              height: 1024
+              image_url: https://gen.krea.ai/images/0424f602-2999-4d0c-a46e-39cbf0ef384b.png
+      responses:
+        '200':
+          description: The resulting job data. This will be returned in a pending state until the job is completed. See [`/jobs/{id}`](#tag/default/get/jobs/{id}) for retrieving the results.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum:
+                    - backlogged
+                    - queued
+                    - scheduled
+                    - processing
+                    - sampling
+                    - intermediate-complete
+                    - completed
+                    - failed
+                    - cancelled
+                  created_at:
+                    type: string
+                    format: date-time
+                  completed_at:
+                    type: 'null'
+                  result:
+                    type: 'null'
+                required:
+                - job_id
+                - status
+                - created_at
+                - completed_at
+                - result
+        '400':
+          description: The request body is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '401':
+          description: You are not authenticated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '402':
+          description: You have run out of credits.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+        '429':
+          description: You have reached the maximum number of concurrent jobs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+components:
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      bearerFormat: Bearer
+      type: http
