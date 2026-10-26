@@ -1,0 +1,758 @@
+import { existsSync } from 'fs'
+import { readdir, readFile, stat } from 'fs/promises'
+import { basename, dirname, join, posix, win32 } from 'path'
+import { homedir } from 'os'
+
+import { readSessionFile } from '../fs-utils.js'
+import { calculateCost } from '../models.js'
+import type { Provider, SessionSource, SessionParser, ParsedProviderCall } from './types.js'
+
+const modelDisplayNames: Record<string, string> = {
+  'gpt-4.1-nano': 'GPT-4.1 Nano',
+  'gpt-4.1-mini': 'GPT-4.1 Mini',
+  'gpt-4.1': 'GPT-4.1',
+  'gpt-4o-mini': 'GPT-4o Mini',
+  'gpt-4o': 'GPT-4o',
+  'gpt-5.4': 'GPT-5.4',
+  'gpt-5.3-codex': 'GPT-5.3 Codex',
+  'gpt-5-mini': 'GPT-5 Mini',
+  'gpt-5': 'GPT-5',
+  'claude-opus-4-7': 'Opus 4.7',
+  'claude-opus-4-6': 'Opus 4.6',
+  'claude-opus-4-5': 'Opus 4.5',
+  'claude-opus-4-1': 'Opus 4.1',
+  'claude-opus-4': 'Opus 4',
+  'claude-sonnet-4-6': 'Sonnet 4.6',
+  'claude-sonnet-4-5': 'Sonnet 4.5',
+  'claude-sonnet-4': 'Sonnet 4',
+  'claude-3-7-sonnet': 'Sonnet 3.7',
+  'claude-3-5-sonnet': 'Sonnet 3.5',
+  'o4-mini': 'o4-mini',
+  'o3': 'o3',
+}
+
+const toolNameMap: Record<string, string> = {
+  bash: 'Bash',
+  run_in_terminal: 'Bash',
+  read_file: 'Read',
+  write_file: 'Edit',
+  edit_file: 'Edit',
+  replace_string_in_file: 'Edit',
+  create_file: 'Write',
+  delete_file: 'Delete',
+  search_files: 'Grep',
+  file_search: 'Grep',
+  find_files: 'Glob',
+  list_directory: 'LS',
+  list_dir: 'LS',
+  web_search: 'WebSearch',
+  fetch_webpage: 'WebFetch',
+  github_repo: 'GitHub',
+  memory: 'Memory',
+  kill_terminal: 'Bash',
+}
+
+function normalizeMcpSegment(segment: string): string {
+  return segment
+    .replace(/[^a-zA-Z0-9_]+/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '')
+}
+
+function normalizeCopilotMcpTool(rawTool: string): string | null {
+  const serverSeparator = rawTool.lastIndexOf('-')
+  if (serverSeparator <= 0 || serverSeparator >= rawTool.length - 1) return null
+
+  const server = normalizeMcpSegment(rawTool.slice(0, serverSeparator))
+  const tool = normalizeMcpSegment(rawTool.slice(serverSeparator + 1))
+  if (!server || !tool) return null
+
+  return `mcp__${server}__${tool}`
+}
+
+function normalizeToolName(rawTool?: unknown): string {
+  if (typeof rawTool !== 'string') return ''
+  if (!rawTool) return ''
+  if (rawTool.startsWith('mcp__')) return rawTool
+
+  const builtIn = toolNameMap[rawTool]
+  if (builtIn) return builtIn
+
+  // Copilot records MCP tools as `<server>-<tool>` instead of Claude's
+  // `mcp__server__tool`; built-ins are handled above before this heuristic.
+  return normalizeCopilotMcpTool(rawTool) ?? rawTool
+}
+
+const CHARS_PER_TOKEN = 4
+const COPILOT_OPENAI_AUTO = 'copilot-openai-auto'
+const COPILOT_ANTHROPIC_AUTO = 'copilot-anthropic-auto'
+
+const modelDisplayEntries = Object.entries(modelDisplayNames).sort((a, b) => b[0].length - a[0].length)
+
+// --- Legacy format (session-state/events.jsonl with outputTokens) ---
+
+type LegacyToolRequest = {
+  name?: string
+  toolCallId?: string
+  type?: string
+}
+
+// Per-event-type shapes. The previous union included a permissive catch-all
+// branch (`{ type: string; data: Record<string, unknown> }`); a literal type
+// like `'user.message'` is assignable to `string`, so TS picked the catch-all
+// over the specific branches when narrowing on `type`, which propagated
+// `unknown`/`{}` into `event.data.content` etc. We now keep only the three
+// shapes we actually read from. Unknown event types fall through the if/else
+// chain without further narrowing — they are not in the union, but JSON.parse
+// returns `any` so we re-type as LegacyCopilotEvent and let the runtime type
+// guards (`event.type === 'X'`) ignore anything else.
+type LegacyCopilotEvent =
+  | { type: 'session.model_change'; timestamp?: string; data: { newModel: string; model?: string } }
+  | { type: 'user.message'; timestamp?: string; data: { content: string; interactionId?: string; model?: string } }
+  | { type: 'assistant.message'; timestamp?: string; data: { messageId: string; outputTokens: number; interactionId?: string; toolRequests?: LegacyToolRequest[]; model?: string } }
+
+function parseLegacyEvents(content: string, sessionId: string, seenKeys: Set<string>): ParsedProviderCall[] {
+  const results: ParsedProviderCall[] = []
+  const lines = content.split('\n').filter(l => l.trim())
+  let currentModel = ''
+  let pendingUserMessage = ''
+
+  for (const line of lines) {
+    let event: LegacyCopilotEvent
+    try {
+      event = JSON.parse(line)
+    } catch {
+      continue
+    }
+
+    // Some newer events include the model ID explicitly.
+    const data = event.data as { newModel?: string; model?: string }
+    if (typeof data.model === 'string' && data.model) {
+      currentModel = data.model
+    }
+
+    if (event.type === 'session.model_change') {
+      currentModel = data.newModel ?? currentModel
+      continue
+    }
+
+    if (event.type === 'user.message') {
+      const userEvent = event as Extract<LegacyCopilotEvent, { type: 'user.message' }>
+      pendingUserMessage = userEvent.data.content ?? ''
+      continue
+    }
+
+    if (event.type === 'assistant.message') {
+      const { messageId, outputTokens, toolRequests: rawToolRequests } = event.data
+      if (outputTokens === 0) continue
+      if (!currentModel) continue
+
+      const dedupKey = `copilot:${sessionId}:${messageId}`
+      if (seenKeys.has(dedupKey)) continue
+      seenKeys.add(dedupKey)
+
+      // Defensive: legacy / corrupt sessions have shipped toolRequests as a
+      // string, null, or missing. Without this guard, .map throws and aborts
+      // the whole file's parse loop, silently dropping every legitimate call
+      // that follows the bad event.
+      const toolRequests = Array.isArray(rawToolRequests) ? rawToolRequests : []
+      const tools = toolRequests
+        .map(t => normalizeToolName(t?.name))
+        .filter(Boolean)
+
+      const costUSD = calculateCost(currentModel, 0, outputTokens, 0, 0, 0)
+
+      results.push({
+        provider: 'copilot',
+        model: currentModel,
+        inputTokens: 0,
+        outputTokens,
+        cacheCreationInputTokens: 0,
+        cacheReadInputTokens: 0,
+        cachedInputTokens: 0,
+        reasoningTokens: 0,
+        webSearchRequests: 0,
+        costUSD,
+        tools,
+        bashCommands: [],
+        timestamp: event.timestamp ?? '',
+        speed: 'standard',
+        deduplicationKey: dedupKey,
+        userMessage: pendingUserMessage,
+        sessionId,
+      })
+
+      pendingUserMessage = ''
+    }
+  }
+
+  return results
+}
+
+// --- VS Code transcript format (workspaceStorage transcripts) ---
+
+type TranscriptToolRequest = {
+  toolCallId?: string
+  name?: string
+  arguments?: string
+  type?: string
+}
+
+type TranscriptEvent =
+  | { type: 'session.start'; timestamp?: string; data: { sessionId: string; producer?: string } }
+  | { type: 'user.message'; timestamp?: string; data: { content: string; attachments?: unknown[] } }
+  | { type: 'assistant.message'; timestamp?: string; data: { messageId: string; content?: string; reasoningText?: string; toolRequests?: TranscriptToolRequest[]; outputTokens?: number } }
+  | { type: string; timestamp?: string; data: Record<string, unknown> }
+
+const transcriptToolCallModelHints: Array<{ prefix: string; model: string }> = [
+  // Anthropic tool-call ID variants observed in Copilot transcript logs.
+  { prefix: 'toolu_bdrk_', model: COPILOT_ANTHROPIC_AUTO },
+  { prefix: 'toolu_vrtx_', model: COPILOT_ANTHROPIC_AUTO },
+  { prefix: 'tooluse_', model: COPILOT_ANTHROPIC_AUTO },
+  { prefix: 'toolu_', model: COPILOT_ANTHROPIC_AUTO },
+  // OpenAI tool-call IDs.
+  { prefix: 'call_', model: COPILOT_OPENAI_AUTO },
+]
+
+function inferModelFromToolCallIds(events: TranscriptEvent[]): string {
+  const modelCounts = new Map<string, number>()
+
+  for (const e of events) {
+    // Some newer events (like tool.execution_complete) explicitly include the model ID.
+    const data = e.data as { model?: string }
+    if (typeof data.model === 'string' && data.model) {
+      modelCounts.set(data.model, (modelCounts.get(data.model) ?? 0) + 100)
+    }
+
+    if (e.type !== 'assistant.message') continue
+    const msg = e as { data: { toolRequests?: TranscriptToolRequest[] } }
+    for (const t of msg.data.toolRequests ?? []) {
+      const toolCallId = t.toolCallId ?? ''
+      for (const hint of transcriptToolCallModelHints) {
+        if (!toolCallId.startsWith(hint.prefix)) continue
+        modelCounts.set(hint.model, (modelCounts.get(hint.model) ?? 0) + 1)
+        break
+      }
+    }
+  }
+
+  if (modelCounts.size > 0) {
+    return [...modelCounts.entries()].sort((a, b) => b[1] - a[1])[0]![0]
+  }
+
+  return 'copilot-auto'
+}
+
+/** Model inference for JB events — checks data.model (100x weight) and tool call
+ *  ID prefixes on tool.execution_start/complete events. */
+function inferModelFromEvents(events: JBEvent[]): string {
+  const modelCounts = new Map<string, number>()
+
+  for (const e of events) {
+    const data = e.data as { model?: string; toolCallId?: string }
+    if (typeof data.model === 'string' && data.model) {
+      modelCounts.set(data.model, (modelCounts.get(data.model) ?? 0) + 100)
+    }
+
+    if (e.type === 'tool.execution_start' || e.type === 'tool.execution_complete') {
+      const toolCallId = data.toolCallId ?? ''
+      for (const hint of transcriptToolCallModelHints) {
+        if (!toolCallId.startsWith(hint.prefix)) continue
+        modelCounts.set(hint.model, (modelCounts.get(hint.model) ?? 0) + 1)
+        break
+      }
+    }
+  }
+
+  if (modelCounts.size > 0) {
+    return [...modelCounts.entries()].sort((a, b) => b[1] - a[1])[0]![0]
+  }
+
+  return 'copilot-auto'
+}
+
+function parseTranscriptEvents(content: string, sessionId: string, seenKeys: Set<string>): ParsedProviderCall[] {
+  const results: ParsedProviderCall[] = []
+  const lines = content.split('\n').filter(l => l.trim())
+  const events: TranscriptEvent[] = []
+
+  for (const line of lines) {
+    try {
+      events.push(JSON.parse(line))
+    } catch {
+      continue
+    }
+  }
+
+  const model = inferModelFromToolCallIds(events)
+  let pendingUserMessage = ''
+
+  for (const event of events) {
+    if (event.type === 'user.message') {
+      const data = event.data as { content?: string }
+      pendingUserMessage = (data.content ?? '').slice(0, 500)
+      continue
+    }
+
+    if (event.type === 'assistant.message') {
+      const data = event.data as { messageId: string; content?: string; reasoningText?: string; toolRequests?: TranscriptToolRequest[]; outputTokens?: number }
+      const contentText = data.content ?? ''
+      const reasoningText = data.reasoningText ?? ''
+
+      if (contentText.length === 0 && reasoningText.length === 0 && (data.toolRequests ?? []).length === 0) continue
+
+      const dedupKey = `copilot:${sessionId}:${data.messageId}`
+      if (seenKeys.has(dedupKey)) continue
+      seenKeys.add(dedupKey)
+
+      let outputTokens = data.outputTokens ?? 0
+      let reasoningTokens = 0
+      if (outputTokens === 0) {
+        outputTokens = Math.ceil(contentText.length / CHARS_PER_TOKEN)
+        reasoningTokens = Math.ceil(reasoningText.length / CHARS_PER_TOKEN)
+      }
+
+      const inputTokens = Math.ceil(pendingUserMessage.length / CHARS_PER_TOKEN)
+
+      // Same defensive guard as the modern event branch — corrupt legacy
+      // sessions have shipped toolRequests as non-array values.
+      const legacyToolRequests = Array.isArray(data.toolRequests) ? data.toolRequests : []
+      const tools = legacyToolRequests
+        .map(t => normalizeToolName(t?.name))
+        .filter(Boolean)
+
+      const costUSD = calculateCost(model, inputTokens, outputTokens + reasoningTokens, 0, 0, 0)
+
+      results.push({
+        provider: 'copilot',
+        model,
+        inputTokens,
+        outputTokens,
+        cacheCreationInputTokens: 0,
+        cacheReadInputTokens: 0,
+        cachedInputTokens: 0,
+        reasoningTokens,
+        webSearchRequests: 0,
+        costUSD,
+        tools,
+        bashCommands: [],
+        timestamp: event.timestamp ?? '',
+        speed: 'standard',
+        deduplicationKey: dedupKey,
+        userMessage: pendingUserMessage,
+        sessionId,
+      })
+
+      pendingUserMessage = ''
+    }
+  }
+
+  return results
+}
+
+// --- Parser ---
+
+function isTranscriptFormat(content: string): boolean {
+  const firstLine = content.split('\n')[0] ?? ''
+  try {
+    const event = JSON.parse(firstLine)
+    return event.type === 'session.start' && event.data?.producer === 'copilot-agent'
+  } catch {
+    return false
+  }
+}
+
+function isJetBrainsFormat(content: string): boolean {
+  const firstLine = content.split('\n')[0] ?? ''
+  try {
+    const event = JSON.parse(firstLine)
+    // JB format starts with user.message_rendered or partition.created (JB-specific).
+    // We intentionally exclude user.message here since legacy files can also start
+    // with that event type — routing them to the JB parser would misparse them.
+    return (
+      event.type === 'user.message_rendered' ||
+      event.type === 'partition.created'
+    )
+  } catch {
+    return false
+  }
+}
+
+// --- JetBrains (IntelliJ/DataGrip) format parser ---
+
+type JBEvent = {
+  type: string
+  timestamp?: string
+  id?: string
+  data: Record<string, unknown>
+}
+
+function parseJetBrainsEvents(content: string, sessionId: string, seenKeys: Set<string>): ParsedProviderCall[] {
+  const results: ParsedProviderCall[] = []
+  const lines = content.split('\n').filter(l => l.trim())
+  const events: JBEvent[] = []
+
+  for (const line of lines) {
+    try {
+      events.push(JSON.parse(line))
+    } catch {
+      continue
+    }
+  }
+
+  // Reuse the shared model inference logic: check explicit data.model fields
+  // (weighted 100x) and tool call ID prefix heuristics from both assistant.message
+  // toolRequests and tool.execution_start/complete events (JB-specific).
+  const model = inferModelFromEvents(events)
+
+  // Collect tool names per turn
+  const toolsByTurn = new Map<string, string[]>()
+  let currentTurnId = ''
+  let userMsg = ''
+  let msgIndex = 0
+
+  for (const e of events) {
+    if (e.type === 'user.message_rendered') {
+      userMsg = ((e.data.renderedMessage as string) ?? '').slice(0, 500)
+    }
+    if (e.type === 'user.message') {
+      const msg = (e.data.content as string) ?? ''
+      if (msg) userMsg = msg.slice(0, 500)
+    }
+
+    if (e.type === 'assistant.turn_start') {
+      currentTurnId = (e.data.turnId as string) ?? ''
+    }
+
+    if (e.type === 'tool.execution_start') {
+      const toolName = (e.data.toolName as string) ?? ''
+      const normalized = normalizeToolName(toolName)
+      if (normalized) {
+        const msgId = currentTurnId || 'unknown'
+        const existing = toolsByTurn.get(msgId) ?? []
+        existing.push(normalized)
+        toolsByTurn.set(msgId, existing)
+      }
+    }
+
+    if (e.type === 'assistant.message') {
+      const data = e.data as { messageId?: string; content?: string; text?: string; reasoningText?: string; thinking?: { text?: string }; iterationNumber?: number; outputTokens?: number }
+      const contentText = data.text ?? data.content ?? ''
+      const reasoningText = data.reasoningText ?? data.thinking?.text ?? ''
+
+      // Skip empty messages (streaming placeholders)
+      if (contentText.length === 0 && reasoningText.length === 0) continue
+
+      // Use messageId if available, otherwise fall back to an incrementing index
+      // to avoid dedup collisions when messageId is absent.
+      const messageId = data.messageId ?? e.id ?? ''
+      const dedupId = messageId || String(msgIndex++)
+      const dedupKey = `copilot:jb:${sessionId}:${dedupId}:${data.iterationNumber ?? 0}`
+      if (seenKeys.has(dedupKey)) continue
+      seenKeys.add(dedupKey)
+
+      let outputTokens = data.outputTokens ?? 0
+      let reasoningTokens = 0
+      if (outputTokens === 0) {
+        outputTokens = Math.ceil(contentText.length / CHARS_PER_TOKEN)
+        reasoningTokens = Math.ceil(reasoningText.length / CHARS_PER_TOKEN)
+      }
+
+      const inputTokens = Math.ceil(userMsg.length / CHARS_PER_TOKEN)
+      const tools = toolsByTurn.get(currentTurnId || messageId) ?? []
+      const costUSD = calculateCost(model, inputTokens, outputTokens + reasoningTokens, 0, 0, 0)
+
+      results.push({
+        provider: 'copilot',
+        model,
+        inputTokens,
+        outputTokens,
+        cacheCreationInputTokens: 0,
+        cacheReadInputTokens: 0,
+        cachedInputTokens: 0,
+        reasoningTokens,
+        webSearchRequests: 0,
+        costUSD,
+        tools,
+        bashCommands: [],
+        timestamp: e.timestamp ?? '',
+        speed: 'standard',
+        deduplicationKey: dedupKey,
+        userMessage: userMsg,
+        sessionId,
+      })
+
+      // Only count user message once per assistant turn
+      userMsg = ''
+    }
+  }
+
+  return results
+}
+
+function createParser(source: SessionSource, seenKeys: Set<string>): SessionParser {
+  return {
+    async *parse(): AsyncGenerator<ParsedProviderCall> {
+      const content = await readSessionFile(source.path)
+      if (content === null) return
+      const sessionId = basename(source.path, '.jsonl').length === 36
+        ? basename(source.path, '.jsonl')
+        : basename(dirname(source.path))
+
+      let calls: ParsedProviderCall[]
+      if (isTranscriptFormat(content)) {
+        calls = parseTranscriptEvents(content, sessionId, seenKeys)
+      } else if (isJetBrainsFormat(content)) {
+        calls = parseJetBrainsEvents(content, sessionId, seenKeys)
+        // Infer project name from tool paths now that content is loaded
+        const inferredProject = inferJBProjectFromContent(content)
+        if (inferredProject) {
+          for (const call of calls) {
+            call.project = inferredProject
+          }
+        }
+      } else {
+        calls = parseLegacyEvents(content, sessionId, seenKeys)
+      }
+
+      for (const call of calls) {
+        yield call
+      }
+    },
+  }
+}
+
+// --- Discovery ---
+
+function getCopilotSessionStateDir(override?: string): string {
+  return override ?? join(homedir(), '.copilot', 'session-state')
+}
+
+export function getVSCodeWorkspaceStorageDirs(homeDir = homedir(), platform = process.platform): string[] {
+  const pathJoin = platform === 'win32' ? win32.join : posix.join
+
+  if (platform === 'darwin') {
+    return [
+      pathJoin(homeDir, 'Library', 'Application Support', 'Code', 'User', 'workspaceStorage'),
+      pathJoin(homeDir, 'Library', 'Application Support', 'Code - Insiders', 'User', 'workspaceStorage'),
+      pathJoin(homeDir, 'Library', 'Application Support', 'VSCodium', 'User', 'workspaceStorage'),
+    ]
+  }
+
+  if (platform === 'win32') {
+    return [
+      pathJoin(homeDir, 'AppData', 'Roaming', 'Code', 'User', 'workspaceStorage'),
+      pathJoin(homeDir, 'AppData', 'Roaming', 'Code - Insiders', 'User', 'workspaceStorage'),
+      pathJoin(homeDir, 'AppData', 'Roaming', 'VSCodium', 'User', 'workspaceStorage'),
+    ]
+  }
+
+  return [
+    pathJoin(homeDir, '.config', 'Code', 'User', 'workspaceStorage'),
+    pathJoin(homeDir, '.config', 'Code - Insiders', 'User', 'workspaceStorage'),
+    pathJoin(homeDir, '.config', 'VSCodium', 'User', 'workspaceStorage'),
+    pathJoin(homeDir, '.vscode-server', 'data', 'User', 'workspaceStorage'),
+  ]
+}
+
+function parseCwd(yaml: string): string | null {
+  const match = yaml.match(/^cwd:\s*(.+)$/m)
+  if (!match?.[1]) return null
+  const raw = match[1]
+    .replace(/\s*#.*$/, '')
+    .replace(/^['"]|['"]$/g, '')
+    .trim()
+  return raw || null
+}
+
+async function readWorkspaceProject(workspaceDir: string): Promise<string> {
+  try {
+    const raw = await readFile(join(workspaceDir, 'workspace.json'), 'utf-8')
+    const data = JSON.parse(raw) as { folder?: string }
+    if (data.folder) {
+      const url = data.folder.replace(/^file:\/\//, '')
+      return basename(decodeURIComponent(url))
+    }
+  } catch {}
+  return basename(workspaceDir)
+}
+
+function getJetBrainsSessionDir(override?: string): string {
+  return override ?? join(homedir(), '.copilot', 'jb')
+}
+
+async function discoverJetBrainsSessions(jbDir: string): Promise<SessionSource[]> {
+  const sources: SessionSource[] = []
+
+  let sessionDirs: string[]
+  try {
+    sessionDirs = await readdir(jbDir)
+  } catch {
+    return sources
+  }
+
+  for (const sessionId of sessionDirs) {
+    const sessionPath = join(jbDir, sessionId)
+    const s = await stat(sessionPath).catch(() => null)
+    if (!s?.isDirectory()) continue
+
+    let partitions: string[]
+    try {
+      partitions = await readdir(sessionPath)
+    } catch {
+      continue
+    }
+
+    for (const file of partitions) {
+      if (!file.endsWith('.jsonl')) continue
+      const filePath = join(sessionPath, file)
+      const fs = await stat(filePath).catch(() => null)
+      if (!fs?.isFile()) continue
+      sources.push({ path: filePath, project: sessionId, provider: 'copilot' })
+    }
+  }
+
+  return sources
+}
+
+/** Infer a project name from tool execution paths in already-loaded content. */
+function inferJBProjectFromContent(content: string): string | null {
+  // Split on either separator so the home-depth math lines up with the recorded
+  // tool path on every platform (JetBrains records Windows paths with
+  // backslashes, and homedir() also uses backslashes there). Using a fixed '/'
+  // for the path while splitting home on the platform sep mismatched on Windows
+  // and made inference always fall back to the raw session id there.
+  const homeParts = homedir().split(/[/\\]/)
+  const homeDepth = homeParts.length
+  const lines = content.split('\n')
+  const limit = Math.min(lines.length, 200)
+
+  for (let i = 0; i < limit; i++) {
+    const line = lines[i]
+    if (!line) continue
+    try {
+      const e = JSON.parse(line)
+      if (e.type === 'tool.execution_start') {
+        const args = e.data?.arguments
+        if (typeof args === 'object' && args !== null && typeof args.path === 'string') {
+          const pathVal: string = args.path
+          const parts = pathVal.split(/[/\\]/)
+          if (parts.length > homeDepth + 1) {
+            const afterHome = parts.slice(homeDepth)
+            if (afterHome.length >= 2) {
+              return basename(afterHome.slice(0, afterHome.length > 2 ? 2 : afterHome.length).join('/'))
+                || afterHome[0] || null
+            }
+            return afterHome[0] || null
+          }
+        }
+      }
+    } catch {
+      continue
+    }
+  }
+  return null
+}
+
+async function discoverLegacySessions(sessionStateDir: string): Promise<SessionSource[]> {
+  const sources: SessionSource[] = []
+
+  let sessionDirs: string[]
+  try {
+    sessionDirs = await readdir(sessionStateDir)
+  } catch {
+    return sources
+  }
+
+  for (const sessionId of sessionDirs) {
+    const eventsPath = join(sessionStateDir, sessionId, 'events.jsonl')
+    const s = await stat(eventsPath).catch(() => null)
+    if (!s?.isFile()) continue
+
+    let project = sessionId
+    const yaml = await readSessionFile(join(sessionStateDir, sessionId, 'workspace.yaml'))
+    if (yaml !== null) {
+      const cwd = parseCwd(yaml)
+      if (cwd) project = basename(cwd)
+    }
+
+    sources.push({ path: eventsPath, project, provider: 'copilot' })
+  }
+
+  return sources
+}
+
+async function discoverVSCodeTranscripts(workspaceStorageDir: string): Promise<SessionSource[]> {
+  const sources: SessionSource[] = []
+
+  let workspaceDirs: string[]
+  try {
+    workspaceDirs = await readdir(workspaceStorageDir)
+  } catch {
+    return sources
+  }
+
+  for (const wsDir of workspaceDirs) {
+    const transcriptsDir = join(workspaceStorageDir, wsDir, 'GitHub.copilot-chat', 'transcripts')
+    if (!existsSync(transcriptsDir)) continue
+
+    const project = await readWorkspaceProject(join(workspaceStorageDir, wsDir))
+
+    let files: string[]
+    try {
+      files = await readdir(transcriptsDir)
+    } catch {
+      continue
+    }
+
+    for (const file of files) {
+      if (!file.endsWith('.jsonl')) continue
+      const filePath = join(transcriptsDir, file)
+      const s = await stat(filePath).catch(() => null)
+      if (!s?.isFile()) continue
+      sources.push({ path: filePath, project, provider: 'copilot' })
+    }
+  }
+
+  return sources
+}
+
+export function createCopilotProvider(sessionStateDir?: string, workspaceStorageDirOverride?: string, jbDirOverride?: string): Provider {
+  const legacyDir = getCopilotSessionStateDir(sessionStateDir)
+  const vscodeDirs = workspaceStorageDirOverride != null ? [workspaceStorageDirOverride] : getVSCodeWorkspaceStorageDirs()
+  const jbDir = getJetBrainsSessionDir(jbDirOverride)
+
+  return {
+    name: 'copilot',
+    displayName: 'Copilot',
+
+    modelDisplayName(model: string): string {
+      if (model === 'copilot-auto') return 'Copilot (auto)'
+      if (model === COPILOT_OPENAI_AUTO) return 'Copilot (OpenAI auto)'
+      if (model === COPILOT_ANTHROPIC_AUTO) return 'Copilot (Anthropic auto)'
+      for (const [key, name] of modelDisplayEntries) {
+        if (model === key || model.startsWith(key + '-')) return name
+      }
+      return model
+    },
+
+    toolDisplayName(rawTool: string): string {
+      return normalizeToolName(rawTool)
+    },
+
+    async discoverSessions(): Promise<SessionSource[]> {
+      const [legacy, jb, ...vscodeResults] = await Promise.all([
+        discoverLegacySessions(legacyDir),
+        discoverJetBrainsSessions(jbDir),
+        ...vscodeDirs.map(discoverVSCodeTranscripts),
+      ])
+      return [...legacy, ...jb, ...vscodeResults.flat()]
+    },
+
+    createSessionParser(source: SessionSource, seenKeys: Set<string>): SessionParser {
+      return createParser(source, seenKeys)
+    },
+  }
+}
+
+export const copilot = createCopilotProvider()

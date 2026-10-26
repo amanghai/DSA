@@ -1,0 +1,553 @@
+---
+title: 'Landing Page Product Feature Component'
+date: '2023-11-19'
+lastmod: '2025-05-31'
+tags:
+  - 'guide'
+  - 'components'
+  - 'documentation'
+  - 'landing-page'
+  - 'product-feature'
+  - 'ui-library'
+  - 'react'
+  - 'nextjs'
+  - 'tailwind-css'
+  - 'shadcn-ui'
+  - 'shadcn-ui-landing-page'
+
+images:
+  - '/static/images/blog/docs/landing-page-product-feature.webp'
+
+summary: 'This component is used to display a product feature in the landing page. It can show an image on the left, right or center; either in perspective or flat and has many customization options'
+layout: PostHub
+
+showThemeSelector: true
+showInstallNotice: true
+
+canonicalUrl: 'https://shipixen.com/boilerplate-documentation/landing-page-components/product-feature'
+---
+
+This component can display a product feature e.g. on your landing page, features page or elsewhere. It can show an image on the left, right or center; either in perspective or flat and has many customization options.
+
+Use this to highlight a feature or key aspect of your product with text
+and an optional image.
+
+<ComponentExample previewComponent={
+  <LandingProductFeature
+    title="The wait is over"
+    description="Give your project the home it deserves. Your users will love you for it."
+    imageSrc="/static/images/backdrop-5.webp"
+    imageAlt="Sample image"
+  />}>
+
+```jsx
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+
+<LandingProductFeature
+  title="The wait is over"
+  description="Give your project the home it deserves. Your users will love you for it."
+  imageSrc="/static/images/backdrop-5.webp"
+  imageAlt="Sample image"
+/>
+```
+
+</ComponentExample>
+
+## Usage
+
+```jsx
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+```
+
+```jsx
+<LandingProductFeature
+  title="The wait is over"
+  description="Give your project the home it deserves. Your users will love you for it."
+  imageSrc="/static/images/backdrop-5.webp"
+  imageAlt="Sample image"
+/>
+```
+
+## Examples
+
+### Image position
+
+<ComponentExample previewComponent={
+  <LandingProductFeature
+    imagePosition="left"
+    title="The wait is over"
+    description="Give your project the home it deserves. Your users will love you for it."
+    imageSrc="/static/images/backdrop-5.webp"
+    imageAlt="Sample image"
+  />}>
+
+```jsx
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+
+<LandingProductFeature
+  imagePosition="left"
+  title="The wait is over"
+  description="Give your project the home it deserves. Your users will love you for it."
+  imageSrc="/static/images/backdrop-5.webp"
+  imageAlt="Sample image"
+/>
+```
+
+</ComponentExample>
+
+### Image perspective
+
+<ComponentExample previewComponent={
+  <LandingProductFeature
+    imagePosition="right"
+    imagePerspective="paper"
+    title="The wait is over"
+    description="Give your project the home it deserves. Your users will love you for it."
+    imageSrc="/static/images/backdrop-5.webp"
+    imageAlt="Sample image"
+  />}>
+
+```jsx
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+
+<LandingProductFeature
+  imagePosition="right"
+  imagePerspective="paper"
+  title="The wait is over"
+  description="Give your project the home it deserves. Your users will love you for it."
+  imageSrc="/static/images/backdrop-5.webp"
+  imageAlt="Sample image"
+/>
+```
+
+</ComponentExample>
+
+### Customization
+
+It is also possible to customize the background color, change text
+position or disable zooming on hover.
+
+<ComponentExample previewComponent={
+  <LandingProductFeature
+    withBackground
+    variant="secondary"
+    zoomOnHover={false}
+    imagePosition="left"
+    imagePerspective="right"
+    title="The wait is over"
+    description="Give your project the home it deserves. Your users will love you for it."
+    imageSrc="/static/images/backdrop-5.webp"
+    imageAlt="Sample image"
+  />}>
+
+```jsx
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+
+<LandingProductFeature
+  withBackground
+  variant="secondary"
+  zoomOnHover={false}
+  imagePosition="left"
+  imagePerspective="right"
+  title="The wait is over"
+  description="Give your project the home it deserves. Your users will love you for it."
+  imageSrc="/static/images/backdrop-5.webp"
+  imageAlt="Sample image"
+/>
+```
+
+</ComponentExample>
+
+### With Background Glow
+
+<ComponentExample previewComponent={
+  <LandingProductFeature
+    withBackgroundGlow
+    backgroundGlowVariant="primary"
+    title="The wait is over"
+    description="Give your project the home it deserves. Your users will love you for it."
+    imageSrc="/static/images/backdrop-5.webp"
+    imageAlt="Sample image"
+  />}>
+
+```jsx
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+
+<LandingProductFeature
+  withBackgroundGlow
+  backgroundGlowVariant="primary"
+  title="The wait is over"
+  description="Give your project the home it deserves. Your users will love you for it."
+  imageSrc="/static/images/backdrop-5.webp"
+  imageAlt="Sample image"
+/>
+```
+
+</ComponentExample>
+
+### With Bullet Points
+
+<ComponentExample previewComponent={
+    <LandingProductFeature
+      title="The wait is over"
+      descriptionComponent={
+        <>
+          <LandingProductFeatureKeyPoints
+            keyPoints={[
+              {
+                title: 'Intelligent Assistance',
+                description:
+                  'Receive personalized recommendations and insights tailored to your workflow.',
+              },
+              {
+                title: 'Seamless Collaboration',
+                description:
+                  'Easily collaborate with team members and clients in real-time.',
+              },
+              {
+                title: 'Advanced Customization',
+                description:
+                  'Tailor your app to fit your unique requirements with extensive customization options.',
+              },
+            ]}
+          />
+        </>
+      }
+      imageSrc="/static/images/backdrop-5.webp"
+      imageAlt="Sample image"
+      imagePosition="right"
+    />
+  }
+>
+
+```jsx
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+import { LandingProductFeatureKeyPoints } from '@/components/landing/LandingProductFeatureKeyPoints';
+
+<LandingProductFeature
+  title="The wait is over"
+  descriptionComponent={
+    <>
+      <LandingProductFeatureKeyPoints
+        keyPoints={[
+          {
+            title: 'Intelligent Assistance',
+            description:
+              'Receive personalized recommendations and insights tailored to your workflow.',
+          },
+          {
+            title: 'Seamless Collaboration',
+            description:
+              'Easily collaborate with team members and clients in real-time.',
+          },
+          {
+            title: 'Advanced Customization',
+            description:
+              'Tailor your app to fit your unique requirements with extensive customization options.',
+          },
+        ]}
+      />
+    </>
+  }
+  imageSrc="/static/images/backdrop-5.webp"
+  imageAlt="Sample image"
+  imagePosition="right"
+/>
+```
+
+</ComponentExample>
+
+### With Call to Action (CTA)
+
+<ComponentExample previewComponent={
+    <LandingProductFeature
+      title="The wait is over"
+      descriptionComponent={
+        <>
+          <p>
+            Receive personalized recommendations and insights tailored to your workflow and easily collaborate with team members and clients in real-time.
+          </p>
+
+          <Button className="mt-8" asChild>
+            <a href="#">Try now for free</a>
+          </Button>
+
+          <p className="text-sm opacity-70">
+            7 day free trial, no credit card required.
+          </p>
+        </>
+      }
+      imageSrc="/static/images/backdrop-5.webp"
+      imageAlt="Sample image"
+      imagePosition="right"
+    />
+
+}
+
+>
+
+```jsx
+import { Button } from '@/components/shared/ui/button';
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+
+<LandingProductFeature
+  title="The wait is over"
+  descriptionComponent={
+    <>
+      <p>
+        Receive personalized recommendations and insights tailored to your
+        workflow.
+      </p>
+
+      <Button className="mt-8" asChild>
+        <a href="#">Try now for free</a>
+      </Button>
+
+      <p className="text-sm">7 day free trial, no credit card required.</p>
+    </>
+  }
+  imageSrc="/static/images/backdrop-5.webp"
+  imageAlt="Sample image"
+  imagePosition="right"
+/>
+```
+
+</ComponentExample>
+
+### With Features Grid
+
+<ComponentExample
+  previewComponent={
+    <LandingProductFeaturesGrid
+      title="Get the job done in no time"
+      description="You'll save days of work and the only question you'll have is 'What do I do with all this free time?'"
+    >
+      <LandingProductFeature
+        title="Deploy"
+        description="Give your project the home it deserves."
+        imageSrc="/static/images/shipixen/product/14.webp"
+        imageAlt="Sample image"
+      />
+
+      <LandingProductFeature
+        title="No config"
+        description="No configuration needed. We take care of it."
+        imageSrc="/static/images/shipixen/product/4.webp"
+        imageAlt="Sample image"
+      />
+
+       <LandingProductFeature
+        title="Themes"
+        description="Choose from more than 30+ themes or create your own."
+        imageSrc="/static/images/shipixen/product/2.webp"
+        imageAlt="Sample image"
+      />
+    </LandingProductFeaturesGrid>}>
+
+```jsx
+import { LandingProductFeaturesGrid } from '@/components/landing/LandingProductFeaturesGrid';
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+
+<LandingProductFeaturesGrid
+  title="Get the job done in no time"
+  description="You'll save days of work and the only question you'll have is 'What do I do with all this free time?'"
+>
+  <LandingProductFeature
+    title="Deploy"
+    description="Give your project the home it deserves."
+    imageSrc="/static/images/shipixen/product/14.webp"
+    imageAlt="Sample image"
+  />
+
+  <LandingProductFeature
+    title="No config"
+    description="No configuration needed. We take care of it."
+    imageSrc="/static/images/shipixen/product/4.webp"
+    imageAlt="Sample image"
+  />
+
+  <LandingProductFeature
+    title="Theme"
+    description="Choose from more than 30+ themes or create your own."
+    imageSrc="/static/images/shipixen/product/2.webp"
+    imageAlt="Sample image"
+  />
+</LandingProductFeaturesGrid>
+```
+
+</ComponentExample>
+
+### With Product Steps
+
+<ComponentExample
+  previewComponent={
+    <LandingProductSteps
+      title="How it works"
+      description="Follow these simple steps to get started with our product."
+    >
+      <LandingProductFeature
+        title="Create your account"
+        description="Sign up in seconds and get instant access to our platform."
+        imageSrc="/static/images/backdrop-4.webp"
+      />
+      <LandingProductFeature
+        title="Customize your workflow"
+        description="Set up your preferences and configure your workspace."
+        imageSrc="/static/images/backdrop-8.webp"
+      />
+      <LandingProductFeature
+        title="Start collaborating"
+        description="Invite your team and begin working together seamlessly."
+        imageSrc="/static/images/backdrop-9.webp"
+      />
+    </LandingProductSteps>
+  }
+>
+
+```jsx
+import { LandingProductSteps } from '@/components/landing/LandingProductSteps';
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+
+<LandingProductSteps
+  title="How it works"
+  description="Follow these simple steps to get started with our product."
+>
+  <LandingProductFeature
+    title="Create your account"
+    description="Sign up in seconds and get instant access to our platform."
+    imageSrc="/static/images/backdrop-4.webp"
+  />
+  <LandingProductFeature
+    title="Customize your workflow"
+    description="Set up your preferences and configure your workspace."
+    imageSrc="/static/images/backdrop-8.webp"
+  />
+  <LandingProductFeature
+    title="Start collaborating"
+    description="Invite your team and begin working together seamlessly."
+    imageSrc="/static/images/backdrop-9.webp"
+  />
+</LandingProductSteps>
+```
+
+</ComponentExample>
+
+### With Background Effect
+
+<ComponentExample previewComponent={
+  <LandingProductFeature
+    title="The wait is over"
+    description="Give your project the home it deserves. Your users will love you for it."
+    imageSrc="/static/images/backdrop-5.webp"
+    imageAlt="Sample image"
+    imagePosition="right"
+    effectComponent={<LandingDotParticleCtaBg />}
+  />}>
+
+```jsx
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+import { LandingDotParticleCtaBg } from '@/components/landing/cta-backgrounds/LandingDotParticleCtaBg';
+
+<LandingProductFeature
+  title="The wait is over"
+  description="Give your project the home it deserves. Your users will love you for it."
+  imageSrc="/static/images/backdrop-5.webp"
+  imageAlt="Sample image"
+  imagePosition="right"
+  effectComponent={<LandingDotParticleCtaBg />}
+/>
+```
+
+</ComponentExample>
+
+
+
+### With Leading Pill
+
+<ComponentExample previewComponent={
+  <LandingProductFeature
+    title="The wait is over"
+    description="Give your project the home it deserves. Your users will love you for it."
+    imageSrc="/static/images/backdrop-5.webp"
+    imageAlt="Sample image"
+    imagePosition="right"
+    leadingComponent={
+      <LandingLeadingPill
+        withBorder={false}
+        withBackground={true}
+        backgroundVariant="primary"
+        leftComponent={<SparklesIcon className="w-4 h-4" />}
+      >
+        Join today
+      </LandingLeadingPill>
+    }
+  />}>
+
+```jsx
+import { LandingProductFeature } from '@/components/landing/LandingProductFeature';
+
+<LandingProductFeature
+  title="The wait is over"
+  description="Give your project the home it deserves. Your users will love you for it."
+  imageSrc="/static/images/backdrop-5.webp"
+  imageAlt="Sample image"
+  imagePosition="right"
+  leadingComponent={
+    <LandingLeadingPill
+      withBorder={false}
+      withBackground={true}
+      backgroundVariant="primary"
+      leftComponent={<SparklesIcon className="w-4 h-4" />}
+    >
+      Join today
+    </LandingLeadingPill>
+  }
+/>
+```
+
+</ComponentExample>
+
+
+## API Reference
+
+> **Note:** When used inside `LandingProductFeaturesGrid`, some props have context-aware defaults:
+> - `imagePosition` defaults to `'center'` when not specified
+> - `imageShadow` defaults to `'none'` when not specified
+> - `minHeight` defaults to `0` when not specified
+
+| Prop Name                                                                                                                              | Prop Type                                                                | Required | Default     |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | -------- | ----------- |
+| **children** <Tippy>React nodes to be rendered within the component (below the text on smaller screen, right side on larger).</Tippy>  | `React.ReactNode` ǀ `string`                                             | No       | -           |
+| **className** <Tippy>Additional CSS classes to apply to the component.</Tippy>                                                         | `string`                                                                 | No       | -           |
+| **innerClassName** <Tippy>Additional CSS classes to apply to the inner container of the component.</Tippy>                             | `string`                                                                 | No       | -           |
+| **title** <Tippy>The title to be displayed in the component.</Tippy>                                                                   | `string` ǀ `React.ReactNode`                                             | No       | -           |
+| **titleComponent** <Tippy>Custom React component to render as the title.</Tippy>                                                       | `React.ReactNode`                                                        | No       | -           |
+| **description** <Tippy>The description to be displayed in the component.</Tippy>                                                       | `string` ǀ `React.ReactNode`                                             | No       | -           |
+| **descriptionComponent** <Tippy>Custom React component to render as the description.</Tippy>                                           | `React.ReactNode`                                                        | No       | -           |
+| **leadingComponent** <Tippy>Custom React component to render as the leading component.</Tippy>                                         | `React.ReactNode`                                                        | No       | -           |
+| **textPosition** <Tippy>The position of the text content ('center' or 'left').</Tippy>                                                 | `'center'` ǀ `'left'`                                                    | No       | `'left'`    |
+| **imageSrc** <Tippy>The URL of the image to be displayed.</Tippy>                                                                      | `string`                                                                 | No       | -           |
+| **imageAlt** <Tippy>The alternative text for the image.</Tippy>                                                                        | `string`                                                                 | No       | ''          |
+| **imagePosition** <Tippy>The position of the image ('left', 'right', or 'center'). When used inside LandingProductFeaturesGrid, defaults to 'center' if not specified.</Tippy> | `'left'` ǀ `'right'` ǀ `'center'` | No | -* |
+| **imagePerspective** <Tippy>The perspective effect for the image ('none', 'left', 'right', 'bottom', 'bottom-lg', or 'paper').</Tippy> | `'none'` ǀ `'left'` ǀ `'right'` ǀ `'bottom'` ǀ `'bottom-lg'` ǀ `'paper'` | No       | `'bottom'`   |
+| **imageShadow** <Tippy>The shadow effect for the image ('none', 'soft', or 'hard'). When used inside LandingProductFeaturesGrid, defaults to 'none' if not specified.</Tippy> | `'none'` ǀ `'soft'` ǀ `'hard'` | No | -* |
+| **zoomOnHover** <Tippy>Whether to enable zoom effect on hover for the image.</Tippy>                                                   | `boolean`                                                                | No       | `true`      |
+| **minHeight** <Tippy>The minimum height of the component.</Tippy>                                                                      | `number`                                                                 | No       | `350`       |
+| **withBackground** <Tippy>Whether to include a background for the component.</Tippy>                                                   | `boolean`                                                                | No       | `false`     |
+| **withBackgroundGlow** <Tippy>Whether to include a glowing background effect.</Tippy>                                                  | `boolean`                                                                | No       | `false`     |
+| **variant** <Tippy>The variant of the component ('primary' or 'secondary').</Tippy>                                                    | `'primary'` ǀ `'secondary'`                                              | No       | `'primary'` |
+| **backgroundGlowVariant** <Tippy>The variant of the glowing background effect ('primary' or 'secondary').</Tippy>                      | `'primary'` ǀ `'secondary'`                                              | No       | `'primary'` |
+| **effectComponent** <Tippy>Custom React component to be displayed as the background effect.</Tippy>                                    | `React.ReactNode`                                                        | No       | -           |
+| **effectClassName** <Tippy>Additional CSS classes to apply to the background effect.</Tippy>                                        | `string`                                                                 | No       | -           |
+
+## More Examples
+
+For more even more examples, see our <a href="/demo/landing-page-component-examples" className="fancy-link">Landing Page Component Examples</a> page or see complete landing page examples by <a href="/demo/landing-page-templates" className="fancy-link">Exploring Our Landing Page Templates</a>.
+
+Also see:
+
+- <a href="/boilerplate-documentation/landing-page-components/product-video-feature" className="fancy-link">Product Video Feature</a> component.
+- <a href="/boilerplate-documentation/landing-page-components/product-steps" className="fancy-link">Product Steps</a> component.
+- <a href="/boilerplate-documentation/landing-page-components/product-features-grid" className="fancy-link">Product Features Grid</a> component.
+- <a href="/boilerplate-documentation/landing-page-components/primary-cta-effects" className="fancy-link">Background Effects</a> component for adding visual interest to a section
+- <a href="/boilerplate-documentation/landing-page-components/leading-pill" className="fancy-link">Leading Pill</a> component.
