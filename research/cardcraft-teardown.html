@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CardCraft Teardown</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Layout: single reading column with a sticky contents rail on wide screens; report, not a landing page */
+  --bg: #f4f5f3;
+  --surface: #ffffff;
+  --ink: #1c2226;
+  --muted: #59636b;
+  --line: #dde1e3;
+  --accent: #1d5a4c;
+  --accent-soft: #e3efeb;
+  --flag: #a8432b;
+  --flag-soft: #f7e7e2;
+  --good: #2c6e3f;
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14191b; --surface: #1b2124; --ink: #e6eaeb; --muted: #9aa5ab; --line: #2d3539;
+    --accent: #7cc2ad; --accent-soft: #1f3530; --flag: #e58f76; --flag-soft: #3a2420; --good: #8fd0a0;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14191b; --surface: #1b2124; --ink: #e6eaeb; --muted: #9aa5ab; --line: #2d3539;
+  --accent: #7cc2ad; --accent-soft: #1f3530; --flag: #e58f76; --flag-soft: #3a2420; --good: #8fd0a0;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.65 var(--font-body); }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 32px 20px 80px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; }
+nav.toc { position: sticky; top: 24px; align-self: start; font-size: 14px; }
+nav.toc p { margin: 0 0 10px; font: 600 12px/1 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+nav.toc ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; counter-reset: toc; }
+nav.toc li { counter-increment: toc; }
+nav.toc a { color: var(--ink); text-decoration: none; display: flex; gap: 8px; }
+nav.toc a::before { content: counter(toc, decimal-leading-zero); color: var(--muted); font: 400 12px/1.9 var(--font-mono); }
+nav.toc a:hover { color: var(--accent); }
+main { min-width: 0; }
+header.top { border-bottom: 1px solid var(--line); padding-bottom: 28px; margin-bottom: 8px; }
+.kicker { font: 500 13px/1 var(--font-mono); color: var(--muted); letter-spacing: .02em; }
+h1 { font: 600 clamp(32px, 4.6vw, 48px)/1.08 var(--font-display); margin: 12px 0 14px; text-wrap: balance; letter-spacing: -.01em; }
+h2 { font: 600 clamp(24px, 3vw, 30px)/1.2 var(--font-display); margin: 0 0 14px; text-wrap: balance; }
+h3 { font: 600 17px/1.35 var(--font-body); margin: 26px 0 8px; }
+.lede { font-size: 18px; color: var(--muted); max-width: 68ch; margin: 0; }
+section { padding: 40px 0 8px; border-bottom: 1px solid var(--line); }
+section > p, section > ul, section > ol { max-width: 72ch; }
+ul, ol { padding-left: 20px; }
+li + li { margin-top: 4px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 24px 0 8px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.tile b { display: block; font: 600 24px/1.15 var(--font-display); font-variant-numeric: tabular-nums; }
+.tile span { display: block; font-size: 13px; color: var(--muted); margin-top: 4px; }
+.tile s { color: var(--muted); font-size: 16px; font-weight: 500; margin-left: 4px; }
+.table-scroll { overflow-x: auto; margin: 16px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; min-width: 640px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+th { font: 600 12px/1.4 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td code, p code, li code { font: 400 13px/1.4 var(--font-mono); background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; word-break: break-word; }
+.palettes { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin: 18px 0; }
+.pal { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px 16px; }
+.pal h4 { margin: 0 0 2px; font: 600 15px/1.3 var(--font-body); }
+.pal p { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
+.sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; }
+.sw div { display: grid; gap: 4px; min-width: 0; overflow-wrap: anywhere; font: 400 11.5px/1.3 var(--font-mono); color: var(--muted); }
+.sw i { display: block; height: 40px; border-radius: 6px; border: 1px solid rgba(0,0,0,.08); }
+.sw em { font-style: normal; color: var(--ink); font-family: var(--font-body); font-size: 12px; }
+.steps { counter-reset: step; list-style: none; padding: 0; display: grid; gap: 10px; max-width: 78ch; }
+.steps li { counter-increment: step; display: grid; grid-template-columns: 36px 1fr; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin: 0; }
+.steps li::before { content: counter(step); font: 600 18px/1.3 var(--font-display); color: var(--accent); }
+.steps b { display: block; }
+.note { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 12px 16px; border-radius: 0 8px 8px 0; max-width: 72ch; margin: 18px 0; }
+.note.flag { border-color: var(--flag); background: var(--flag-soft); }
+.note p { margin: 0; }
+.note p + p { margin-top: 8px; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 18px 0; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+.card h3 { margin-top: 4px; }
+.card ul { margin: 0; }
+.pill { display: inline-block; font: 600 11px/1 var(--font-body); letter-spacing: .05em; text-transform: uppercase; padding: 4px 7px; border-radius: 999px; vertical-align: 2px; margin-right: 6px; }
+.pill.fact { background: var(--accent-soft); color: var(--accent); }
+.pill.read { background: var(--flag-soft); color: var(--flag); }
+.fontrow { display: grid; grid-template-columns: 170px 1fr; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--line); max-width: 78ch; }
+.fontrow:last-child { border-bottom: 0; }
+.fontrow b { font-weight: 600; }
+.fontrow span { color: var(--muted); font-size: 14.5px; }
+footer { padding-top: 32px; font-size: 13.5px; color: var(--muted); max-width: 78ch; }
+@media (max-width: 880px) {
+  .wrap { grid-template-columns: 1fr; gap: 0; }
+  nav.toc { position: static; margin-bottom: 20px; }
+  nav.toc ol { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+}
+@media (max-width: 480px) {
+  .fontrow { grid-template-columns: 1fr; gap: 2px; }
+  .steps li { grid-template-columns: 26px 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#glance">At a glance</a></li>
+    <li><a href="#company">Company and founder</a></li>
+    <li><a href="#product">The 7 designs</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#journey">Customer journey</a></li>
+    <li><a href="#pricing">Pricing and model</a></li>
+    <li><a href="#delivery">Delivery and policies</a></li>
+    <li><a href="#colors">Colours</a></li>
+    <li><a href="#type">Type and style</a></li>
+    <li><a href="#tech">Tech stack</a></li>
+    <li><a href="#marketing">Marketing</a></li>
+    <li><a href="#risks">Status and risks</a></li>
+    <li><a href="#swot">SWOT</a></li>
+    <li><a href="#nazakat">For Nazakat Telecom</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="top">
+  <div class="kicker">Competitor teardown · cardcraft.date · researched 1 Nov 2026</div>
+  <h1>CardCraft: digital wedding invitations for Indian weddings</h1>
+  <p class="lede">A complete breakdown of the site's product, pricing, payment, delivery, design system, technology, marketing and the company behind it. Each claim is marked as either a <span class="pill fact">Fact</span> read directly from the site, its code or a public record, or a <span class="pill read">Read</span>, which is my interpretation.</p>
+</header>
+
+<section id="glance">
+  <h2>At a glance</h2>
+  <div class="tiles">
+    <div class="tile"><b>₹499<s>₹1,999</s></b><span>Price per invitation, every design (shown as a sale)</span></div>
+    <div class="tile"><b>7</b><span>Animated designs: Tale, Calendar, Celestial, Petals, Night, Spring, Umbrella</span></div>
+    <div class="tile"><b>26–27 Oct 2026</b><span>Company incorporated, about 5 days before this research</span></div>
+    <div class="tile"><b>Razorpay</b><span>Payment gateway; checkout showed "Test Mode" on 1 Nov</span></div>
+    <div class="tile"><b>2.4K</b><span>Instagram followers on @cardcraft.date (50 posts)</span></div>
+    <div class="tile"><b>6 months</b><span>Guest link stays live until 6 months after the last ceremony</span></div>
+  </div>
+  <p><span class="pill fact">Fact</span>The pitch is "A digital invitation your guests will <em>keep</em>." The flow is: pick a design, type two names and a date, watch a watermarked preview, pay, then add photos, ceremonies and venues, and share one guest link on WhatsApp.</p>
+  <p><span class="pill read">Read</span>This is a very new, well-funded-looking but small operation. The engineering and illustration quality is far above a typical Indian e-card app, and the business is in its launch week.</p>
+</section>
+
+<section id="company">
+  <h2>Company and founder</h2>
+  <div class="table-scroll"><table>
+    <tbody>
+      <tr><th scope="row">Legal owner</th><td><span class="pill fact">Fact</span>Spectra Labs Private Limited ("CardCraft is a product of Spectra Labs Private Limited", in the footer and the Terms)</td></tr>
+      <tr><th scope="row">CIN</th><td><code>U62011KA2026PTC230387</code></td></tr>
+      <tr><th scope="row">Incorporated</th><td>26 Oct 2026 (one registry listing says 27 Oct), ROC Bangalore</td></tr>
+      <tr><th scope="row">Registered area</th><td>Bangalore North, Karnataka 560064 (Doddaballapura Road area, a residential apartment address)</td></tr>
+      <tr><th scope="row">Capital</th><td>₹1 lakh authorised, ₹1 lakh paid-up (the legal minimum-style setup)</td></tr>
+      <tr><th scope="row">Activity code</th><td>Computer programming, consultancy and related activities</td></tr>
+      <tr><th scope="row">Linked companies</th><td>Registry site lists the same directors on Greenpath Mobility Ventures Pvt Ltd and Arpa Holiday Pvt Ltd</td></tr>
+      <tr><th scope="row">Contact</th><td>Email only: hello@cardcraft.date. No phone, WhatsApp or office address on the site.</td></tr>
+      <tr><th scope="row">Founder name</th><td>Not published on the site, social pages or the public registry summaries I could reach. The director names are on the MCA record, which you can buy from the MCA portal for a small fee using the CIN above.</td></tr>
+    </tbody>
+  </table></div>
+  <p><span class="pill read">Read</span>The company name ("Spectra Labs"), the ₹1 lakh capital and a home address suggest a founder or two running this as a side or first startup, with other ventures under the same people. The policies are written with unusual care (DPDP Act 2023, OTP rules, deletion), which points to a technically strong, product-minded founder rather than an agency.</p>
+</section>
+
+<section id="product">
+  <h2>The 7 designs</h2>
+  <p><span class="pill fact">Fact</span>All seven cost the same. Each has a live demo at <code>/invites/&lt;name&gt;</code> and an SEO landing page at <code>/designs/&lt;name&gt;</code> (Tale has no landing page yet).</p>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Design</th><th>Concept and interaction</th><th>Style options for the couple</th><th>Default music</th></tr></thead>
+    <tbody>
+      <tr><td><b>Tale</b></td><td>Painted storybook. Guests pull a page corner or swipe; each ceremony is a "chapter" that a brush paints in. Gold cover with a hummingbird landing on the names, doves on the title page.</td><td>4 cover effects: The living manuscript, Liquid gold, Starlit edges, Gilded ink. Couple photo painted into page 1.</td><td>Kala Chashma (instrumental)</td></tr>
+      <tr><td><b>Calendar</b></td><td>3D desk calendar on a stand with ring binding. Each page flip is one celebration, ending on the wedding month and the RSVP.</td><td>Colourways: sage/teal, lavender, rose. Theme sets in the code: keepsake, heirloom, paper-theatre, goa, pondicherry.</td><td>Gentle Light</td></tr>
+      <tr><td><b>Celestial</b></td><td>Midnight-blue envelope with a gold floral wax seal. Opens into moons, stars and parchment; the date is scratch-to-reveal under gold leaf.</td><td>Fixed palette</td><td>Indian Bhangra (site default)</td></tr>
+      <tr><td><b>Petals</b></td><td>A rose opens; each ceremony settles on a falling petal. Zari-embroidery border, peacocks, butterflies, falling petals at the end.</td><td>Petal colour: gulab red, rani pink, marigold gold, jamun plum, or mixed. Backdrop: ivory, blush, sage, midnight paper, or arches scene. Border: painted or outline.</td><td>Relaxing</td></tr>
+      <tr><td><b>Night</b></td><td>River town at night. Two lanterns rise, meet and become a heart holding both portraits. Ceremonies hang as paper tags; RSVP is a parchment slip sealed with a red wax seal. Swipe-led, 4 scenes.</td><td>Fixed palette</td><td>Indian Bhangra</td></tr>
+      <tr><td><b>Spring</b></td><td>Cherry branches; bride and groom portraits hang as petals, and each ceremony completes the flower.</td><td>Fixed palette</td><td>Acoustic Hymn</td></tr>
+      <tr><td><b>Umbrella</b></td><td>Rain, a shared umbrella and the couple at the centre; petal rain falls across the screen.</td><td>Paper: blush wash, moonlit blue, rose mist. Flowers: blush and olive, ivory and sage, lavender and plum.</td><td>Midnight Forest</td></tr>
+    </tbody>
+  </table></div>
+  <p><span class="pill fact">Fact</span>Every demo uses the sample couple "Aanya &amp; Rohan" (Tale uses "Meera &amp; Arjun") with a fictional Udaipur wedding, 10–15 December 2026.</p>
+</section>
+
+<section id="features">
+  <h2>Features</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Ceremonies supported</h3>
+      <ul>
+        <li>Ring Ceremony, Tilak, Mehndi, Sangeet, Haldi, Cocktail Party, Bachelor Party, Baraat Aagman, Wedding, Reception</li>
+        <li>Gujarati extras on Calendar: Mandap Muhurat, Mameru</li>
+        <li>Each ceremony has an illustrated motif (mehndi hand, dholak, wine glass, turmeric and so on)</li>
+        <li>"Bride first" or "Groom first" ordering; groom-first adds Tilak and Baraat</li>
+        <li>Code has a ritual region fixed to "north-indian"; a Christian/chapel set is stubbed but switched off</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Guest experience</h3>
+      <ul>
+        <li>Google Maps "Directions" per venue</li>
+        <li>"Add to calendar" per event (times labelled IST)</li>
+        <li>Background music with mute button; tap to start</li>
+        <li>Parents' names as "D/o" and "S/o" lines</li>
+        <li>Travel legs between venues (auto, car, plane) with distance and time</li>
+        <li>QR code of the invitation can be saved</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>RSVP</h3>
+      <ul>
+        <li>One form for all ceremonies: attending or can't attend, per event</li>
+        <li>Adults and children counters per event (up to 20 each)</li>
+        <li>Lead guest name, optional phone, optional note (600 characters)</li>
+        <li>Cloudflare Turnstile bot check</li>
+        <li>Host gets email updates at most once an hour</li>
+        <li>Host can download all replies as a spreadsheet</li>
+        <li>Thank-you screen: "Planning your own wedding? Create your own card"</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Media</h3>
+      <ul>
+        <li>Two portraits (bride, groom) or a couple photo; JPG, PNG or WebP, up to 12 MB and 32 megapixels, with crop</li>
+        <li>40+ licensed tracks, 12 of them tagged Indian (Bhangra, Festive Lights, India Moods and more)</li>
+        <li>Own song upload: MP3 or M4A up to 10 MB, trim start and end (minimum 5 seconds), with a rights tick-box that is logged</li>
+        <li>Venue autocomplete through Ola Maps</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="journey">
+  <h2>Customer journey, step by step</h2>
+  <ol class="steps">
+    <li><div><b>Discover</b>Homepage autoplays the seven designs inside phone frames. "Personalise this design" or "Open live demo".</div></li>
+    <li><div><b>"Who's getting married?"</b>Bride's name, groom's name, wedding date ("Not final yet? Pick your best guess"). No signup, no email, no phone. Draft is kept in the browser.</div></li>
+    <li><div><b>Watermarked preview</b>The real animation plays with their names in seconds, overlaid with "CARDCRAFT · PREVIEW". Switching designs keeps the names.</div></li>
+    <li><div><b>Checkout</b>Razorpay checkout in rupees (UPI, cards, netbanking, wallets as Razorpay offers). CardCraft asks for no contact details; Razorpay may pass on the email or phone typed there.</div></li>
+    <li><div><b>Link goes live instantly</b>The clean guest link works the moment payment is verified, but shows placeholder portraits and "Details coming soon", and RSVP stays off.</div></li>
+    <li><div><b>Optional contact verify</b>WhatsApp number or email, confirmed by one-time code. Used for the link, reminders to finish the card and a "ready" note. Reply STOP ends WhatsApp messages.</div></li>
+    <li><div><b>Fill in details</b>Photos, ceremonies, dates, venues, notes, music. Save as often as needed; guests keep seeing the earlier version.</div></li>
+    <li><div><b>Submit final card once</b>Free, one time only, and it locks the card. No edits after this.</div></li>
+    <li><div><b>Share</b>Guest link at <code>cardcraft.date/i/&lt;slug&gt;</code> goes out on WhatsApp. Private management link at <code>/manage/&lt;token&gt;</code>, protected by OTP on other devices.</div></li>
+    <li><div><b>After the wedding</b>Feedback email about 2 hours after finishing and the morning after the last ceremony ("If you tell us we may quote you"). Card deleted 6 months after the last ceremony, with a warning a week before.</div></li>
+  </ol>
+  <p><span class="pill read">Read</span>Charging before collecting details is a deliberate conversion trick: the couple pays at peak excitement, right after seeing their own names animate. The one-time final submit cuts support load from endless edits.</p>
+</section>
+
+<section id="pricing">
+  <h2>Pricing and business model</h2>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Product</th><th>List price</th><th>Selling price</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Interactive invitation (any of 7 designs)</td><td>₹1,999</td><td><b>₹499</b></td><td>Live (checkout in test mode on 1 Nov)</td></tr>
+      <tr><td>Invitation video, Calendar or Celestial</td><td>₹1,999</td><td><b>₹999</b></td><td>In the code (video checkout, render, download events); the Terms still say no MP4 is delivered, so it looks unreleased</td></tr>
+      <tr><td>"Story bundle"</td><td>–</td><td>–</td><td>Code has "view" and "notify me" events only: a teaser for a future bundle</td></tr>
+    </tbody>
+  </table></div>
+  <p><span class="pill fact">Fact</span>Prices sit in the front-end code in paise (<code>list: 199900, sale: 49900</code>). The site itself never shows a price before checkout: "The final price is shown at checkout."</p>
+  <h3>How the money works</h3>
+  <ul>
+    <li><span class="pill read">Read</span>One-time payment per wedding; no subscription.</li>
+    <li><span class="pill read">Read</span>Cost per order is close to zero: hosting is on Cloudflare (cheap static and edge hosting), and Razorpay's standard fee is about 2%, roughly ₹10 on ₹499. Gross margin is likely above 90% before ads and GST.</li>
+    <li><span class="pill read">Read</span>The ₹1,999 "list" price is an anchor to make ₹499 feel like 75% off.</li>
+    <li><span class="pill read">Read</span>The growth engine is the guest page itself. Every invite carries a "Made with love · CardCraft" logo and an end screen asking "Planning your own wedding?", tagged <code>utm_source=guest</code>. One wedding with 300 guests gives 300 free ad views to people in wedding season.</li>
+    <li><span class="pill fact">Fact</span>Licence terms ban reselling: "You may not resell the design, use it as a template for other couples, or offer CardCraft invitations as your own product."</li>
+  </ul>
+</section>
+
+<section id="delivery">
+  <h2>Delivery and policies</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>What the customer gets</h3>
+      <ul>
+        <li>A hosted web page (guest link) on cardcraft.date</li>
+        <li>No printed card, no downloadable video (yet), no PDF</li>
+        <li>Unlisted link: anyone with the URL can open it; marked not to be indexed by Google</li>
+        <li>Live until 6 months after the last ceremony</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Refunds</h3>
+      <ul>
+        <li>Only if payment was captured in error or the link cannot be published</li>
+        <li>Changing your mind after publication is not a refund reason</li>
+        <li>Refunds go back through Razorpay and revoke the page</li>
+        <li>Liability capped at the amount paid</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Security and data</h3>
+      <ul>
+        <li>OTP codes expire in 10 minutes, 5 attempts, single use, 24-hour session</li>
+        <li>Written against India's DPDP Act 2023; data requests answered within 30 days</li>
+        <li>Shares data with Razorpay, Cloudflare, Resend (email), WhatsApp/Meta, Google Analytics, Meta Pixel, Ola Maps</li>
+        <li>Keeps a record of how people use the builder, including typed field content</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="colors">
+  <h2>Colours</h2>
+  <p><span class="pill fact">Fact</span>Values below come from the site's stylesheets and code, plus pixel samples from a screenshot of the builder. Each design has its own palette; the shell around them is deliberately quiet so the invitations stand out.</p>
+  <div class="palettes">
+    <div class="pal">
+      <h4>Website shell</h4>
+      <p>Homepage, design pages, guides, legal pages</p>
+      <div class="sw">
+        <div><i style="background:#f7f4ef"></i><em>Page</em>#f7f4ef</div>
+        <div><i style="background:#241f1b"></i><em>Ink / CTA</em>#241f1b</div>
+        <div><i style="background:#6a6158"></i><em>Muted</em>#6a6158</div>
+        <div><i style="background:#e6dfd6"></i><em>Lines</em>#e6dfd6</div>
+        <div><i style="background:#3e4f38"></i><em>Sage links</em>#3e4f38</div>
+        <div><i style="background:#ffffff"></i><em>Surface</em>#ffffff</div>
+      </div>
+    </div>
+    <div class="pal">
+      <h4>Builder ("Who's getting married?")</h4>
+      <p>Sampled from the live screen</p>
+      <div class="sw">
+        <div><i style="background:#0f4438"></i><em>Header green</em>#0f4438</div>
+        <div><i style="background:#e0b155"></i><em>Gold rule / logo</em>#e0b155</div>
+        <div><i style="background:linear-gradient(180deg,#d33670,#c42c65)"></i><em>Rani pink CTA</em>#d33670→#c42c65</div>
+        <div><i style="background:#df7c99"></i><em>"&amp;" mark</em>#df7c99</div>
+        <div><i style="background:#ffdfe8"></i><em>Blush wash</em>#ffdfe8</div>
+      </div>
+    </div>
+    <div class="pal">
+      <h4>Petals</h4>
+      <p>Indian colour names used in the code</p>
+      <div class="sw">
+        <div><i style="background:#b51f38"></i><em>Gulab red</em>#b51f38</div>
+        <div><i style="background:#d61f72"></i><em>Rani pink</em>#d61f72</div>
+        <div><i style="background:#e3ab1c"></i><em>Marigold gold</em>#e3ab1c</div>
+        <div><i style="background:#6f245f"></i><em>Jamun plum</em>#6f245f</div>
+        <div><i style="background:#fbf2e8"></i><em>Paper</em>#fbf2e8</div>
+        <div><i style="background:#5b2631"></i><em>Ink</em>#5b2631</div>
+        <div><i style="background:#9e7b42"></i><em>Zari gold</em>#9e7b42</div>
+      </div>
+    </div>
+    <div class="pal">
+      <h4>Tale</h4>
+      <p>Gold-leaf cover gradient and glow</p>
+      <div class="sw">
+        <div><i style="background:#5e3e11"></i><em>Deep gold</em>#5e3e11</div>
+        <div><i style="background:#ac7f2e"></i><em>Gold</em>#ac7f2e</div>
+        <div><i style="background:#b08a37"></i><em>Foil</em>#b08a37</div>
+        <div><i style="background:#fff1b1"></i><em>Glow lines</em>#fff1b1</div>
+        <div><i style="background:#f6f1df"></i><em>Cover</em>#f6f1df</div>
+      </div>
+    </div>
+    <div class="pal">
+      <h4>Celestial</h4>
+      <p>Navy night with antique gold</p>
+      <div class="sw">
+        <div><i style="background:#132341"></i><em>Navy</em>#132341</div>
+        <div><i style="background:#06102b"></i><em>Midnight</em>#06102b</div>
+        <div><i style="background:#fceabe"></i><em>Gold text</em>#fceabe</div>
+        <div><i style="background:#d8c492"></i><em>Gold border</em>#d8c492</div>
+        <div><i style="background:#e8d1a7"></i><em>Button</em>#e8d1a7</div>
+      </div>
+    </div>
+    <div class="pal">
+      <h4>Night</h4>
+      <p>Dusk gradients, lantern light, wax seal</p>
+      <div class="sw">
+        <div><i style="background:#0a0716"></i><em>Night</em>#0a0716</div>
+        <div><i style="background:linear-gradient(176deg,#322052,#8c476a,#d97a58)"></i><em>Dusk sky</em>#322052→#d97a58</div>
+        <div><i style="background:#ffe9c8"></i><em>Names</em>#ffe9c8</div>
+        <div><i style="background:#f4c66a"></i><em>Lantern gold</em>#f4c66a</div>
+        <div><i style="background:#f3dfb4"></i><em>Tag paper</em>#f3dfb4</div>
+        <div><i style="background:#6b2318"></i><em>Tag ink</em>#6b2318</div>
+        <div><i style="background:#a3272b"></i><em>Wax seal</em>#a3272b</div>
+      </div>
+    </div>
+    <div class="pal">
+      <h4>Spring</h4>
+      <p>Blossom pink and warm brown</p>
+      <div class="sw">
+        <div><i style="background:#f3dfd0"></i><em>Ground</em>#f3dfd0</div>
+        <div><i style="background:#5b4139"></i><em>Ink</em>#5b4139</div>
+        <div><i style="background:#a07733"></i><em>Gold</em>#a07733</div>
+        <div><i style="background:#d6b471"></i><em>Gold light</em>#d6b471</div>
+        <div><i style="background:#b25258"></i><em>RSVP rose</em>#b25258</div>
+      </div>
+    </div>
+    <div class="pal">
+      <h4>Calendar colourways</h4>
+      <p>Accent · ink · paper · stage for each</p>
+      <div class="sw">
+        <div><i style="background:#286e60"></i><em>Teal accent</em>#286e60</div>
+        <div><i style="background:#e4efce"></i><em>Teal paper</em>#e4efce</div>
+        <div><i style="background:#84569e"></i><em>Lavender accent</em>#84569e</div>
+        <div><i style="background:#f3e1f3"></i><em>Lavender paper</em>#f3e1f3</div>
+        <div><i style="background:#a74062"></i><em>Rose accent</em>#a74062</div>
+        <div><i style="background:#ffe6e1"></i><em>Rose paper</em>#ffe6e1</div>
+      </div>
+    </div>
+    <div class="pal">
+      <h4>Umbrella paper and flowers</h4>
+      <p>Customer-selectable swatches</p>
+      <div class="sw">
+        <div><i style="background:linear-gradient(135deg,#fbf2e9,#f1cfc8)"></i><em>Blush wash</em></div>
+        <div><i style="background:linear-gradient(135deg,#f1eee1,#b9d9d6)"></i><em>Moonlit blue</em></div>
+        <div><i style="background:linear-gradient(135deg,#f8eee5,#e9b5bd)"></i><em>Rose mist</em></div>
+        <div><i style="background:linear-gradient(135deg,#d98f8b 0 48%,#687052 52%)"></i><em>Blush &amp; olive</em></div>
+        <div><i style="background:linear-gradient(135deg,#efe5df 0 48%,#777c67 52%)"></i><em>Ivory &amp; sage</em></div>
+        <div><i style="background:linear-gradient(135deg,#d993c2 0 48%,#654653 52%)"></i><em>Lavender &amp; plum</em></div>
+      </div>
+    </div>
+    <div class="pal">
+      <h4>RSVP thank-you screen</h4>
+      <p>Shared across designs; carries the "create your own" CTA</p>
+      <div class="sw">
+        <div><i style="background:#f2dcd3"></i><em>Ground</em>#f2dcd3</div>
+        <div><i style="background:#fff8f4"></i><em>Card</em>#fff8f4</div>
+        <div><i style="background:#4a2430"></i><em>Ink</em>#4a2430</div>
+        <div><i style="background:#a8325a"></i><em>Accent</em>#a8325a</div>
+        <div><i style="background:#e58fa9"></i><em>Garland pink</em>#e58fa9</div>
+        <div><i style="background:#d4a04a"></i><em>Garland gold</em>#d4a04a</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="type">
+  <h2>Typography and visual style</h2>
+  <h3>Fonts</h3>
+  <div class="fontrow"><b>Cormorant Garamond</b><span>Main serif, used most. Italic for couple names, poetic lines and invitation body text.</span></div>
+  <div class="fontrow"><b>Marcellus</b><span>Classical caps for headings, dates, RSVP forms and marketing-page H1/H2.</span></div>
+  <div class="fontrow"><b>Jost</b><span>Geometric sans for labels, buttons and small caps ("BRIDE'S NAME", "SEE MY INVITATION").</span></div>
+  <div class="fontrow"><b>Cinzel</b><span>Roman inscription caps on some design titles.</span></div>
+  <div class="fontrow"><b>Great Vibes</b><span>Script lettering inside Night.</span></div>
+  <div class="fontrow"><b>Playfair Display, Yeseva One, Public Sans</b><span>Minor uses in individual designs.</span></div>
+  <h3>Visual language</h3>
+  <ul>
+    <li>Hand-painted, storybook illustration rather than stock templates or photos</li>
+    <li>Indian craft cues: zari embroidery borders, peacocks, marigold and rose petals, diyas, lanterns, wax seals, gold leaf, mehndi and haldi motifs</li>
+    <li>Phone-first: every design is framed at 9:16, with 44 px touch targets and safe-area padding</li>
+    <li>Motion everywhere (page turns, falling petals, flying doves, swaying portraits), but it switches to quiet motion when the phone asks for reduced motion</li>
+    <li>Transparent video for birds and doves (HEVC .mov for iPhone, WebM for Android)</li>
+    <li>Copy is soft and literary: "A story waiting to be opened.", "Seven little worlds for your wedding.", "Two names and a date. See your invitation in seconds."</li>
+    <li>Watermark on unpaid previews: "CARDCRAFT · PREVIEW"</li>
+  </ul>
+</section>
+
+<section id="tech">
+  <h2>Tech stack</h2>
+  <div class="table-scroll"><table>
+    <thead><tr><th>Layer</th><th>What they use</th></tr></thead>
+    <tbody>
+      <tr><td>Framework</td><td>Next.js 16.3 (App Router, Turbopack build), React 19.3 canary</td></tr>
+      <tr><td>Animation</td><td>GSAP timelines, CSS 3D transforms, Three.js (WebGL) for some scenes, canvas painting</td></tr>
+      <tr><td>Hosting and database</td><td>Cloudflare (site, database, R2 storage for customer photos), Cloudflare Web Analytics</td></tr>
+      <tr><td>Payments</td><td>Razorpay, INR only, server-side payment verification, "Check payment" recovery</td></tr>
+      <tr><td>Messaging</td><td>Resend (email OTP, order mail), WhatsApp Business (OTP, link, reminders)</td></tr>
+      <tr><td>Maps</td><td>Ola Maps (Krutrim) for venue autocomplete; Google Maps links for directions</td></tr>
+      <tr><td>Anti-spam</td><td>Cloudflare Turnstile on RSVP</td></tr>
+      <tr><td>Analytics</td><td>Google Analytics 4 (<code>G-WBQ0FT6PQ6</code>), Meta Pixel (<code>925382836823867</code>), first-party event log at <code>/api/events</code> with 100+ named events and an anonymous visitor ID</td></tr>
+      <tr><td>Icons</td><td>Phosphor icons</td></tr>
+    </tbody>
+  </table></div>
+  <p><span class="pill read">Read</span>The funnel tracking is unusually detailed: separate events for every step (details, preview, checkout opened, payment attempted, failed, dismissed, recovered), every portrait upload and crop, every music preview, and whether the visitor came from Instagram's or Facebook's in-app browser. They are set up to optimise paid social ads hard.</p>
+</section>
+
+<section id="marketing">
+  <h2>Marketing and growth</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Search (SEO)</h3>
+      <ul>
+        <li>Sitemap with 13 URLs: home, designs, 6 design pages, guides index and 4 guides</li>
+        <li>Guides: wedding wording for WhatsApp, a digital invitation checklist, multiple events in one invitation, interactive link vs video</li>
+        <li>Each design page has an FAQ section (watermark, WhatsApp sharing, partial RSVP, print/video)</li>
+        <li>Title tag: "Digital Wedding Invitations for Indian Weddings | CardCraft"; locale <code>en_IN</code></li>
+        <li>Demo and guest pages are kept out of Google on purpose</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Social</h3>
+      <ul>
+        <li>Instagram @cardcraft.date: about 2.4K followers, 0 following, 50 posts. Bio: "Aesthetic engaging wedding invites with RSVP &amp; Live Direction Maps"</li>
+        <li>Reels pitch "Ready to share on WhatsApp and Instagram" and lower cost than printing</li>
+        <li>Some older posts (Sept 2026) are about Pinterest and card-making, so the account may have been repurposed</li>
+        <li>Facebook page "CardCraft.Date": 14 followers but "355 talking about this", tagline "A timeless invitation. A momentary reveal. Bespoke digital wedding suites."</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Built-in loops</h3>
+      <ul>
+        <li>"Made with love · CardCraft" logo on every guest page</li>
+        <li>RSVP thank-you screen pushes guests to create their own card</li>
+        <li>Footer links on guest pages open the builder with that same design pre-selected</li>
+        <li>Post-wedding feedback emails collect testimonials</li>
+      </ul>
+    </div>
+  </div>
+  <p><span class="pill read">Read</span>A Facebook page with 14 followers but 355 people "talking about this" usually means paid Meta ads are running. Combined with the Pixel and detailed checkout events, their main acquisition channel is almost certainly Instagram and Facebook ads aimed at engaged couples.</p>
+</section>
+
+<section id="risks">
+  <h2>Status and risks</h2>
+  <div class="note flag">
+    <p><b>Launch week.</b> The company is about five days old, the legal pages are dated 29 October 2026, and on 1 November the builder still showed a "Test Mode · Razorpay Checkout" badge. Real payments may not be switched on yet.</p>
+  </div>
+  <ul>
+    <li><b>No social proof:</b> no reviews, testimonials, order counts or real couples anywhere on the site.</li>
+    <li><b>Email-only support:</b> no phone or WhatsApp number for a high-emotion, deadline-driven purchase.</li>
+    <li><b>English only:</b> no Hindi, Punjabi, Gujarati or other wording, even though family elders are a big part of the guest list.</li>
+    <li><b>North Indian Hindu rituals only:</b> no Sikh (Anand Karaj, Roka, Chunni, Jaggo, Milni), Muslim (Nikah, Walima), South Indian, Bengali or Christian sets yet.</li>
+    <li><b>Music copyright exposure:</b> the library includes a "Kala Chashma" instrumental (a Bollywood song) as Tale's default track.</li>
+    <li><b>Hidden price:</b> the price only appears at checkout, which loses comparison shoppers.</li>
+    <li><b>Strict policy:</b> one final submit, no edits after locking, no change-of-mind refunds.</li>
+  </ul>
+</section>
+
+<section id="swot">
+  <h2>SWOT</h2>
+  <div class="cols">
+    <div class="card"><h3>Strengths</h3><ul>
+      <li>Best-in-class illustration and animation</li>
+      <li>Real multi-event Indian wedding fit</li>
+      <li>See your names before paying</li>
+      <li>₹499 is an impulse price</li>
+      <li>RSVP with head counts per function</li>
+      <li>Near-zero delivery cost</li>
+    </ul></div>
+    <div class="card"><h3>Weaknesses</h3><ul>
+      <li>No trust signals or human support</li>
+      <li>English only, limited communities</li>
+      <li>Hosted link only, no print or video yet</li>
+      <li>Brand-new company, no track record</li>
+    </ul></div>
+    <div class="card"><h3>Opportunities</h3><ul>
+      <li>Video add-on at ₹999 (already coded)</li>
+      <li>Bundles, regional languages and rituals</li>
+      <li>Other events: engagements, birthdays, griha pravesh</li>
+      <li>Viral spread through every guest page</li>
+    </ul></div>
+    <div class="card"><h3>Threats</h3><ul>
+      <li>Cheap Canva and WhatsApp-video makers</li>
+      <li>Local designers offering done-for-you</li>
+      <li>Music copyright claims</li>
+      <li>Easy for competitors to copy the format</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="nazakat">
+  <h2>What it means for Nazakat Telecom</h2>
+  <div class="note">
+    <p><b>You cannot resell CardCraft as your own.</b> Their licence forbids offering CardCraft invitations as your product or making them for other couples. Any partnership would need their written agreement.</p>
+  </div>
+  <h3>Three realistic routes</h3>
+  <ol>
+    <li><b>Partner with them.</b> They are days old, have no reseller or affiliate programme and no offline presence. A shop that sees wedding families every day is a channel they lack. Write to hello@cardcraft.date and propose a referral fee per paid invite or an assisted-sale arrangement.</li>
+    <li><b>Run an assisted service legally.</b> At your counter, help a family make their own CardCraft invite on their own phone and pay with their own UPI, and charge a separate service fee for setup, photo editing and wording. Read their terms closely first or get their consent; the safest version is with their permission.</li>
+    <li><b>Build your own local offer.</b> Use their gaps: Punjabi and Hindi wording, Sikh ceremonies (Roka, Chunni, Jaggo, Anand Karaj, Milni, Doli), a done-for-you service, a visible price and a WhatsApp helpline. Sell it bundled with SIMs, recharges or accessories in wedding season.</li>
+  </ol>
+  <h3>Benchmarks to use</h3>
+  <ul>
+    <li>Do-it-yourself online price to beat or match: <b>₹499</b></li>
+    <li>Premium add-on benchmark: <b>₹999</b> for an invitation video</li>
+    <li>Features customers now expect: multiple events in one link, map directions, RSVP with head counts, music, couple photos</li>
+  </ul>
+</section>
+
+<footer>
+  <p>Sources: cardcraft.date pages (home, designs, design pages, guides, Terms, Privacy, Content, Delete my data, sitemap, robots), its public stylesheets and JavaScript, a screenshot of the builder, Indian company registry listings for CIN U62011KA2026PTC230387, and the public @cardcraft.date Instagram and CardCraft.Date Facebook pages. Research date 1 November 2026. Figures can change after this date.</p>
+</footer>
+</main>
+</div>
+</body>
+</html>
