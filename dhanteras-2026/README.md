@@ -35,3 +35,7 @@ Since 1992 aapka bharosa. Is tyohaar par Nazakat Telecom aur A&H Teleservices ki
 #HappyDhanteras #Dhanteras2026 #ShubhDhanteras #Diwali2026 #NazakatTelecom #AHTeleservices #Pathankot #MamunCantt #PathankotMobileShop #DhanterasShopping #NewPhone #Punjab #Gurdaspur #Dalhousie
 ```
 Geotag: Pathankot, Punjab. Tag: Nazakat Telecom + A&H Teleservices accounts.
+
+## v2 styles
+`python3 make_post_v2.py --fonts /tmp/fonts --style luxury` → `output/dhanteras_2026_luxury.jpg` (black & gold, polaroid photo)
+`python3 make_post_v2.py --fonts /tmp/fonts --style bright` → `output/dhanteras_2026_bright.jpg` (saffron/magenta, photo inside phone mockup)
