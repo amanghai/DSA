@@ -202,7 +202,20 @@ html,body{{width:1080px;height:1350px;overflow:hidden;background:#1d0208}}
 .footer .brand{{font-family:'Cinzel',serif;font-weight:700;font-size:27px;letter-spacing:3px;color:#ffd34d}}
 .footer .brand span{{color:#ffe9b5;font-weight:400}}
 .footer .addr{{font-size:19px;letter-spacing:.6px;color:#ffe9b5;font-weight:500}}
-</style></head><body><div class="post">
+/* layout when a showroom photo is present */
+.with-photo .logos{{top:96px}}
+.with-photo .logo{{width:200px;height:200px}}
+.with-photo .title{{top:316px}}
+.with-photo .hindi{{font-size:124px}}
+.with-photo .eng{{font-size:80px;margin-top:-14px}}
+.with-photo .date{{font-size:21px;margin-top:2px}}
+.with-photo .centre{{top:600px}}
+.with-photo .arch-wrap{{margin-top:0}}
+.with-photo .arch{{width:600px;height:340px;border-radius:300px 300px 16px 16px}}
+.with-photo .blessing.small{{font-size:23px;margin-top:16px;line-height:1.35}}
+.with-photo .diyas{{bottom:158px;gap:44px}}
+.with-photo .diyas svg{{transform:scale(.78);transform-origin:bottom center;margin:0 -16px}}
+</style></head><body><div class="post{' with-photo' if photo else ''}">
   {mandala_svg()}
   <div class="bokeh" style="width:90px;height:90px;left:70px;top:420px;opacity:.5"></div>
   <div class="bokeh" style="width:60px;height:60px;right:90px;top:520px;opacity:.55"></div>
