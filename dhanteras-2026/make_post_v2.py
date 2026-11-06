@@ -189,6 +189,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--fonts", type=pathlib.Path, required=True)
     ap.add_argument("--style", choices=["luxury", "bright"], required=True)
+    ap.add_argument("--width", type=int, default=0, help="also export a hi-res JPG at this width (e.g. 3840 for 4K)")
     args = ap.parse_args()
     a = HERE / "assets"
     nt, ah, photo = (data_uri(a / "nazakat_logo.jpg"), data_uri(a / "ah_logo_circle.png"),
@@ -209,6 +210,19 @@ def main() -> None:
     Image.open(out.with_suffix(".png")).convert("RGB").resize((1080, 1350), Image.LANCZOS).save(
         out.with_suffix(".jpg"), quality=95)
     print("wrote", out.with_suffix(".jpg"))
+    if args.width:
+        with sync_playwright() as p:
+            b = p.chromium.launch(executable_path=CHROMIUM if pathlib.Path(CHROMIUM).exists() else None)
+            page = b.new_page(viewport={"width": 1080, "height": 1350}, device_scale_factor=args.width / 1080)
+            page.set_content(html)
+            page.evaluate("document.fonts.ready")
+            page.wait_for_timeout(600)
+            hi = out.with_name(out.name + f"_{args.width}px")
+            page.screenshot(path=str(hi.with_suffix(".png")))
+            b.close()
+        Image.open(hi.with_suffix(".png")).convert("RGB").save(hi.with_suffix(".jpg"), quality=95)
+        hi.with_suffix(".png").unlink()
+        print("wrote", hi.with_suffix(".jpg"))
 
 
 if __name__ == "__main__":
