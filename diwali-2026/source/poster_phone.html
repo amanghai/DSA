@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: 'Oswald'; font-weight: 600; src: url('fonts/Oswald-600.ttf'); }
+  @font-face { font-family: 'GreatVibes'; src: url('fonts/GreatVibes.ttf'); }
+  @font-face { font-family: 'Cinzel'; font-weight: 700; src: url('fonts/Cinzel-700.ttf'); }
+  @font-face { font-family: 'Cinzel'; font-weight: 900; src: url('fonts/Cinzel-900.ttf'); }
+  @font-face { font-family: 'Poppins'; font-weight: 400; src: url('fonts/Poppins-400.ttf'); }
+  @font-face { font-family: 'Poppins'; font-weight: 500; src: url('fonts/Poppins-500.ttf'); }
+  @font-face { font-family: 'Poppins'; font-weight: 600; src: url('fonts/Poppins-600.ttf'); }
+  @font-face { font-family: 'Yatra'; src: url('fonts/YatraOne.ttf'); }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #06091A; }
+  .poster {
+    position: relative; width: 1080px; height: 1920px; overflow: hidden;
+    background:
+      radial-gradient(ellipse 620px 620px at 540px 760px, rgba(255,150,40,0.28), transparent 70%),
+      radial-gradient(ellipse 900px 520px at 540px 1150px, rgba(220,38,38,0.30), transparent 70%),
+      linear-gradient(155deg, #0D1328 0%, #0A0F1E 40%, #130825 70%, #080C18 100%);
+  }
+  svg.layer { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+  .gold {
+    background: linear-gradient(180deg, #fff7c9 0%, #ffd56b 30%, #f2a93b 58%, #ffe08a 78%, #c9822a 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  /* ---------- header ---------- */
+  .medallion {
+    position: absolute; left: 52px; top: 48px; width: 214px; height: 214px; border-radius: 50%;
+    padding: 7px; background: conic-gradient(from 0deg, #ffe08a, #c9822a, #fff3c4, #e0a040, #ffe08a);
+    box-shadow: 0 0 40px rgba(255,180,60,0.45), 0 10px 30px rgba(0,0,0,0.5);
+  }
+  .medallion img { width: 100%; height: 100%; border-radius: 50%; display: block; }
+  .ahcard {
+    position: absolute; right: 52px; top: 58px; width: 270px; height: 196px; border-radius: 26px;
+    background: linear-gradient(180deg, #ffffff, #fff6e6); padding: 12px 14px;
+    border: 3px solid #f0c060; box-shadow: 0 0 40px rgba(255,180,60,0.40), 0 10px 30px rgba(0,0,0,0.5);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ahcard img { max-width: 100%; max-height: 100%; }
+  .hdr-mid { position: absolute; top: 70px; left: 280px; right: 336px; text-align: center; }
+  .hdr-mid .hi { font-family: 'Yatra'; font-size: 74px; line-height: 1.15;
+    filter: drop-shadow(0 0 18px rgba(255,160,40,0.55)) drop-shadow(0 3px 2px rgba(60,10,0,0.7)); }
+  .hdr-mid .sub { margin-top: 6px; font-family: 'Cinzel'; font-weight: 700; font-size: 19px; letter-spacing: 6px; color: #ffd98a; }
+
+  /* ---------- phone ---------- */
+  .phone-wrap { position: absolute; left: 330px; top: 318px; width: 420px; height: 820px; transform: rotate(-4deg); }
+  .phone {
+    position: absolute; inset: 0; border-radius: 66px; padding: 12px;
+    background: linear-gradient(135deg, #fff1b0 0%, #d79a3a 22%, #7a4a12 45%, #f3c766 62%, #a0661c 82%, #ffe7a0 100%);
+    box-shadow: 0 0 0 2px rgba(255,230,160,0.6), 0 0 90px rgba(255,160,40,0.55), 0 40px 80px rgba(0,0,0,0.7);
+  }
+  .screen {
+    position: relative; width: 100%; height: 100%; border-radius: 56px; overflow: hidden;
+    background:
+      radial-gradient(ellipse 340px 360px at 50% 92%, rgba(255,170,50,0.95), rgba(255,110,20,0.55) 35%, rgba(150,30,60,0.25) 65%, transparent 80%),
+      linear-gradient(180deg, #0D1328 0%, #1a0d33 45%, #3a0f2a 75%, #5a1a10 100%);
+  }
+  .island { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); width: 118px; height: 34px; border-radius: 20px; background: #000; }
+  .status { position: absolute; top: 22px; left: 36px; right: 30px; display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Poppins'; font-weight: 600; font-size: 19px; color: #fff; }
+  .status .right { display: flex; align-items: center; gap: 8px; font-size: 16px; }
+  .bars { display: flex; align-items: flex-end; gap: 2px; height: 14px; }
+  .bars i { display: block; width: 4px; background: #fff; border-radius: 1px; }
+  .batt { display: flex; align-items: center; gap: 3px; }
+  .batt .b { width: 34px; height: 16px; border: 2px solid #ffd166; border-radius: 5px; padding: 2px; }
+  .batt .b i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #ffd166, #ffb020); border-radius: 2px; }
+  .batt .t { width: 3px; height: 6px; background: #ffd166; border-radius: 0 2px 2px 0; }
+  .date { position: absolute; top: 84px; width: 100%; text-align: center; font-family: 'Poppins'; font-weight: 500; font-size: 22px; color: #ffe2b0; letter-spacing: 0.5px; }
+  .clock { position: absolute; top: 104px; width: 100%; text-align: center; font-family: 'Poppins'; font-weight: 600; font-size: 112px; line-height: 1.1; letter-spacing: -2px; color: #fff4dc;
+    text-shadow: 0 0 30px rgba(255,190,80,0.45); }
+  .notif {
+    position: absolute; left: 18px; right: 18px; border-radius: 26px; padding: 14px 16px 15px 16px;
+    background: rgba(255,248,236,0.16); border: 1px solid rgba(255,230,180,0.35);
+    backdrop-filter: blur(8px); box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .notif .ic { flex: none; width: 50px; height: 50px; border-radius: 13px; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center; }
+  .notif .ic img { width: 100%; height: 100%; object-fit: cover; }
+  .notif .ic.pad img { width: 88%; height: 88%; object-fit: contain; }
+  .notif .tx { flex: 1; min-width: 0; }
+  .notif .top { display: flex; justify-content: space-between; font-family: 'Poppins'; font-weight: 600; font-size: 15px; letter-spacing: 1px; color: #ffd98a; }
+  .notif .top span:last-child { font-weight: 400; color: #f1dcc0; letter-spacing: 0; }
+  .notif .msg { margin-top: 3px; font-family: 'Poppins'; font-weight: 500; font-size: 17px; line-height: 1.32; color: #fff; }
+  .n1 { top: 256px; } .n2 { top: 376px; }
+
+  /* ---------- headline ---------- */
+  .script { position: absolute; top: 1168px; width: 100%; text-align: center; font-family: 'GreatVibes'; font-size: 162px; line-height: 1.15;
+    filter: drop-shadow(0 0 26px rgba(255,170,50,0.55)) drop-shadow(0 5px 2px rgba(60,10,0,0.75)); }
+  .tag { position: absolute; top: 1380px; width: 100%; text-align: center; font-family: 'Poppins'; font-weight: 500; font-size: 30px; color: #fbe9cf; }
+  .tag b { color: #ffd166; font-weight: 600; }
+  .tag .bat { display: inline-flex; vertical-align: -5px; margin: 0 10px 0 0; align-items: center; gap: 3px; }
+  .tag .bat .b { width: 54px; height: 28px; border: 3px solid #ffd166; border-radius: 7px; padding: 3px; }
+  .tag .bat .b i { display: block; height: 100%; background: linear-gradient(90deg, #ff6b6b, #ffd166); border-radius: 2px; }
+  .tag .bat .t { width: 5px; height: 10px; background: #ffd166; border-radius: 0 3px 3px 0; }
+
+  /* ---------- partners ---------- */
+  .partners { position: absolute; top: 1460px; left: 0; right: 0; text-align: center; }
+  .partners .lbl { font-family: 'Cinzel'; font-weight: 700; font-size: 21px; letter-spacing: 6px; color: #ffd98a; }
+  .partners .lbl::before, .partners .lbl::after { content: ''; display: inline-block; width: 110px; height: 1px; vertical-align: middle; margin: 0 18px;
+    background: linear-gradient(90deg, transparent, #ffcf6e); }
+  .partners .lbl::after { background: linear-gradient(90deg, #ffcf6e, transparent); }
+  .pcards { margin-top: 18px; display: flex; justify-content: center; gap: 34px; }
+  .pcard { width: 330px; height: 110px; border-radius: 22px; background: linear-gradient(180deg, #ffffff, #fff6e6); border: 3px solid #f0c060;
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(255,180,60,0.25), 0 8px 20px rgba(0,0,0,0.4); }
+  .pcard img.intex { height: 74px; }
+  .pcard img.ambrane { height: 42px; }
+
+  /* ---------- contact ---------- */
+  .contact {
+    position: absolute; left: 52px; right: 52px; top: 1672px; height: 196px; border-radius: 30px; overflow: hidden;
+    background: linear-gradient(90deg, #B91C1C, #DC2626 50%, #B91C1C);
+    box-shadow: 0 0 50px rgba(220,38,38,0.45), 0 14px 30px rgba(0,0,0,0.5);
+    border: 2px solid rgba(255,220,150,0.8);
+  }
+  .contact .row1 { position: absolute; top: 22px; left: 0; right: 0; display: flex; justify-content: center; align-items: center; gap: 18px;
+    font-family: 'Poppins'; font-weight: 600; font-size: 44px; color: #fff; letter-spacing: 1px; }
+  .contact .row1 .sep { width: 2px; height: 44px; background: rgba(255,255,255,0.55); }
+  .contact .ico { width: 54px; height: 54px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; }
+  .contact .row2 { position: absolute; top: 96px; left: 0; right: 0; text-align: center; font-family: 'Poppins'; font-weight: 500; font-size: 19px; color: #ffe9e0; letter-spacing: 3px; text-transform: uppercase; }
+  .contact .row3 { position: absolute; bottom: 0; left: 0; right: 0; height: 56px; background: #0A0F1E; display: flex; align-items: center; justify-content: center; gap: 16px;
+    font-family: 'Poppins'; font-weight: 500; font-size: 21px; color: #f3e6d0; }
+  .contact .row3 b { color: #ffd166; font-weight: 600; }
+  .contact .row3 .d { color: #DC2626; }
+  .intexsvg { display: block; height: 82px; width: auto; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <svg class="layer" id="bg" viewBox="0 0 1080 1920"></svg>
+
+  <!-- header -->
+  <div class="medallion"><img src="logos/nt_medallion.png"></div>
+  <div class="hdr-mid"><div class="hi gold">शुभ दीपावली</div><div class="sub">DIWALI GREETINGS</div></div>
+  <div class="ahcard"><img src="logos/ah_full.png"></div>
+
+  <!-- phone -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="screen">
+        <div class="island"></div>
+        <div class="status">
+          <span>8:00</span>
+          <span class="right">
+            <span class="bars"><i style="height:5px"></i><i style="height:8px"></i><i style="height:11px"></i><i style="height:14px"></i></span>
+            <span>5G</span>
+            <span class="batt"><span class="b"><i></i></span><span class="t"></span></span>
+          </span>
+        </div>
+        <div class="date">Sunday, 8 November</div>
+        <div class="clock">8:00</div>
+        <div class="notif n1">
+          <div class="ic"><img src="logos/nt_icon.png"></div>
+          <div class="tx">
+            <div class="top"><span>NAZAKAT TELECOM</span><span>now</span></div>
+            <div class="msg">Happy Diwali! May your home shine bright ✨</div>
+          </div>
+        </div>
+        <div class="notif n2">
+          <div class="ic pad"><img src="logos/ah_emblem.png"></div>
+          <div class="tx">
+            <div class="top"><span>A&amp;H TELESERVICES</span><span>now</span></div>
+            <div class="msg">Wishing you prosperity &amp; success 🪔</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <svg class="layer" id="fg" viewBox="0 0 1080 1920"></svg>
+
+  <!-- headline -->
+  <div class="script gold">Happy Diwali</div>
+  <div class="tag"><span class="bat"><span class="b"><i></i></span><span class="t"></span></span>Fully charged with <b>Light, Love &amp; Prosperity</b></div>
+
+  <!-- partners -->
+  <div class="partners">
+    <div class="lbl">AUTHORISED DISTRIBUTOR</div>
+    <div class="pcards">
+      <div class="pcard"><svg class="intexsvg" viewBox="0 0 288 128" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="0" width="288" height="92" fill="#E21D24"/><svg x="22" y="19" width="244" height="54" viewBox="0 0 150 33.169"><path fill="#ffffff" d="M116.562 336.434h7.138v32.681h-7.141zm51.433-.07h26.279v4.807a1.919 1.919 0 0 1-1.857 1.966h-7.709V369.1h-7.146v-25.96h-7.72a1.916 1.916 0 0 1-1.842-1.969zm-4.85 27.286a8.51 8.51 0 0 0 .035-1.1l.026-26.135h-7.126l-.019 24.026s0 .256-.241.216a.337.337 0 0 1-.148-.125l-13.618-20.685c-.509-.687-.763-1.043-.972-1.3l-.019-.025a6.216 6.216 0 0 0-9.954.271 7.9 7.9 0 0 0-1.351 4.566v.024c0 .1-.006.191 0 .255l.03 25.483h7.152l-.032-23.266-.007-.7c.007-.332.313-.29.379-.152.045.08 13.9 20.984 13.9 20.984.071.1.717.955.815 1.1l.149.173a6.493 6.493 0 0 0 4.741 2.078h.215a6.185 6.185 0 0 0 5.452-3.525 6.072 6.072 0 0 0 .594-2.164zm70.006-1.562l.642-.073h.051a5.361 5.361 0 0 0 1.887-.318c1.328-.578 1.854-.988 3.909-3.661.269-.353.607-.846.94-1.321a33.061 33.061 0 0 1 2.98-3.862l.1-.1-.1-.107a32.091 32.091 0 0 1-2.98-3.858l-.016-.028c-.324-.47-.666-.959-.924-1.3-2.065-2.67-2.582-3.075-3.909-3.657a5.15 5.15 0 0 0-1.49-.306h-.416v-.012l-.006.012-.668.014v-6.842l.564-.024h.133a12.211 12.211 0 0 1 4.614.889c2.778 1.2 4.144 2.556 6.616 5.763.372.481.747 1.023 1.141 1.589l.016.027a30.64 30.64 0 0 0 2.026 2.712l.034.04a2.372 2.372 0 0 0 3.535.021 32.216 32.216 0 0 0 2.041-2.735c.409-.587.788-1.138 1.149-1.619 2.473-3.2 3.847-4.551 6.625-5.756a12.14 12.14 0 0 1 4.609-.891h.148l.159.022v6.854l-.223-.044h-.058a5.34 5.34 0 0 0-1.9.327c-1.326.574-1.851.986-3.911 3.655-.27.352-.626.866-.935 1.319a33.151 33.151 0 0 1-2.946 3.825l-.1.107.1.1a32.069 32.069 0 0 1 2.939 3.825c.341.483.681.974.941 1.32 2.06 2.671 2.585 3.079 3.911 3.653a5.294 5.294 0 0 0 1.9.327h.043l.239-.066v6.866l-.307.034a12.232 12.232 0 0 1-4.609-.891c-2.778-1.2-4.146-2.554-6.625-5.756-.38-.495-.764-1.058-1.136-1.6a31.429 31.429 0 0 0-2.042-2.729 2.354 2.354 0 0 0-3.521-.036 31.514 31.514 0 0 0-2.086 2.792l-.016.021c-.395.567-.769 1.106-1.141 1.593-2.472 3.2-3.838 4.556-6.616 5.762a12.176 12.176 0 0 1-4.609.891c-.043 0-.141-.006-.141-.006l-.561.072zm-18.523 6.862a32.892 32.892 0 0 1-4.263-.266c-.554-.065-1.613-.3-1.732-.333l-.615-.142-.081-.02a16.164 16.164 0 0 1-8.976-5.517A15.917 15.917 0 0 1 200 341.313a16.211 16.211 0 0 1 9.794-4.672l.962-.084.5-.007h7.661c.164.007.454.018.591.03a8.81 8.81 0 0 1 .046 17.579h-1.274a.583.583 0 0 0-.085 0H210.3l-3.7-.021-.027-.085c-.161-.786-.785-4.748 3.042-6.22a5.9 5.9 0 0 1 1.864-.31h7.421a1.752 1.752 0 0 0 1.251-.589 2.1 2.1 0 0 0 .538-1.6 1.82 1.82 0 0 0-1.769-1.765h-7.669l-.03.006a9.04 9.04 0 0 0-1.953 17.818 20.481 20.481 0 0 0 5.366.773 20.978 20.978 0 0 0 10.506-2.46c.646-.358 2.562-1.5 2.562-1.5l-.037 7.476-1.427.7a27.81 27.81 0 0 1-11.609 2.567z" transform="translate(-116.562 -336.162)"/>
+</svg><text x="14" y="124" textLength="260" lengthAdjust="spacing" font-family="Oswald" font-weight="600" font-size="24" fill="#E21D24">DEMAND MORE</text></svg></div>
+      <div class="pcard"><img class="ambrane" src="logos/web/ambrane.svg"></div>
+    </div>
+  </div>
+
+  <!-- contact -->
+  <div class="contact">
+    <div class="row1">
+      <div class="ico">
+        <svg width="34" height="34" viewBox="0 0 32 32"><path fill="#25D366" d="M16 3C8.8 3 3 8.7 3 15.8c0 2.5.7 4.9 2 6.9L3 29l6.5-2c1.9 1 4.1 1.6 6.5 1.6 7.2 0 13-5.7 13-12.8S23.2 3 16 3z"/><path fill="#fff" d="M22.6 18.9c-.4-.2-2.1-1-2.4-1.1-.3-.1-.6-.2-.8.2-.2.4-.9 1.1-1.1 1.3-.2.2-.4.3-.8.1-.4-.2-1.5-.6-2.9-1.8-1.1-1-1.8-2.1-2-2.5-.2-.4 0-.6.2-.8l.6-.7c.2-.2.2-.4.4-.6.1-.3 0-.5 0-.7l-1.1-2.6c-.3-.7-.6-.6-.8-.6h-.7c-.2 0-.6.1-1 .5s-1.3 1.3-1.3 3.1 1.3 3.6 1.5 3.8c.2.2 2.6 4 6.4 5.6 3.2 1.3 3.8 1 4.5 1 .7-.1 2.1-.9 2.4-1.7.3-.8.3-1.6.2-1.7-.1-.2-.4-.3-.8-.5z"/></svg>
+      </div>
+      <span>81968 48484</span>
+      <span class="sep"></span>
+      <span>99889 69696</span>
+    </div>
+    <div class="row2">Call / WhatsApp · Mobiles · Accessories · Gadgets</div>
+    <div class="row3">Defence Road, Mamun Cantt, Pathankot <span class="d">◆</span> <b>nazakattelecom.shop</b></div>
+  </div>
+</div>
+
+<script>
+let seed = 811;
+const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+const bg = document.getElementById('bg'), fg = document.getElementById('fg');
+const add = (svg, html) => svg.insertAdjacentHTML('beforeend', html);
+const DEFS = `<defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fff1b0"/><stop offset="50%" stop-color="#f0b246"/><stop offset="100%" stop-color="#ffe08a"/></linearGradient>
+  <radialGradient id="flame" cx="50%" cy="70%" r="60%"><stop offset="0%" stop-color="#fff"/><stop offset="30%" stop-color="#fff3a0"/><stop offset="65%" stop-color="#ffb627"/><stop offset="100%" stop-color="#ff5e00" stop-opacity="0.9"/></radialGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#ffd27a" stop-opacity="0.9"/><stop offset="40%" stop-color="#ff9a2e" stop-opacity="0.35"/><stop offset="100%" stop-color="#ff6a00" stop-opacity="0"/></radialGradient>
+  <linearGradient id="clay" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e2672c"/><stop offset="55%" stop-color="#a8381a"/><stop offset="100%" stop-color="#5e1a0c"/></linearGradient>
+  <filter id="b6"><feGaussianBlur stdDeviation="6"/></filter><filter id="b18"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>`;
+add(bg, DEFS); add(fg, DEFS.replace(/id="/g, 'id="f'));
+
+// bokeh + stars
+const cols = ['#ff9f40','#ffd166','#DC2626','#ff6b6b','#c77dff'];
+for (let i = 0; i < 34; i++) add(bg, `<circle cx="${rnd()*1080}" cy="${rnd()*1920}" r="${10+rnd()*42}" fill="${cols[i%cols.length]}" opacity="${0.05+rnd()*0.1}" filter="url(#b6)"/>`);
+for (let i = 0; i < 90; i++) {
+  const x = rnd()*1080, y = 280 + rnd()*1100, s = rnd();
+  if (s < 0.25) { const k = 4 + rnd()*8; add(bg, `<path d="M${x},${y-k} Q${x+k*.18},${y-k*.18} ${x+k},${y} Q${x+k*.18},${y+k*.18} ${x},${y+k} Q${x-k*.18},${y+k*.18} ${x-k},${y} Q${x-k*.18},${y-k*.18} ${x},${y-k}Z" fill="#fff4cf" opacity="${.5+rnd()*.5}"/>`); }
+  else add(bg, `<circle cx="${x}" cy="${y}" r="${.8+rnd()*1.8}" fill="#ffe9b0" opacity="${.35+rnd()*.6}"/>`);
+}
+
+// ---------- circuit rangoli ----------
+(function circuitRangoli(cx, cy) {
+  let s = `<g transform="translate(${cx} ${cy}) scale(0.92) translate(${-cx} ${-cy})" stroke="url(#g)" fill="none" stroke-linecap="round" stroke-linejoin="round">`;
+  const N = 16;
+  const polar = (r, a) => [cx + Math.cos(a)*r, cy + Math.sin(a)*r];
+  // concentric rings
+  [470, 505, 545].forEach((r, i) => s += `<circle cx="${cx}" cy="${cy}" r="${r}" stroke-width="${i===1?2.2:1.2}" opacity="${i===1?0.55:0.3}" ${i!==1?'stroke-dasharray="3 9"':''}/>`);
+  for (let k = 0; k < N; k++) {
+    const a0 = (k / N) * Math.PI * 2 - Math.PI/2;
+    for (const side of [-1, 1]) {
+      // PCB-style trace: radial out, 45deg jog, radial out, terminal pad
+      const da = side * 0.075;
+      const p1 = polar(300, a0 + da), p2 = polar(360, a0 + da), p3 = polar(400, a0 + da*2.4), p4 = polar(460, a0 + da*2.4);
+      s += `<path d="M${p1} L${p2} L${p3} L${p4}" stroke-width="2.4" opacity="0.7"/>`;
+      s += `<circle cx="${p4[0]}" cy="${p4[1]}" r="6" stroke-width="2.4" opacity="0.85"/>`;
+      s += `<circle cx="${p1[0]}" cy="${p1[1]}" r="3" fill="#ffd166" stroke="none" opacity="0.8"/>`;
+    }
+    // centre spoke ending in petal (rangoli motif)
+    const q1 = polar(330, a0), q2 = polar(500, a0), tip = polar(560, a0);
+    s += `<path d="M${q1} L${q2}" stroke-width="1.6" opacity="0.5" stroke-dasharray="2 7"/>`;
+    const l = polar(530, a0 - 0.045), r = polar(530, a0 + 0.045);
+    s += `<path d="M${q2} Q${l} ${tip} Q${r} ${q2}Z" fill="#DC2626" fill-opacity="0.35" stroke-width="2" opacity="0.85"/>`;
+    // chip squares between sectors
+    const am = a0 + Math.PI / N, c = polar(520, am);
+    s += `<rect x="${c[0]-7}" y="${c[1]-7}" width="14" height="14" rx="2" transform="rotate(${am*180/Math.PI} ${c[0]} ${c[1]})" stroke-width="2" opacity="0.6"/>`;
+  }
+  s += '</g>';
+  add(bg, s);
+})(540, 728);
+
+// ---------- floating gadget icons (A&H range) ----------
+const icons = {
+  earbuds: `<rect x="-20" y="-12" width="40" height="28" rx="12"/><line x1="-20" y1="-1" x2="20" y2="-1"/><circle cx="-8" cy="-20" r="5"/><circle cx="8" cy="-20" r="5"/>`,
+  power: `<rect x="-14" y="-24" width="28" height="48" rx="6"/><path d="M2,-12 L-6,2 L2,2 L-2,14"/>`,
+  watch: `<rect x="-15" y="-16" width="30" height="32" rx="8"/><path d="M-9,-16 L-7,-28 L7,-28 L9,-16 M-9,16 L-7,28 L7,28 L9,16"/><path d="M0,-6 L0,1 L6,4"/>`,
+  speaker: `<rect x="-17" y="-24" width="34" height="48" rx="6"/><circle cx="0" cy="7" r="9"/><circle cx="0" cy="-12" r="4"/>`,
+  headphones: `<path d="M-20,8 L-20,-2 A20,20 0 0 1 20,-2 L20,8"/><rect x="-25" y="4" width="10" height="18" rx="4"/><rect x="15" y="4" width="10" height="18" rx="4"/>`,
+  cable: `<path d="M-18,20 C-18,0 18,8 18,-10"/><rect x="11" y="-26" width="14" height="16" rx="3"/><rect x="-25" y="18" width="14" height="10" rx="2"/>`,
+};
+[[120, 470, 'earbuds'], [960, 470, 'watch'], [92, 760, 'power'], [988, 760, 'speaker'], [118, 995, 'headphones'], [962, 995, 'cable']]
+.forEach(([x, y, k]) => {
+  add(bg, `<g transform="translate(${x} ${y})">
+    <circle r="54" fill="url(#glow)" opacity="0.55"/>
+    <circle r="40" fill="#0A0F1E" fill-opacity="0.75" stroke="url(#g)" stroke-width="2.5"/>
+    <g stroke="#ffd98a" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="scale(0.85)">${icons[k]}</g>
+  </g>`);
+});
+
+// ---------- fireworks ----------
+function burst(cx, cy, R, n, colors, op) {
+  let s = `<g opacity="${op}"><circle cx="${cx}" cy="${cy}" r="${R*.85}" fill="${colors[0]}" opacity="0.08" filter="url(#b18)"/>`;
+  for (let i = 0; i < n; i++) {
+    const a = i / n * Math.PI * 2, r0 = R*(.2+rnd()*.1), r1 = R*(.75+rnd()*.25), c = colors[i % colors.length];
+    s += `<line x1="${cx+Math.cos(a)*r0}" y1="${cy+Math.sin(a)*r0}" x2="${cx+Math.cos(a)*r1}" y2="${cy+Math.sin(a)*r1}" stroke="${c}" stroke-width="${1.5+rnd()*1.5}" stroke-linecap="round"/>`;
+    s += `<circle cx="${cx+Math.cos(a)*r1}" cy="${cy+Math.sin(a)*r1}" r="${2+rnd()*2.4}" fill="${c}"/>`;
+  }
+  add(bg, s + '</g>');
+}
+burst(170, 330, 95, 28, ['#ffd166','#fff3c4','#ffb347'], 0.75);
+burst(915, 315, 90, 26, ['#ff6b6b','#ffc2c2','#ffd166'], 0.75);
+burst(62, 1450, 62, 22, ['#ffd166','#ffffff'], 0.5);
+burst(1018, 1450, 62, 22, ['#ff7070','#ffd166'], 0.5);
+
+// ---------- diya in front of phone ----------
+function diya(cx, cy, sc) {
+  const u = v => v * sc; let s = '<g>';
+  s += `<ellipse cx="${cx}" cy="${cy-u(40)}" rx="${u(230)}" ry="${u(190)}" fill="url(#fglow)"/>`;
+  s += `<path d="M${cx},${cy-u(122)} C${cx+u(24)},${cy-u(82)} ${cx+u(27)},${cy-u(46)} ${cx},${cy-u(26)} C${cx-u(27)},${cy-u(46)} ${cx-u(24)},${cy-u(82)} ${cx},${cy-u(122)}Z" fill="url(#fflame)"/>`;
+  s += `<path d="M${cx},${cy-u(86)} C${cx+u(9)},${cy-u(65)} ${cx+u(10)},${cy-u(46)} ${cx},${cy-u(36)} C${cx-u(10)},${cy-u(46)} ${cx-u(9)},${cy-u(65)} ${cx},${cy-u(86)}Z" fill="#fff" opacity=".92"/>`;
+  s += `<line x1="${cx}" y1="${cy-u(30)}" x2="${cx}" y2="${cy-u(18)}" stroke="#3a1a0a" stroke-width="${u(4)}" stroke-linecap="round"/>`;
+  s += `<path d="M${cx-u(95)},${cy-u(20)} Q${cx-u(80)},${cy+u(55)} ${cx},${cy+u(58)} Q${cx+u(80)},${cy+u(55)} ${cx+u(95)},${cy-u(20)} Q${cx+u(110)},${cy-u(34)} ${cx+u(124)},${cy-u(40)} Q${cx+u(96)},${cy-u(6)} ${cx+u(95)},${cy-u(20)}Z" fill="url(#fclay)"/>`;
+  s += `<ellipse cx="${cx}" cy="${cy-u(20)}" rx="${u(95)}" ry="${u(16)}" fill="#ff9a4a"/><ellipse cx="${cx}" cy="${cy-u(19)}" rx="${u(84)}" ry="${u(11)}" fill="#ffd27a" opacity=".8"/>`;
+  for (let k = -3; k <= 3; k++) s += `<circle cx="${cx+k*u(22)}" cy="${cy+u(16)-Math.abs(k)*u(3)}" r="${u(5)}" fill="#ffd166"/>`;
+  s += `<path d="M${cx-u(80)},${cy+u(2)} Q${cx},${cy+u(24)} ${cx+u(80)},${cy+u(2)}" stroke="#ffd166" stroke-width="${u(3)}" fill="none"/>`;
+  add(fg, s + '</g>');
+}
+// small side diyas on a rangoli line
+add(fg, `<g opacity="0.9"><path d="M200,1132 Q540,1180 880,1132" stroke="url(#fg)" stroke-width="2" fill="none" stroke-dasharray="2 8"/></g>`);
+diya(240, 1112, 0.55); diya(840, 1112, 0.55);
+diya(540, 1088, 1.35);
+</script>
+</body>
+</html>
